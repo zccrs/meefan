@@ -36,3 +36,9 @@ Makefile*
 # QtCtreator CMake
 CMakeLists.txt.user
 
+./moc
+./obj
+./meefan
+*.changes
+*.deb
+*.stackdump
