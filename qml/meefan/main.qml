@@ -27,4 +27,21 @@ PageStackWindow {
             MenuItem { text: qsTr("Sample menu item") }
         }
     }
+
+    Connections {
+        target: oauth
+
+        onRequestAccessTokenFinished: {
+            console.log("finished! token =", token, "secret =", secret)
+        }
+        onRequestAccessTokenError: {
+            console.log("error:", error)
+        }
+    }
+
+    Component.onCompleted: {
+        oauth.consumerKey = "e5dd03165aebdba16611e1f4849ce2c3";
+        oauth.consumerSecret = "none";
+        oauth.requestAccessToken("username", "password");
+    }
 }

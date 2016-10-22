@@ -1,3 +1,6 @@
+QT += network
+CONFIG += c++11
+
 # Add more folders to ship with the application, here
 folder_01.source = qml/meefan
 folder_01.target = qml
@@ -30,7 +33,8 @@ CONFIG += qdeclarative-boostable
 # CONFIG += qt-components
 
 # The .cpp file which was generated for your project. Feel free to hack it.
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    src/oauthfanfou.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -50,6 +54,9 @@ contains(MEEGO_EDITION, harmattan){
     INSTALLS += splash
 }
 
+# Lib oauth
+include($$PWD/src/oauth/oauth.pri)
+
 OTHER_FILES += \
     qtc_packaging/debian_harmattan/rules \
     qtc_packaging/debian_harmattan/README \
@@ -58,3 +65,8 @@ OTHER_FILES += \
     qtc_packaging/debian_harmattan/control \
     qtc_packaging/debian_harmattan/compat \
     qtc_packaging/debian_harmattan/changelog
+
+HEADERS += \
+    src/oauthfanfou.h
+
+INCLUDEPATH += $$PWD/src
