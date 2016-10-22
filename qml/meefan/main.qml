@@ -1,47 +1,36 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
+import com.nokia.extras 1.1
 
 PageStackWindow {
     id: appWindow
 
-    initialPage: mainPage
-
-    MainPage {
-        id: mainPage
+    function showInfoBanner(string) {
+        infoBanner.text = string
+        infoBanner.show()
     }
 
-    ToolBarLayout {
-        id: commonTools
-        visible: true
-        ToolIcon {
-            platformIconId: "toolbar-view-menu"
-            anchors.right: (parent === undefined) ? undefined : parent.right
-            onClicked: (myMenu.status === DialogStatus.Closed) ? myMenu.open() : myMenu.close()
-        }
+    initialPage: LoginPage {
+
     }
 
-    Menu {
-        id: myMenu
-        visualParent: pageStack
-        MenuLayout {
-            MenuItem { text: qsTr("Sample menu item") }
-        }
+    InfoBanner {
+        id: infoBanner
+
+        y:35
     }
 
-    Connections {
-        target: oauth
+//    MainPage {
+//        id: mainPage
+//    }
 
-        onRequestAccessTokenFinished: {
-            console.log("finished! token =", token, "secret =", secret)
-        }
-        onRequestAccessTokenError: {
-            console.log("error:", error)
-        }
-    }
-
-    Component.onCompleted: {
-        oauth.consumerKey = "e5dd03165aebdba16611e1f4849ce2c3";
-        oauth.consumerSecret = "none";
-        oauth.requestAccessToken("username", "password");
-    }
+//    ToolBarLayout {
+//        id: commonTools
+//        visible: true
+//        ToolIcon {
+//            platformIconId: "toolbar-view-menu"
+//            anchors.right: (parent === undefined) ? undefined : parent.right
+//            onClicked: (myMenu.status === DialogStatus.Closed) ? myMenu.open() : myMenu.close()
+//        }
+//    }
 }

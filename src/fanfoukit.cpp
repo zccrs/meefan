@@ -1,4 +1,4 @@
-#include "oauthfanfou.h"
+#include "fanfoukit.h"
 
 #include <QPair>
 #include <QNetworkAccessManager>
@@ -9,24 +9,24 @@
 
 #define ACCESS_TOKEN_URL "http://fanfou.com/oauth/access_token"
 
-OAuthFanfou::OAuthFanfou(QObject *parent)
+FanfouKit::FanfouKit(QObject *parent)
     : OAuth(parent)
     , m_accessManager(new QNetworkAccessManager(this))
 {
 }
 
-OAuthFanfou::OAuthFanfou(const QByteArray &consumerKey, const QByteArray &consumerSecret, QObject *parent)
+FanfouKit::FanfouKit(const QByteArray &consumerKey, const QByteArray &consumerSecret, QObject *parent)
     : OAuth(consumerKey, consumerSecret, parent)
     , m_accessManager(new QNetworkAccessManager(this))
 {
 }
 
-QString OAuthFanfou::userName() const
+QString FanfouKit::userName() const
 {
     return m_userName;
 }
 
-QByteArray OAuthFanfou::generateAuthorizationHeader(const QString &username, const QString &password)
+QByteArray FanfouKit::generateAuthorizationHeader(const QString &username, const QString &password)
 {
     QUrl url(ACCESS_TOKEN_URL);
 
@@ -35,15 +35,17 @@ QByteArray OAuthFanfou::generateAuthorizationHeader(const QString &username, con
     url.addQueryItem("x_auth_mode", "client_auth");
 
     QByteArray oauthHeader = OAuth::generateAuthorizationHeader(url, OAuth::POST);
+    const QList<QPair<QByteArray, QByteArray> > urlItems = url.encodedQueryItems();
 
-    for (const QPair<QByteArray, QByteArray> &item : url.encodedQueryItems()) {
+    for (int i = 0; i < urlItems.count(); ++i) {
+        const QPair<QByteArray, QByteArray> &item = urlItems.at(i);
         oauthHeader.append("," + item.first + "=\"" + item.second + "\"");
     }
 
     return oauthHeader;
 }
 
-void OAuthFanfou::requestAccessToken(const QString &password)
+void FanfouKit::requestAccessToken(const QString &password)
 {
     QNetworkRequest request;
     request.setUrl(QUrl(ACCESS_TOKEN_URL));
@@ -54,13 +56,13 @@ void OAuthFanfou::requestAccessToken(const QString &password)
     connect(reply, SIGNAL(finished()), this, SLOT(onRequestAccessToken()));
 }
 
-void OAuthFanfou::requestAccessToken(const QString &username, const QString &password)
+void FanfouKit::requestAccessToken(const QString &username, const QString &password)
 {
     setUserName(username);
     requestAccessToken(password);
 }
 
-void OAuthFanfou::setUserName(QString arg)
+void FanfouKit::setUserName(QString arg)
 {
     if (m_userName != arg) {
         m_userName = arg;
@@ -68,7 +70,7 @@ void OAuthFanfou::setUserName(QString arg)
     }
 }
 
-void OAuthFanfou::onRequestAccessToken()
+void FanfouKit::onRequestAccessToken()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 

@@ -7,15 +7,15 @@ QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
 QT_END_NAMESPACE
 
-class OAuthFanfou : public OAuth
+class FanfouKit : public OAuth
 {
     Q_OBJECT
 
     Q_PROPERTY(QString userName READ userName WRITE setUserName NOTIFY userNameChanged)
 
 public:
-    explicit OAuthFanfou(QObject *parent = 0);
-    explicit OAuthFanfou(const QByteArray& consumerKey, const QByteArray& consumerSecret, QObject *parent = 0);
+    explicit FanfouKit(QObject *parent = 0);
+    explicit FanfouKit(const QByteArray& consumerKey, const QByteArray& consumerSecret, QObject *parent = 0);
     
     QString userName() const;
 

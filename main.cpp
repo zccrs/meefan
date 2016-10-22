@@ -3,7 +3,7 @@
 #include <QNetworkProxy>
 
 #include "qmlapplicationviewer.h"
-#include "oauthfanfou.h"
+#include "fanfoukit.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
@@ -19,7 +19,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
     QmlApplicationViewer viewer;
 
-    viewer.rootContext()->setContextProperty("oauth", new OAuthFanfou(&viewer));
+    viewer.rootContext()->setContextProperty("ffkit", new FanfouKit(&viewer));
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationLockPortrait);
     viewer.setMainQmlFile(QLatin1String("qml/meefan/main.qml"));
     viewer.showExpanded();
