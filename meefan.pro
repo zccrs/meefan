@@ -36,6 +36,20 @@ SOURCES += main.cpp
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
 qtcAddDeployment()
 
+# Splash For MeeGo
+contains(MEEGO_EDITION, harmattan){
+    message(harmattan build)
+    DEFINES += Q_OS_HARMATTAN
+
+    splash.files = splash.png
+    splash.path = /opt/$${TARGET}/data
+
+    export(splash.files)
+    export(splash.path)
+
+    INSTALLS += splash
+}
+
 OTHER_FILES += \
     qtc_packaging/debian_harmattan/rules \
     qtc_packaging/debian_harmattan/README \

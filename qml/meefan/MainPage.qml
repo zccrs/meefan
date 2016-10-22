@@ -3,6 +3,7 @@ import com.nokia.meego 1.0
 
 Page {
     tools: commonTools
+    orientationLock: PageOrientation.LockPortrait
 
     Label {
         id: label

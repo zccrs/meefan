@@ -5,7 +5,7 @@ Type=Application
 Terminal=false
 Name=meefan
 Name[zh]=米饭
-Exec=/usr/bin/invoker --type=d -s /opt/meefan/bin/meefan
+Exec=/usr/bin/invoker --splash /opt/meefan/data/splash.png --type=d -s /opt/meefan/bin/meefan
 Icon=/usr/share/icons/hicolor/80x80/apps/meefan80.png
 X-Window-Icon=
 X-HildonDesk-ShowInToolbar=true
