@@ -1,5 +1,6 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
+import "../js/FanFouService.js" as Service
 
 Page {
     orientationLock: PageOrientation.LockPortrait
@@ -7,7 +8,7 @@ Page {
         ToolButton {
             text: qsTr("Login")
             onClicked: {
-                ffkit.requestAccessToken(inputPassword.text)
+                ffkit.requestAccessToken(inputEmail.text, inputPassword.text)
             }
         }
         ToolButton {
@@ -19,9 +20,8 @@ Page {
         target: ffkit
 
         onRequestAccessTokenFinished: {
-            console.log("finished! token =", token, "secret =", secret)
-
-            showInfoBanner("Login Finished! token=" + token + "secret=" + secret)
+            console.log("finished! token =", ffkit.oauthToken, "secret =", ffkit.oauthTokenSecret)
+            Service.login()
         }
         onRequestAccessTokenError: {
             console.log("error:", error)
@@ -30,7 +30,7 @@ Page {
         }
 
         Component.onCompleted: {
-            ffkit.consumerKey = "e5dd03165aebdba16611e1f4849ce2c3"
+            Service.initialize(ffkit, appWindow)
         }
     }
 
@@ -83,10 +83,6 @@ Page {
             KeyNavigation.down: inputPassword
             KeyNavigation.up: inputPassword
             KeyNavigation.tab: inputPassword
-
-            onTextChanged: {
-                ffkit.userName = text
-            }
         }
 
         TextField {

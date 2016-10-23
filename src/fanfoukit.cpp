@@ -1,4 +1,5 @@
 #include "fanfoukit.h"
+#include "httprequest.h"
 
 #include <QPair>
 #include <QNetworkAccessManager>
@@ -21,12 +22,12 @@ FanfouKit::FanfouKit(const QByteArray &consumerKey, const QByteArray &consumerSe
 {
 }
 
-QString FanfouKit::userName() const
+HttpRequest *FanfouKit::createHttpRequest()
 {
-    return m_userName;
+    return new HttpRequest(this);
 }
 
-QByteArray FanfouKit::generateAuthorizationHeader(const QString &username, const QString &password)
+QByteArray FanfouKit::generateXAuthorizationHeader(const QString &username, const QString &password)
 {
     QUrl url(ACCESS_TOKEN_URL);
 
@@ -45,29 +46,15 @@ QByteArray FanfouKit::generateAuthorizationHeader(const QString &username, const
     return oauthHeader;
 }
 
-void FanfouKit::requestAccessToken(const QString &password)
+void FanfouKit::requestAccessToken(const QString &username, const QString &password)
 {
     QNetworkRequest request;
     request.setUrl(QUrl(ACCESS_TOKEN_URL));
-    request.setRawHeader("Authorization", generateAuthorizationHeader(m_userName, password));
+    request.setRawHeader("Authorization", generateXAuthorizationHeader(username, password));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
     QNetworkReply *reply = m_accessManager->post(request, QByteArray());
     connect(reply, SIGNAL(finished()), this, SLOT(onRequestAccessToken()));
-}
-
-void FanfouKit::requestAccessToken(const QString &username, const QString &password)
-{
-    setUserName(username);
-    requestAccessToken(password);
-}
-
-void FanfouKit::setUserName(QString arg)
-{
-    if (m_userName != arg) {
-        m_userName = arg;
-        emit userNameChanged(arg);
-    }
 }
 
 void FanfouKit::onRequestAccessToken()
@@ -112,8 +99,13 @@ void FanfouKit::onRequestAccessToken()
         return;
     }
 
-    if (token_list.first().contains("secret"))
-        emit requestAccessTokenFinished(secret_list.last(), token_list.last());
-    else
-        emit requestAccessTokenFinished(token_list.last(), secret_list.last());
+    if (token_list.first().contains("secret")) {
+        setOAuthToken(secret_list.last());
+        setOAuthTokenSecret(token_list.last());
+    } else {
+        setOAuthToken(token_list.last());
+        setOAuthTokenSecret(secret_list.last());
+    }
+
+    emit requestAccessTokenFinished();
 }

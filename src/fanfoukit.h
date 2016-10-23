@@ -7,35 +7,30 @@ QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
 QT_END_NAMESPACE
 
+class HttpRequest;
 class FanfouKit : public OAuth
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString userName READ userName WRITE setUserName NOTIFY userNameChanged)
-
 public:
     explicit FanfouKit(QObject *parent = 0);
     explicit FanfouKit(const QByteArray& consumerKey, const QByteArray& consumerSecret, QObject *parent = 0);
-    
-    QString userName() const;
+
+    Q_INVOKABLE HttpRequest *createHttpRequest();
 
 public slots:
-    QByteArray generateAuthorizationHeader(const QString &username, const QString &password);
+    QByteArray generateXAuthorizationHeader(const QString &username, const QString &password);
 
-    void requestAccessToken(const QString &password);
     void requestAccessToken(const QString &username, const QString &password);
-    void setUserName(QString arg);
 
 signals:
-    void userNameChanged(QString arg);
-    void requestAccessTokenFinished(QByteArray token, QByteArray secret);
+    void requestAccessTokenFinished();
     void requestAccessTokenError(QString error);
 
 private slots:
     void onRequestAccessToken();
 
 private:
-    QString m_userName;
     QNetworkAccessManager *m_accessManager;
 };
 

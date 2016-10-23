@@ -42,8 +42,16 @@ public:
     OAuth(QObject *parent = 0);
     OAuth(const QByteArray& consumerKey, const QByteArray& consumerSecret, QObject *parent = 0);
 
-    enum HttpMethod {GET, POST, PUT, DELETE};
+    enum HttpMethod {
+        GET = 0,
+        POST = 1,
+        PUT = 2,
+        DELETE = 3
+    };
 
+    Q_ENUMS(HttpMethod)
+
+public slots:
     void parseTokens(const QByteArray& response);
     QByteArray generateAuthorizationHeader(const QUrl& url, HttpMethod method);
     void setOAuthToken(const QByteArray& token);

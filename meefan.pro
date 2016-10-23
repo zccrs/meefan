@@ -1,10 +1,17 @@
-QT += network
+QT += network script
 CONFIG += c++11
+
+TARGET = meefan
+VERSION = 1.0.0
 
 # Add more folders to ship with the application, here
 folder_01.source = qml/meefan
 folder_01.target = qml
-DEPLOYMENTFOLDERS = folder_01
+
+folder_js.source = qml/js
+folder_js.target = qml
+
+DEPLOYMENTFOLDERS = folder_01 folder_js
 
 # Additional import path used to resolve QML modules in Creator's code model
 QML_IMPORT_PATH =
@@ -34,7 +41,8 @@ CONFIG += qdeclarative-boostable
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
-    src/fanfoukit.cpp
+    src/fanfoukit.cpp \
+    src/httprequest.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -64,9 +72,12 @@ OTHER_FILES += \
     qtc_packaging/debian_harmattan/copyright \
     qtc_packaging/debian_harmattan/control \
     qtc_packaging/debian_harmattan/compat \
-    qtc_packaging/debian_harmattan/changelog
+    qtc_packaging/debian_harmattan/changelog \
+    qml/js/FanFouAPI.js \
+    qml/js/FanFouService.js
 
 HEADERS += \
-    src/fanfoukit.h
+    src/fanfoukit.h \
+    src/httprequest.h
 
 INCLUDEPATH += $$PWD/src
