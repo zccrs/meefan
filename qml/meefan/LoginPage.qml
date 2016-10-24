@@ -21,7 +21,21 @@ Page {
 
         onRequestAccessTokenFinished: {
             console.log("finished! token =", ffkit.oauthToken, "secret =", ffkit.oauthTokenSecret)
-            Service.login()
+            var obj = Service.login()
+
+            if (obj.error) {
+                showInfoBanner(obj.error)
+                return;
+            }
+
+            showInfoBanner("Login Finished " + obj.screen_name)
+
+            obj = Service.homeTimeline()
+
+            if (obj.error) {
+                showInfoBanner(obj.error)
+                return;
+            }
         }
         onRequestAccessTokenError: {
             console.log("error:", error)
@@ -30,7 +44,7 @@ Page {
         }
 
         Component.onCompleted: {
-            Service.initialize(ffkit, appWindow)
+            Service.initialize(ffkit)
         }
     }
 

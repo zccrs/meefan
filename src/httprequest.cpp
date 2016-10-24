@@ -4,6 +4,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QScriptEngine>
+#include <QEventLoop>
 #include <QDebug>
 
 HttpRequest::HttpRequest(QObject *parent)
@@ -27,6 +28,10 @@ HttpRequest::~HttpRequest()
     if (m_reply) {
         m_reply->abort();
         m_reply->deleteLater();
+    }
+
+    if (eventLoop) {
+        eventLoop->exit();
     }
 }
 
@@ -111,14 +116,19 @@ void HttpRequest::setRequestHeader(const QByteArray &name, const QByteArray &val
     m_request.setRawHeader(name, value);
 }
 
-void HttpRequest::open(const QByteArray &method, const QUrl &url)
+void HttpRequest::open(const QByteArray &method, const QUrl &url, bool async)
 {
     m_method = method;
     m_request = QNetworkRequest(url);
+    m_async = async;
 
     if (m_reply) {
         m_reply->abort();
         m_reply->deleteLater();
+    }
+
+    if (eventLoop) {
+        eventLoop->exit();
     }
 
     setReadyState(Opened);
@@ -143,11 +153,16 @@ void HttpRequest::send(const QByteArray &data)
     setReadyState(Headers_Received);
     connect(m_reply.data(), SIGNAL(readyRead()), this, SLOT(setReadyStateToLoading()));
     connect(m_reply.data(), SIGNAL(finished()), this, SLOT(onFinished()));
-}
 
-void HttpRequest::send()
-{
-    send(QByteArray());
+    if (!m_async) {
+        if (eventLoop) {
+            eventLoop->exit();
+        }
+
+        QEventLoop loop;
+        eventLoop = &loop;
+        loop.exec();
+    }
 }
 
 void HttpRequest::abort()
@@ -159,6 +174,10 @@ void HttpRequest::abort()
 
     m_reply->abort();
     m_reply->deleteLater();
+
+    if (eventLoop) {
+        eventLoop->exit();
+    }
 }
 
 void HttpRequest::setReadyStateToLoading()
@@ -182,4 +201,8 @@ void HttpRequest::onFinished()
 {
     m_responseText = m_reply->readAll();
     setReadyState(Done);
+
+    if (eventLoop) {
+        eventLoop->exit();
+    }
 }

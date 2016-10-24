@@ -10,6 +10,7 @@ QT_BEGIN_NAMESPACE
 class QUrl;
 class QNetworkAccessManager;
 class QNetworkReply;
+class QEventLoop;
 QT_END_NAMESPACE
 
 class HttpRequest : public QObject
@@ -56,9 +57,8 @@ public:
 public slots:
     void setOnreadystatechange(const QScriptValue &arg);
     void setRequestHeader(const QByteArray &name, const QByteArray &value);
-    void open(const QByteArray &method, const QUrl &url);
-    void send(const QByteArray &data);
-    void send();
+    void open(const QByteArray &method, const QUrl &url, bool async = true);
+    void send(const QByteArray &data = QByteArray());
     void abort();
 
 private slots:
@@ -76,6 +76,8 @@ private:
     QPointer<QNetworkReply> m_reply;
     QByteArray m_responseText;
     QByteArray m_method;
+    QPointer<QEventLoop> eventLoop;
+    bool m_async;
 };
 
 #endif // HTTPREQUEST_H

@@ -7,3 +7,8 @@ var FORMAT = "json"
 var account = {
     verify_credentials: HOST + "/account/verify_credentials." + FORMAT + "?mode=lite"
 }
+
+// status
+var statuses = {
+    home_timeline: HOST + "/statuses/home_timeline." + FORMAT + "?mode=lite"
+}

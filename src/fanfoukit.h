@@ -3,9 +3,10 @@
 
 #include "oauth.h"
 
+#include <QScriptValue>
+
 QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
-class QScriptValue;
 QT_END_NAMESPACE
 
 class HttpRequest;
@@ -18,7 +19,7 @@ public:
     explicit FanfouKit(QNetworkAccessManager *manager, QObject *parent = 0);
     explicit FanfouKit(const QByteArray& consumerKey, const QByteArray& consumerSecret, QObject *parent = 0);
 
-    Q_INVOKABLE HttpRequest *httpRequest(const QScriptValue &onreadystatechange);
+    Q_INVOKABLE HttpRequest *httpRequest(const QScriptValue &onreadystatechange = QScriptValue());
 
 public slots:
     QByteArray generateXAuthorizationHeader(const QString &username, const QString &password);

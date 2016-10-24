@@ -9,52 +9,56 @@ var OAuth = {
     DELETE: 3
 }
 
-var ffkit, appWindow
+var ffkit
 
-function initialize(fk, aw) {
+function initialize(fk) {
     ffkit = fk
-    appWindow = aw
 }
 
-function HttpRequest(method, url, data) {
-    this.method = method
-    this.url = url
-    this.data = data
-}
+function httpRequest(method, url, async, data) {
+    var xhr = ffkit.httpRequest();
 
-HttpRequest.prototype.send = function (onFinished, onFailed) {
-            var xhr = ffkit.httpRequest(function() {
-                                            if (xhr.readyState === xhr.DONE) {
-                                                if (xhr.status === 200) {
-                                                    try {
-                                                        onFinished(JSON.parse(xhr.responseText));
-                                                    } catch(e) {
-                                                        if (onFailed)
-                                                            onFailed(JSON.stringify(e));
-                                                    }
-                                                } else if (onFailed) {
-                                                    onFailed(xhr.status + ",---" + xhr.statusText + "," + xhr.responseText);
-                                                }
-                                            }
-                                        });
+    httpRequest.prototype.url = url
 
-            if (this.method === OAuth.POST) {
-                xhr.open("POST", this.url);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            } else {
-                xhr.open("GET", this.url);
+    if (method === OAuth.POST) {
+        xhr.open("POST", url, async);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    } else {
+        xhr.open("GET", url, async);
+    }
+
+    xhr.setRequestHeader("Authorization", ffkit.generateAuthorizationHeader(url, method))
+    xhr.send(data);
+
+    var object = {};
+
+    if (xhr.readyState === xhr.DONE) {
+        try {
+            object = JSON.parse(xhr.responseText);
+
+            if (xhr.status !== 200) {
+                printError(xhr, object.error);
             }
-
-            xhr.setRequestHeader("Authorization", ffkit.generateAuthorizationHeader(this.url, this.method))
-            xhr.send(this.data);
+        } catch(e) {
+            object.error = JSON.stringify(e);
+            printError(xhr, error);
         }
+    }
+
+    return object
+}
+
+function printError(xhr, error) {
+    console.log("Http Request Error, url:", httpRequest.prototype.url)
+    console.log("Message:", error)
+    console.log("Http Status =", xhr.status, "statusText =", xhr.statusText)
+    console.log("Request data =", xhr.responseText)
+}
 
 function login() {
-    var httpRequest = new HttpRequest(OAuth.POST, account.verify_credentials, "mode=lite")
+    return httpRequest(OAuth.GET, account.verify_credentials)
+}
 
-    httpRequest.send(function(obj) {
-                         appWindow.showInfoBanner("Login Finished: " + obj.name);
-                     }, function(error) {
-                         console.log(error, "login error")
-                     })
+function homeTimeline() {
+    return httpRequest(OAuth.GET, statuses.home_timeline)
 }
