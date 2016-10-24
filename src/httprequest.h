@@ -70,9 +70,9 @@ private:
     void setReadyState(State state);
 
     QScriptValue m_onreadystatechange;
-    State m_readyState = Unsent;
+    State m_readyState;
     QNetworkRequest m_request;
-    QNetworkAccessManager *m_manager = NULL;
+    QNetworkAccessManager *m_manager;
     QPointer<QNetworkReply> m_reply;
     QByteArray m_responseText;
     QByteArray m_method;

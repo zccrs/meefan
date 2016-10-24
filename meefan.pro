@@ -2,7 +2,7 @@ QT += network script
 CONFIG += c++11
 
 TARGET = meefan
-VERSION = 1.0.0
+VERSION = 0.0.1
 
 DEFINES += CONSUMER_KEY=\\\"$${CONSUMER_KEY}\\\" CONSUMER_SECRET=\\\"$${CONSUMER_SECRET}\\\"
 

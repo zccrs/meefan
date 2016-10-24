@@ -13,7 +13,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QScopedPointer<QApplication> app(createApplication(argc, argv));
 
     app->setApplicationName("meefan");
-    app->setApplicationVersion("1.0.0");
+    app->setApplicationVersion("0.0.1");
     app->setOrganizationName("zccrs");
 
 #ifdef ENABLE_PROXY

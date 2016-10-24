@@ -8,12 +8,15 @@
 
 HttpRequest::HttpRequest(QObject *parent)
     : QObject(parent)
+    , m_readyState(Unsent)
+    , m_manager(NULL)
 {
 
 }
 
 HttpRequest::HttpRequest(QNetworkAccessManager *manager, QObject *parent)
     : QObject(parent)
+    , m_readyState(Unsent)
     , m_manager(manager)
 {
 
