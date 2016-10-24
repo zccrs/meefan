@@ -1,5 +1,6 @@
 #include <QtGui/QApplication>
 #include <QDeclarativeContext>
+#include <QDeclarativeEngine>
 #include <qdeclarative.h>
 #include <QNetworkProxy>
 
@@ -28,7 +29,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
     QmlApplicationViewer viewer;
 
-    viewer.rootContext()->setContextProperty("ffkit", new FanfouKit(&viewer));
+    viewer.rootContext()->setContextProperty("ffkit", new FanfouKit(viewer.engine()->networkAccessManager(), &viewer));
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationLockPortrait);
     viewer.setMainQmlFile(QLatin1String("qml/meefan/main.qml"));
     viewer.showExpanded();

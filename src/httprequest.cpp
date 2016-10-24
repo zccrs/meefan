@@ -4,10 +4,19 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QScriptEngine>
+#include <QDebug>
 
 HttpRequest::HttpRequest(QObject *parent)
     : QObject(parent)
 {
+
+}
+
+HttpRequest::HttpRequest(QNetworkAccessManager *manager, QObject *parent)
+    : QObject(parent)
+    , m_manager(manager)
+{
+
 }
 
 HttpRequest::~HttpRequest()
@@ -30,7 +39,7 @@ HttpRequest::State HttpRequest::readyState() const
 
 int HttpRequest::status() const
 {
-    if (m_readyState != DONE || !m_reply) {
+    if (m_readyState != Done || !m_reply) {
         qCritical("Error: Invalid state");
         return -1;
     }
@@ -43,7 +52,7 @@ int HttpRequest::status() const
 
 QString HttpRequest::statusText() const
 {
-    if (m_readyState != DONE || !m_reply) {
+    if (m_readyState != Done || !m_reply) {
         qCritical("Error: Invalid state");
     }
 
@@ -52,21 +61,46 @@ QString HttpRequest::statusText() const
 
 QByteArray HttpRequest::responseText() const
 {
-    if (m_readyState != DONE) {
+    if (m_readyState != Done) {
         qCritical("Error: Invalid state");
     }
 
     return m_responseText;
 }
 
-void HttpRequest::setOnreadystatechange(QScriptValue arg)
+HttpRequest::State HttpRequest::enumUnsent() const
+{
+    return Unsent;
+}
+
+HttpRequest::State HttpRequest::enumOpened() const
+{
+    return Opened;
+}
+
+HttpRequest::State HttpRequest::enumHeaders_Received() const
+{
+    return Headers_Received;
+}
+
+HttpRequest::State HttpRequest::enumLoading() const
+{
+    return Loading;
+}
+
+HttpRequest::State HttpRequest::enumDone() const
+{
+    return Done;
+}
+
+void HttpRequest::setOnreadystatechange(const QScriptValue &arg)
 {
     m_onreadystatechange = arg;
 }
 
 void HttpRequest::setRequestHeader(const QByteArray &name, const QByteArray &value)
 {
-    if (m_readyState != OPENED) {
+    if (m_readyState != Opened) {
         qCritical("Error: Invalid state");
         return;
     }
@@ -84,7 +118,7 @@ void HttpRequest::open(const QByteArray &method, const QUrl &url)
         m_reply->deleteLater();
     }
 
-    setReadyState(OPENED);
+    setReadyState(Opened);
 }
 
 void HttpRequest::send(const QByteArray &data)
@@ -103,7 +137,7 @@ void HttpRequest::send(const QByteArray &data)
     else
         return;
 
-    setReadyState(HEADERS_RECEIVED);
+    setReadyState(Headers_Received);
     connect(m_reply.data(), SIGNAL(readyRead()), this, SLOT(setReadyStateToLoading()));
     connect(m_reply.data(), SIGNAL(finished()), this, SLOT(onFinished()));
 }
@@ -115,7 +149,7 @@ void HttpRequest::send()
 
 void HttpRequest::abort()
 {
-    if (m_readyState < HEADERS_RECEIVED || m_readyState > LOADING || !m_reply) {
+    if (m_readyState < Headers_Received || m_readyState > Loading || !m_reply) {
         qCritical("Error: Invalid state");
         return;
     }
@@ -126,7 +160,7 @@ void HttpRequest::abort()
 
 void HttpRequest::setReadyStateToLoading()
 {
-    setReadyState(LOADING);
+    setReadyState(Loading);
 }
 
 void HttpRequest::setReadyState(HttpRequest::State state)
@@ -144,5 +178,5 @@ void HttpRequest::setReadyState(HttpRequest::State state)
 void HttpRequest::onFinished()
 {
     m_responseText = m_reply->readAll();
-    setReadyState(DONE);
+    setReadyState(Done);
 }

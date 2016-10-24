@@ -4,6 +4,8 @@ CONFIG += c++11
 TARGET = meefan
 VERSION = 1.0.0
 
+DEFINES += CONSUMER_KEY=\\\"$${CONSUMER_KEY}\\\" CONSUMER_SECRET=\\\"$${CONSUMER_SECRET}\\\"
+
 # Add more folders to ship with the application, here
 folder_01.source = qml/meefan
 folder_01.target = qml

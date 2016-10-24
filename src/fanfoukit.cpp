@@ -13,7 +13,16 @@
 FanfouKit::FanfouKit(QObject *parent)
     : OAuth(parent)
     , m_accessManager(new QNetworkAccessManager(this))
+    , m_httpRequest(new HttpRequest(m_accessManager, this))
 {
+}
+
+FanfouKit::FanfouKit(QNetworkAccessManager *manager, QObject *parent)
+    : OAuth(parent)
+    , m_accessManager(manager)
+    , m_httpRequest(new HttpRequest(m_accessManager, this))
+{
+
 }
 
 FanfouKit::FanfouKit(const QByteArray &consumerKey, const QByteArray &consumerSecret, QObject *parent)
@@ -22,9 +31,11 @@ FanfouKit::FanfouKit(const QByteArray &consumerKey, const QByteArray &consumerSe
 {
 }
 
-HttpRequest *FanfouKit::createHttpRequest()
+HttpRequest *FanfouKit::httpRequest(const QScriptValue &onreadystatechange)
 {
-    return new HttpRequest(this);
+    m_httpRequest->setOnreadystatechange(onreadystatechange);
+
+    return m_httpRequest;
 }
 
 QByteArray FanfouKit::generateXAuthorizationHeader(const QString &username, const QString &password)

@@ -23,22 +23,20 @@ function HttpRequest(method, url, data) {
 }
 
 HttpRequest.prototype.send = function (onFinished, onFailed) {
-            var xhr = new XMLHttpRequest();
-
-            xhr.onreadystatechange = function() {
-                        if (xhr.readyState === xhr.DONE) {
-                            if (xhr.status === 200) {
-                                try {
-                                    onFinished(JSON.parse(xhr.responseText));
-                                } catch(e) {
-                                    if (onFailed)
-                                        onFailed(JSON.stringify(e));
-                                }
-                            } else if (onFailed) {
-                                onFailed(xhr.status + ",---" + xhr.statusText + "," + xhr.responseText);
-                            }
-                        }
-                    }
+            var xhr = ffkit.httpRequest(function() {
+                                            if (xhr.readyState === xhr.DONE) {
+                                                if (xhr.status === 200) {
+                                                    try {
+                                                        onFinished(JSON.parse(xhr.responseText));
+                                                    } catch(e) {
+                                                        if (onFailed)
+                                                            onFailed(JSON.stringify(e));
+                                                    }
+                                                } else if (onFailed) {
+                                                    onFailed(xhr.status + ",---" + xhr.statusText + "," + xhr.responseText);
+                                                }
+                                            }
+                                        });
 
             if (this.method === OAuth.POST) {
                 xhr.open("POST", this.url);
