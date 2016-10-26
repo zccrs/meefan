@@ -10,5 +10,5 @@ var account = {
 
 // status
 var statuses = {
-    home_timeline: HOST + "/statuses/home_timeline." + FORMAT + "?mode=lite"
+    home_timeline: HOST + "/statuses/home_timeline." + FORMAT + "?mode=lite&count=10&format=html"
 }

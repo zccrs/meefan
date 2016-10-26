@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/divide.png</file>
+        <file>images/mask.png</file>
+    </qresource>
+</RCC>

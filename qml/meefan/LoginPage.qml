@@ -4,15 +4,12 @@ import "../js/FanFouService.js" as Service
 
 Page {
     orientationLock: PageOrientation.LockPortrait
-    tools: ToolBarLayout {
-        ToolButton {
-            text: qsTr("Login")
-            onClicked: {
-                ffkit.requestAccessToken(inputEmail.text, inputPassword.text)
-            }
-        }
-        ToolButton {
-            text: qsTr("Sign In")
+    tools: ToolButton {
+        text: qsTr("Login")
+        anchors.centerIn: parent
+        onClicked: {
+            ffkit.requestAccessToken(inputEmail.text, inputPassword.text)
+//            pageStack.push(Qt.resolvedUrl("MainPage.qml"));
         }
     }
 
@@ -29,13 +26,7 @@ Page {
             }
 
             showInfoBanner("Login Finished " + obj.screen_name)
-
-            obj = Service.homeTimeline()
-
-            if (obj.error) {
-                showInfoBanner(obj.error)
-                return;
-            }
+            pageStack.push(Qt.resolvedUrl("MainPage.qml"));
         }
         onRequestAccessTokenError: {
             console.log("error:", error)
@@ -71,14 +62,14 @@ Page {
                 Text {
                     text: "MeeFan"
                     color: parent.parent.border.color
-                    font.pointSize: 26
+                    font.pixelSize: 38
                 }
 
                 Text {
                     text: "米饭"
                     anchors.horizontalCenter: parent.horizontalCenter
                     color: parent.parent.border.color
-                    font.pointSize: 26
+                    font.pixelSize: 38
                 }
             }
         }

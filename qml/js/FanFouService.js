@@ -59,6 +59,6 @@ function login() {
     return httpRequest(OAuth.GET, account.verify_credentials)
 }
 
-function homeTimeline() {
-    return httpRequest(OAuth.GET, statuses.home_timeline)
+function homeTimeline(max_id) {
+    return httpRequest(OAuth.GET, statuses.home_timeline + (max_id ? "&max_id=" + max_id : ""))
 }

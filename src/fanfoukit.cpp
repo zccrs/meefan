@@ -6,6 +6,8 @@
 #include <QNetworkReply>
 #include <QRegExp>
 #include <QStringList>
+#include <QFile>
+#include <QDateTime>
 #include <QDebug>
 
 #define ACCESS_TOKEN_URL "http://fanfou.com/oauth/access_token"
@@ -36,6 +38,26 @@ HttpRequest *FanfouKit::httpRequest(const QScriptValue &onreadystatechange)
     m_httpRequest->setOnreadystatechange(onreadystatechange);
 
     return m_httpRequest;
+}
+
+QByteArray FanfouKit::readFile(const QString &filePath) const
+{
+    QFile file(filePath);
+
+    if (file.open(QIODevice::ReadOnly))
+        return file.readAll();
+
+    return QByteArray();
+}
+
+QString FanfouKit::fromUtf8(const QByteArray &data) const
+{
+    return QString::fromUtf8(data);
+}
+
+QString FanfouKit::datetimeFormatFromISO(const QString &dt) const
+{
+    return QDateTime::fromString(dt, Qt::ISODate).toString("yyyy-MM-dd hh:mm");
 }
 
 QByteArray FanfouKit::generateXAuthorizationHeader(const QString &username, const QString &password)

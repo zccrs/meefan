@@ -83,3 +83,6 @@ HEADERS += \
     src/httprequest.h
 
 INCLUDEPATH += $$PWD/src
+
+RESOURCES += \
+    images.qrc

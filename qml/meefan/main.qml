@@ -20,6 +20,13 @@ PageStackWindow {
         y:35
     }
 
+    BusyIndicator {
+        anchors.centerIn: parent
+        platformStyle: BusyIndicatorStyle { size: "large" }
+        running: pageStack.busy
+        visible: running
+    }
+
 //    MainPage {
 //        id: mainPage
 //    }

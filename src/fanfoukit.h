@@ -20,6 +20,9 @@ public:
     explicit FanfouKit(const QByteArray& consumerKey, const QByteArray& consumerSecret, QObject *parent = 0);
 
     Q_INVOKABLE HttpRequest *httpRequest(const QScriptValue &onreadystatechange = QScriptValue());
+    Q_INVOKABLE QByteArray readFile(const QString &filePath) const;
+    Q_INVOKABLE QString fromUtf8(const QByteArray &data) const;
+    Q_INVOKABLE QString datetimeFormatFromISO(const QString &dt) const;
 
 public slots:
     QByteArray generateXAuthorizationHeader(const QString &username, const QString &password);
