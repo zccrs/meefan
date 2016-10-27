@@ -1,6 +1,7 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
 import com.nokia.extras 1.1
+import "setting"
 
 PageStackWindow {
     id: appWindow
@@ -25,6 +26,21 @@ PageStackWindow {
         platformStyle: BusyIndicatorStyle { size: "large" }
         running: pageStack.busy
         visible: running
+    }
+
+    SettingsMain {
+        id: settings
+
+        json: ffkit.settingValue("settings", "")
+
+        Component.onCompleted: {
+            console.log("init settings:", ffkit.settingValue("settings", ""))
+        }
+
+        Component.onDestruction: {
+            console.log("save settings:", json)
+            ffkit.setSettingValue("settings", json)
+        }
     }
 
 //    MainPage {

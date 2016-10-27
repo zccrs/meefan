@@ -8,8 +8,17 @@ Page {
         text: qsTr("Login")
         anchors.centerIn: parent
         onClicked: {
-            ffkit.requestAccessToken(inputEmail.text, inputPassword.text)
-//            pageStack.push(Qt.resolvedUrl("MainPage.qml"));
+            if (settings.setCurrentUserByName(inputEmail.text)) {
+                ffkit.oauthToken = settings.currentUser.token;
+                ffkit.oauthTokenSecret = settings.currentUser.secret;
+                pageStack.push(Qt.resolvedUrl("MainPage.qml"));
+            } else {
+                settings.currentUser.name = inputEmail.text;
+                ffkit.requestAccessToken(inputEmail.text, inputPassword.text)
+            }
+
+            if (settings.currentUser.savePass)
+                settings.currentUser.password = ffkit.stringEncrypt(inputPassword.text, ffkit.consumerSecret);
         }
     }
 
@@ -25,7 +34,10 @@ Page {
                 return;
             }
 
-            showInfoBanner("Login Finished " + obj.screen_name)
+            showInfoBanner("Login Finished " + obj.screen_name);
+            settings.currentUser.token = ffkit.oauthToken;
+            settings.currentUser.secret = ffkit.oauthTokenSecret;
+            settings.setUser(settings.currentUser.name, settings.currentUser)
             pageStack.push(Qt.resolvedUrl("MainPage.qml"));
         }
         onRequestAccessTokenError: {
@@ -83,6 +95,7 @@ Page {
             id: inputEmail
 
             placeholderText: qsTr("User Name/Email")
+            text: settings.currentUser.name
             anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width * 0.85
             KeyNavigation.down: inputPassword
@@ -94,6 +107,7 @@ Page {
             id: inputPassword
 
             placeholderText: qsTr("Password")
+            text: ffkit.stringUncrypt(settings.currentUser.password, ffkit.consumerSecret)
             anchors.horizontalCenter: parent.horizontalCenter
             width: inputEmail.width
             KeyNavigation.down: inputEmail
@@ -113,6 +127,11 @@ Page {
                 id: savaPasswordRadio
 
                 text: qsTr("Save Password")
+                checked: settings.currentUser.savePass
+
+                onClicked: {
+                    settings.currentUser.savePass = checked;
+                }
             }
 
             CheckBox {

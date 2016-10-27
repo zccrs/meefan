@@ -4,9 +4,11 @@
 #include "oauth.h"
 
 #include <QScriptValue>
+#include <QVariant>
 
 QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
+class QSettings;
 QT_END_NAMESPACE
 
 class HttpRequest;
@@ -23,11 +25,16 @@ public:
     Q_INVOKABLE QByteArray readFile(const QString &filePath) const;
     Q_INVOKABLE QString fromUtf8(const QByteArray &data) const;
     Q_INVOKABLE QString datetimeFormatFromISO(const QString &dt) const;
+    Q_INVOKABLE void setSettingValue(const QString &name, const QVariant &value);
+    Q_INVOKABLE QVariant settingValue(const QString &name, const QVariant &defaultValue = QVariant()) const;
 
 public slots:
     QByteArray generateXAuthorizationHeader(const QString &username, const QString &password);
 
     void requestAccessToken(const QString &username, const QString &password);
+
+    QString stringEncrypt(const QString &content, QString key);//加密任意字符串，中文请使用utf-8编码
+    QString stringUncrypt(const QString &content_hex, QString key);//解密加密后的字符串
 
 signals:
     void requestAccessTokenFinished();
@@ -39,6 +46,7 @@ private slots:
 private:
     QNetworkAccessManager *m_accessManager;
     HttpRequest *m_httpRequest;
+    QSettings *m_settings;
 };
 
 #endif // OAUTHFANFOU_H
