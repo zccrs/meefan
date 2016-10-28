@@ -3,9 +3,10 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 
 ListView {
+    property bool loadButtonVisible: false
+
     signal loadButtonClicked
 
-    model: ListModel{}
     spacing: 10
     delegate: Item {
         width: parent.width - 20
@@ -99,6 +100,7 @@ ListView {
 
             text: qsTr("Load")
             anchors.centerIn: parent
+            visible: parent.parent.parent.loadButtonVisible
             onClicked: parent.parent.parent.loadButtonClicked()
         }
     }

@@ -9,8 +9,9 @@ SettingsBase {
         property string name
         property string token
         property string secret
-        property bool savePass: false
         property string password
+        property bool savePass: false
+        property bool autoLogin: false
     }
 
     function setCurrentUserByName (name) {
@@ -20,10 +21,11 @@ SettingsBase {
         var user = userMap[name];
 
         if (user) {
-            token = "";
-            secret = "";
-            savePass = false;
-            password = ""
+            currentUser.token = "";
+            currentUser.secret = "";
+            currentUser.password = "";
+            currentUser.savePass = false;
+            currentUser.autoLogin = false;
 
             jsObject2QObject(currentUser, user);
         }

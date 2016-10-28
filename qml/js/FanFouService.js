@@ -9,56 +9,78 @@ var OAuth = {
     DELETE: 3
 }
 
-var ffkit
+var ffkit, httpRequestErrorHandle
 
-function initialize(fk) {
-    ffkit = fk
+function initialize(fk, handle) {
+    ffkit = fk;
+    httpRequestErrorHandle = handle;
 }
 
-function httpRequest(method, url, async, data) {
-    var xhr = ffkit.httpRequest();
+function HttpRequest(async, callback) {
+    this.async = async;
+    this.callback = callback;
+}
 
-    httpRequest.prototype.url = url
+HttpRequest.prototype.send = function(method, url, data) {
+            var xhr = ffkit.httpRequest();
+            var object;
+            var callback = this.callback;
 
-    if (method === OAuth.POST) {
-        xhr.open("POST", url, async);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    } else {
-        xhr.open("GET", url, async);
-    }
+            function onreadystatechange() {
+                if (xhr.readyState === xhr.DONE) {
+                    try {
+                        object = JSON.parse(xhr.responseText);
 
-    xhr.setRequestHeader("Authorization", ffkit.generateAuthorizationHeader(url, method))
-    xhr.send(data);
+                        if (xhr.status !== 200) {
+                            printError(url, xhr, object.error);
 
-    var object = {};
-
-    if (xhr.readyState === xhr.DONE) {
-        try {
-            object = JSON.parse(xhr.responseText);
-
-            if (xhr.status !== 200) {
-                printError(xhr, object.error);
+                            if (httpRequestErrorHandle)
+                                httpRequestErrorHandle(xhr, object.error);
+                        } else {
+                            if (callback)
+                                callback(object);
+                        }
+                    } catch(e) {
+                        object.error = JSON.stringify(e);
+                        printError(url, xhr, object.error);
+                    }
+                }
             }
-        } catch(e) {
-            object.error = JSON.stringify(e);
-            printError(xhr, error);
+
+            if (this.async)
+                xhr.setOnreadystatechange(onreadystatechange);
+
+            if (method === OAuth.POST) {
+                xhr.open("POST", url, this.async);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            } else {
+                xhr.open("GET", url, this.async);
+            }
+
+            xhr.setRequestHeader("Authorization", ffkit.generateAuthorizationHeader(url, method))
+            xhr.send(data);
+
+            if (!this.async)
+                onreadystatechange();
+
+            return object;
         }
-    }
 
-    return object
-}
-
-function printError(xhr, error) {
-    console.log("Http Request Error, url:", httpRequest.prototype.url)
+function printError(url, xhr, error) {
+    console.log("Http Request Error, url:", url)
     console.log("Message:", error)
     console.log("Http Status =", xhr.status, "statusText =", xhr.statusText)
     console.log("Request data =", xhr.responseText)
 }
 
-function login() {
-    return httpRequest(OAuth.GET, account.verify_credentials)
+function loginVerify() {
+    var hr = new HttpRequest();
+
+    return hr.send(OAuth.GET, account.verify_credentials)
 }
 
-function homeTimeline(max_id) {
-    return httpRequest(OAuth.GET, statuses.home_timeline + (max_id ? "&max_id=" + max_id : ""))
+function homeTimeline(max_id, callback) {
+    var hr = new HttpRequest(Boolean(callback), callback);
+
+    return hr.send(OAuth.GET, statuses.home_timeline + (max_id ? "&max_id=" + max_id : ""));
 }

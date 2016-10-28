@@ -1,6 +1,7 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
 import com.nokia.extras 1.1
+import "../js/FanFouService.js" as Service
 import "setting"
 
 PageStackWindow {
@@ -11,8 +12,35 @@ PageStackWindow {
         infoBanner.show()
     }
 
-    initialPage: LoginPage {
+    function httpRequestErrorHandle(httpRequest, errorMessage) {
+        /// To relogin
+        if (httpRequest.status === 204) {
+            showInfoBanner(qsTr("Login is expired."));
 
+            settings.currentUser.token = "";
+            settings.currentUser.secret = "";
+
+            pageStack.clear();
+            pageStack.push(Qt.resolvedUrl("LoginPage.qml"), null, true);
+        } else {
+            showInfoBanner(errorMessage);
+        }
+    }
+
+    Component {
+        id: loginComponent
+
+        LoginPage {
+
+        }
+    }
+
+    Component {
+        id: mainPageComponent
+
+        MainPage {
+
+        }
     }
 
     InfoBanner {
@@ -35,6 +63,17 @@ PageStackWindow {
 
         Component.onCompleted: {
             console.log("init settings:", ffkit.settingValue("settings", ""))
+
+            Service.initialize(ffkit, httpRequestErrorHandle)
+
+            if (currentUser.autoLogin && currentUser.token && currentUser.secret) {
+                ffkit.oauthToken = currentUser.token;
+                ffkit.oauthTokenSecret = currentUser.secret;
+
+                appWindow.initialPage = mainPageComponent.createObject(appWindow);
+            } else {
+                appWindow.initialPage = loginComponent.createObject(appWindow);
+            }
         }
 
         Component.onDestruction: {

@@ -5,16 +5,8 @@ import "../js/FanFouService.js" as Service
 CustomPage {
     title: qsTr("Concerned Message")
 
-    function loadHomeTimeline() {
-        var max_id
-
-        if (homeList.model.count > 0)
-            max_id = homeList.model.get(homeList.count - 1).object.id
-
-        var obj = Service.homeTimeline(max_id)
-
+    function loadHomeTimelineHandle(obj) {
         if (obj.error) {
-            showInfoBanner(obj.error)
             return;
         }
 
@@ -25,16 +17,30 @@ CustomPage {
 //        }
 
         for (var i in obj) {
-            homeList.model.append({"object": obj[i]});
+            homeListModel.append({"object": obj[i]});
         }
+
+        homeList.loadButtonVisible = true;
     }
 
-    Component.onCompleted: loadHomeTimeline()
+    function loadHomeTimeline() {
+        var max_id;
+
+        if (homeListModel.count > 0)
+            max_id = homeListModel.get(homeListModel.count - 1).object.id;
+
+        Service.homeTimeline(max_id, loadHomeTimelineHandle);
+    }
+
+    Component.onCompleted: loadHomeTimeline();
 
     content: HomeList {
         id: homeList
 
         anchors.fill: parent
+        model: ListModel {
+            id: homeListModel
+        }
         onLoadButtonClicked: {
             loadHomeTimeline()
         }

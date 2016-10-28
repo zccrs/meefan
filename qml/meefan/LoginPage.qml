@@ -8,17 +8,14 @@ Page {
         text: qsTr("Login")
         anchors.centerIn: parent
         onClicked: {
-            if (settings.setCurrentUserByName(inputEmail.text)) {
-                ffkit.oauthToken = settings.currentUser.token;
-                ffkit.oauthTokenSecret = settings.currentUser.secret;
-                pageStack.push(Qt.resolvedUrl("MainPage.qml"));
-            } else {
-                settings.currentUser.name = inputEmail.text;
-                ffkit.requestAccessToken(inputEmail.text, inputPassword.text)
-            }
+            settings.currentUser.name = inputEmail.text;
 
             if (settings.currentUser.savePass)
                 settings.currentUser.password = ffkit.stringEncrypt(inputPassword.text, ffkit.consumerSecret);
+
+            settings.setUser(settings.currentUser.name, settings.currentUser);
+
+            ffkit.requestAccessToken(inputEmail.text, inputPassword.text)
         }
     }
 
@@ -27,27 +24,17 @@ Page {
 
         onRequestAccessTokenFinished: {
             console.log("finished! token =", ffkit.oauthToken, "secret =", ffkit.oauthTokenSecret)
-            var obj = Service.login()
 
-            if (obj.error) {
-                showInfoBanner(obj.error)
-                return;
-            }
-
-            showInfoBanner("Login Finished " + obj.screen_name);
             settings.currentUser.token = ffkit.oauthToken;
             settings.currentUser.secret = ffkit.oauthTokenSecret;
-            settings.setUser(settings.currentUser.name, settings.currentUser)
-            pageStack.push(Qt.resolvedUrl("MainPage.qml"));
+
+            showInfoBanner("Login Finished");
+            pageStack.replace(Qt.resolvedUrl("MainPage.qml"));
         }
         onRequestAccessTokenError: {
             console.log("error:", error)
 
             showInfoBanner(error)
-        }
-
-        Component.onCompleted: {
-            Service.initialize(ffkit)
         }
     }
 
@@ -101,6 +88,10 @@ Page {
             KeyNavigation.down: inputPassword
             KeyNavigation.up: inputPassword
             KeyNavigation.tab: inputPassword
+
+            onTextChanged: {
+                settings.setCurrentUserByName(inputEmail.text)
+            }
         }
 
         TextField {
@@ -129,14 +120,27 @@ Page {
                 text: qsTr("Save Password")
                 checked: settings.currentUser.savePass
 
-                onClicked: {
+                onCheckedChanged: {
                     settings.currentUser.savePass = checked;
+
+                    if (!checked)
+                        autoLoginRadio.checked = false;
                 }
             }
 
             CheckBox {
+                id: autoLoginRadio
+
                 text: qsTr("Auto Login")
+                checked: settings.currentUser.autoLogin
                 anchors.right: parent.right
+
+                onCheckedChanged: {
+                    settings.currentUser.autoLogin = checked;
+
+                    if (checked)
+                        savaPasswordRadio.checked = true;
+                }
             }
         }
     }
