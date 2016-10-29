@@ -14,6 +14,7 @@ ToolButton {
     platformStyle: ToolButtonStyle {
         backgroundVisible: false
         checkedBackground: "qrc:///images/toolbutton-checked-background.png"
+        pressedBackground: checkedBackground
     }
 
     ToolIcon {

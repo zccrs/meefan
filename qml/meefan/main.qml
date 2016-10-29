@@ -27,6 +27,34 @@ PageStackWindow {
         }
     }
 
+    function findChildren(obj, key, all, pro) {
+        var children = obj.children;
+        var list = [];
+
+        for (var i = 0; i < children.length; ++i) {
+            var string = pro ? children[i][pro].toString() : children[i].toString();
+
+            if (string.indexOf(key) >= 0) {
+                if (!all)
+                    return children[i];
+
+                list.push(children[i]);
+            }
+        }
+
+        for (var i = 0; i < children.length; ++i) {
+            var r = findChildren(children[i], key, all, pro);
+
+            if (all)
+                list.push(r);
+            else if (r)
+                return r;
+        }
+
+        if (all)
+            return list;
+    }
+
     InfoBanner {
         id: infoBanner
 
@@ -66,17 +94,50 @@ PageStackWindow {
         }
     }
 
-//    MainPage {
-//        id: mainPage
-//    }
+    PageHeader {
+        id: header
 
-//    ToolBarLayout {
-//        id: commonTools
-//        visible: true
-//        ToolIcon {
-//            platformIconId: "toolbar-view-menu"
-//            anchors.right: (parent === undefined) ? undefined : parent.right
-//            onClicked: (myMenu.status === DialogStatus.Closed) ? myMenu.open() : myMenu.close()
-//        }
-//    }
+        parent: findChildren(appWindow, "appWindowContent", false, "objectName")
+        title: pageStack.currentPage.title
+        width: parent.width
+
+        Component.onCompleted: {
+            pageStack.parent.anchors.top = header.bottom;
+        }
+    }
+
+    ButtonRow {
+        id: commonTools
+
+        enabled: !pageStack.busy
+        anchors.fill: parent
+
+        CustomToolButton {
+            iconId: "toolbar-home";
+
+            onCheckedChanged: {
+                if (checked) {
+                    pageStack.replace(Qt.resolvedUrl("MainPage.qml"));
+                }
+            }
+        }
+        CustomToolButton {
+            iconId: "toolbar-list";
+        }
+        CustomToolButton {
+            iconId: "toolbar-search";
+        }
+        CustomToolButton {
+            iconId: "toolbar-contact";
+
+            onCheckedChanged: {
+                if (checked) {
+                    pageStack.replace(Qt.resolvedUrl("UserInfoPage.qml"));
+                }
+            }
+        }
+        CustomToolButton {
+            iconId: "toolbar-settings";
+        }
+    }
 }

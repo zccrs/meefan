@@ -138,6 +138,11 @@ QVariant FanfouKit::settingValue(const QString &name, const QVariant &defaultVal
     return m_settings->value(name, defaultValue);
 }
 
+QByteArray FanfouKit::objectClassName(QObject *object) const
+{
+    return object->metaObject()->className();
+}
+
 QByteArray FanfouKit::generateXAuthorizationHeader(const QString &username, const QString &password)
 {
     QUrl url(ACCESS_TOKEN_URL);

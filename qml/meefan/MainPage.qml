@@ -3,7 +3,8 @@ import com.nokia.meego 1.0
 import "../js/FanFouService.js" as Service
 
 CustomPage {
-    title: qsTr("Concerned Message")
+    title: qsTr("Home")
+    tools: commonTools
 
     function loadHomeTimelineHandle(obj) {
         if (obj.error) {
@@ -34,7 +35,7 @@ CustomPage {
 
     Component.onCompleted: loadHomeTimeline();
 
-    content: HomeList {
+    HomeList {
         id: homeList
 
         anchors.fill: parent
