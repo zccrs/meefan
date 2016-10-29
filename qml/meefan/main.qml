@@ -138,6 +138,13 @@ PageStackWindow {
         }
         CustomToolButton {
             iconId: "toolbar-settings";
+
+            onClicked: {
+                settings.currentUser.token = "";
+                settings.currentUser.secret = "";
+
+                showInfoBanner("clean token and secret finished");
+            }
         }
     }
 }

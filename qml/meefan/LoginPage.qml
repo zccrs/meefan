@@ -2,7 +2,8 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 import "../js/FanFouService.js" as Service
 
-Page {
+CustomPage {
+    title: qsTr("Login")
     orientationLock: PageOrientation.LockPortrait
 
     tools: ToolButton {
