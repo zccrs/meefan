@@ -27,22 +27,6 @@ PageStackWindow {
         }
     }
 
-    Component {
-        id: loginComponent
-
-        LoginPage {
-
-        }
-    }
-
-    Component {
-        id: mainPageComponent
-
-        MainPage {
-
-        }
-    }
-
     InfoBanner {
         id: infoBanner
 
@@ -70,9 +54,9 @@ PageStackWindow {
                 ffkit.oauthToken = currentUser.token;
                 ffkit.oauthTokenSecret = currentUser.secret;
 
-                appWindow.initialPage = mainPageComponent.createObject(appWindow);
+                pageStack.push(Qt.resolvedUrl("MainPage.qml"));
             } else {
-                appWindow.initialPage = loginComponent.createObject(appWindow);
+                pageStack.push(Qt.resolvedUrl("LoginPage.qml"));
             }
         }
 

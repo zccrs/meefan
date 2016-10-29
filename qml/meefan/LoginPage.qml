@@ -4,9 +4,12 @@ import "../js/FanFouService.js" as Service
 
 Page {
     orientationLock: PageOrientation.LockPortrait
+
     tools: ToolButton {
         text: qsTr("Login")
         anchors.centerIn: parent
+        enabled: inputEmail.text && inputPassword.text && !pageStack.busy
+
         onClicked: {
             settings.currentUser.name = inputEmail.text;
 

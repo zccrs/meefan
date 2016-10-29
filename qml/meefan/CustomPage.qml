@@ -13,6 +13,22 @@ Page {
 
     orientationLock: PageOrientation.LockPortrait
 
+    tools: ToolBarLayout {
+        enabled: !pageStack.busy
+
+        ToolIcon {
+            iconId: "toolbar-back";
+            enabled: pageStack.depth > 1
+
+            onClicked: {
+                pageStack.pop();
+            }
+        }
+        ToolIcon {
+            iconId: "toolbar-view-menu";
+        }
+    }
+
     PageHeader {
         id: header
     }
