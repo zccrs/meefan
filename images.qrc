@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>images/divide.png</file>
         <file>images/mask.png</file>
+        <file>images/toolbutton-checked-background.png</file>
     </qresource>
 </RCC>

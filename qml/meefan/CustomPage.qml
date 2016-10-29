@@ -13,19 +13,24 @@ Page {
 
     orientationLock: PageOrientation.LockPortrait
 
-    tools: ToolBarLayout {
+    tools: ButtonRow {
         enabled: !pageStack.busy
+        anchors.fill: parent
 
-        ToolIcon {
-            iconId: "toolbar-back";
-            enabled: pageStack.depth > 1
-
-            onClicked: {
-                pageStack.pop();
-            }
+        CustomToolButton {
+            iconId: "toolbar-home";
         }
-        ToolIcon {
-            iconId: "toolbar-view-menu";
+        CustomToolButton {
+            iconId: "toolbar-list";
+        }
+        CustomToolButton {
+            iconId: "toolbar-search";
+        }
+        CustomToolButton {
+            iconId: "toolbar-contact";
+        }
+        CustomToolButton {
+            iconId: "toolbar-settings";
         }
     }
 

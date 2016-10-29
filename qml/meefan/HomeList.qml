@@ -49,6 +49,10 @@ ListView {
                     text: ffkit.datetimeFormatFromISO(new Date(object.created_at).toISOString())
                     color: "#888"
                     font.pixelSize: 20
+
+                    onLinkActivated: {
+                        Qt.openUrlExternally(link)
+                    }
                 }
             }
 
