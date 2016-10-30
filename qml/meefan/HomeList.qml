@@ -10,17 +10,16 @@ ListView {
     spacing: 10
     delegate: Item {
         width: parent.width - 20
-        height: Math.max(avatar.implicitHeight, text_column.implicitHeight)
-                + textLocation.implicitHeight + textLocation.anchors.bottomMargin
+        height: labelColumn.implicitHeight
         anchors.horizontalCenter: parent.horizontalCenter
 
         Image {
             id: avatar
 
-            source: object.user.profile_image_url_large
+            source: object.user.profile_image_url
             sourceSize: Qt.size(width, height)
-            width: 80
-            height: 80
+            width: 60
+            height: 60
 
             Image {
                 source: "qrc:///images/mask.png"
@@ -29,7 +28,7 @@ ListView {
         }
 
         Column {
-            id: text_column
+            id: labelColumn
 
             anchors {
                 left: avatar.right
@@ -42,18 +41,31 @@ ListView {
 
                 Text {
                     text: object.user.screen_name
-                    font.pixelSize: 20
+                    font.pixelSize: 22
                 }
 
                 Text {
                     text: ffkit.datetimeFormatFromISO(new Date(object.created_at).toISOString())
                     color: "#888"
-                    font.pixelSize: 20
-
-                    onLinkActivated: {
-                        Qt.openUrlExternally(link)
-                    }
+                    font.pixelSize: 22
                 }
+            }
+
+            Text {
+                id: textLocation
+
+                text: object.source + " " + object.user.location
+                color: "#888"
+                font.pixelSize: 22
+
+                onLinkActivated: {
+                    Qt.openUrlExternally(link)
+                }
+            }
+
+            Item {
+                width: 1
+                height: 10
             }
 
             Text {
@@ -63,34 +75,21 @@ ListView {
                 font.pixelSize: 26
                 width: parent.width
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-            }
-        }
 
-        Text {
-            id: textLocation
-
-            text: object.source + " " + object.user.location
-            color: "#888"
-            font.pixelSize: 20
-            anchors {
-                right: parent.right
-                bottom: parent.bottom
-                bottomMargin: 10
+                onLinkActivated: {
+                    Qt.openUrlExternally(link)
+                }
             }
 
-            onLinkActivated: {
-                Qt.openUrlExternally(link)
+            Item {
+                width: 1
+                height: 10
             }
-        }
 
-        Rectangle {
-            color: "#ccc"
-            height: 1
-            anchors {
-                left: text_column.left
-                right: parent.right
-                top: textLocation.bottom
-                topMargin: 10
+            Rectangle {
+                color: "#ccc"
+                height: 1
+                width: parent.width
             }
         }
     }

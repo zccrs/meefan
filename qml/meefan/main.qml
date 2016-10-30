@@ -7,6 +7,10 @@ import "setting"
 PageStackWindow {
     id: appWindow
 
+//    initialPage: UserInfoPage {
+
+//    }
+
     function showInfoBanner(string) {
         infoBanner.text = string
         infoBanner.show()
