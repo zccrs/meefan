@@ -101,55 +101,73 @@ PageStackWindow {
     PageHeader {
         id: header
 
-        parent: findChildren(appWindow, "appWindowContent", false, "objectName")
         title: pageStack.currentPage.title
         width: parent.width
 
         Component.onCompleted: {
+            parent = findChildren(appWindow, "appWindowContent", false, "objectName");
             pageStack.parent.anchors.top = header.bottom;
         }
     }
 
-    ButtonRow {
+    ToolBarLayout {
         id: commonTools
 
         enabled: !pageStack.busy
-        anchors.fill: parent
+        visible: showToolBar
 
-        CustomToolButton {
-            iconId: "toolbar-home";
+        ToolIcon {
+            id: backButton
 
-            onCheckedChanged: {
-                if (checked) {
-                    pageStack.replace(Qt.resolvedUrl("MainPage.qml"));
-                }
-            }
-        }
-        CustomToolButton {
-            iconId: "toolbar-list";
-
-            onClicked: ffkit.clearSettings();
-        }
-        CustomToolButton {
-            iconId: "toolbar-search";
-        }
-        CustomToolButton {
-            iconId: "toolbar-contact";
-
-            onCheckedChanged: {
-                if (checked) {
-                    pageStack.replace(Qt.resolvedUrl("UserInfoPage.qml"), {"userId": settings.currentUser.userId});
-                }
-            }
-        }
-        CustomToolButton {
-            iconId: "toolbar-settings";
+            height: parent.height
+            iconId: "toolbar-back"
+            enabled: pageStack.depth > 1
 
             onClicked: {
-                settings.currentUser.token = "";
-                settings.currentUser.secret = "";
+                pageStack.pop();
+            }
+        }
 
-                showInfoBanner("clean token and secret finished");
+        ButtonRow {
+            height: parent.height
+            anchors {
+                left: backButton.right
+                right: parent.right
+            }
+
+            CustomToolButton {
+                iconId: "toolbar-home";
+
+                checked: true
+                onClicked: {
+                    if (checked) {
+                        pageStack.replace(Qt.resolvedUrl("MainPage.qml"));
+                    }
+                }
+            }
+            CustomToolButton {
+                iconId: "toolbar-list";
+
+                onClicked: ffkit.clearSettings();
+            }
+            CustomToolButton {
+                iconId: "toolbar-contact";
+
+                onCheckedChanged: {
+                    if (checked) {
+                        pageStack.replace(Qt.resolvedUrl("UserInfoPage.qml"), {"userId": settings.currentUser.userId});
+                    }
+                }
+            }
+            CustomToolButton {
+                iconId: "toolbar-settings";
+
+                onClicked: {
+                    settings.currentUser.token = "";
+                    settings.currentUser.secret = "";
+
+                    showInfoBanner("clean token and secret finished");
+                }
             }
         }
     }

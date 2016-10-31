@@ -6,17 +6,14 @@ CustomPage {
     title: qsTr("Login")
     orientationLock: PageOrientation.LockPortrait
 
-    tools: ToolButton {
-        text: qsTr("Login")
-        anchors.centerIn: parent
-        enabled: inputEmail.text && inputPassword.text && !pageStack.busy
+    Component.onCompleted: {
+        findChildren(appWindow, "ToolBar").platformStyle.visibilityTransitionDuration = 0;
+        showToolBar = false;
+    }
 
-        onClicked: {
-            settings.currentUser.userId = inputEmail.text;
-            settings.setUser(settings.currentUser.userId, settings.currentUser);
-
-            ffkit.requestAccessToken(inputEmail.text, inputPassword.text)
-        }
+    Component.onDestruction: {
+        findChildren(appWindow, "ToolBar").platformStyle.visibilityTransitionDuration = 250;
+        showToolBar = true;
     }
 
     Connections {
@@ -42,7 +39,7 @@ CustomPage {
     }
 
     Column {
-        anchors.centerIn: parent
+        y: 80
         width: parent.width
         spacing: 30
 
@@ -78,7 +75,7 @@ CustomPage {
 
         Item {
             width: 1
-            height: 30
+            height: 10
         }
 
         TextField {
@@ -144,6 +141,24 @@ CustomPage {
                     if (checked)
                         savaPasswordRadio.checked = true;
                 }
+            }
+        }
+
+        Item {
+            width: 1
+            height: 10
+        }
+
+        Button {
+            text: qsTr("Login")
+            anchors.horizontalCenter: parent.horizontalCenter
+            enabled: inputEmail.text && inputPassword.text && !pageStack.busy
+
+            onClicked: {
+                settings.currentUser.userId = inputEmail.text;
+                settings.setUser(settings.currentUser.userId, settings.currentUser);
+
+                ffkit.requestAccessToken(inputEmail.text, inputPassword.text)
             }
         }
     }

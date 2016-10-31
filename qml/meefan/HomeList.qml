@@ -4,7 +4,6 @@ import com.nokia.meego 1.0
 
 ListView {
     property bool loadButtonVisible: false
-
     signal loadButtonClicked
 
     spacing: 10
