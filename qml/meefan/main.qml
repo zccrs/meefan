@@ -86,9 +86,9 @@ PageStackWindow {
                 ffkit.oauthToken = currentUser.token;
                 ffkit.oauthTokenSecret = currentUser.secret;
 
-                pageStack.push(Qt.resolvedUrl("MainPage.qml"));
+                pageStack.push(Qt.resolvedUrl("MainPage.qml"), null, true);
             } else {
-                pageStack.push(Qt.resolvedUrl("LoginPage.qml"));
+                pageStack.push(Qt.resolvedUrl("LoginPage.qml"), null, true);
             }
         }
 
@@ -127,6 +127,8 @@ PageStackWindow {
         }
         CustomToolButton {
             iconId: "toolbar-list";
+
+            onClicked: ffkit.clearSettings();
         }
         CustomToolButton {
             iconId: "toolbar-search";
@@ -136,7 +138,7 @@ PageStackWindow {
 
             onCheckedChanged: {
                 if (checked) {
-                    pageStack.replace(Qt.resolvedUrl("UserInfoPage.qml"));
+                    pageStack.replace(Qt.resolvedUrl("UserInfoPage.qml"), {"userId": settings.currentUser.userId});
                 }
             }
         }

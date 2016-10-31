@@ -138,6 +138,11 @@ QVariant FanfouKit::settingValue(const QString &name, const QVariant &defaultVal
     return m_settings->value(name, defaultValue);
 }
 
+void FanfouKit::clearSettings()
+{
+    m_settings->clear();
+}
+
 QByteArray FanfouKit::objectClassName(QObject *object) const
 {
     return object->metaObject()->className();

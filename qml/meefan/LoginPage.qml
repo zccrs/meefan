@@ -12,12 +12,8 @@ CustomPage {
         enabled: inputEmail.text && inputPassword.text && !pageStack.busy
 
         onClicked: {
-            settings.currentUser.name = inputEmail.text;
-
-            if (settings.currentUser.savePass)
-                settings.currentUser.password = ffkit.stringEncrypt(inputPassword.text, ffkit.consumerSecret);
-
-            settings.setUser(settings.currentUser.name, settings.currentUser);
+            settings.currentUser.userId = inputEmail.text;
+            settings.setUser(settings.currentUser.userId, settings.currentUser);
 
             ffkit.requestAccessToken(inputEmail.text, inputPassword.text)
         }
@@ -31,6 +27,9 @@ CustomPage {
 
             settings.currentUser.token = ffkit.oauthToken;
             settings.currentUser.secret = ffkit.oauthTokenSecret;
+
+            if (settings.currentUser.savePass)
+                settings.currentUser.password = ffkit.stringEncrypt(inputPassword.text, ffkit.oauthTokenSecret);
 
             showInfoBanner("Login Finished");
             pageStack.replace(Qt.resolvedUrl("MainPage.qml"));
@@ -86,7 +85,7 @@ CustomPage {
             id: inputEmail
 
             placeholderText: qsTr("User Name/Email")
-            text: settings.currentUser.name
+            text: settings.currentUser.userId
             anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width * 0.85
             KeyNavigation.down: inputPassword
@@ -94,7 +93,7 @@ CustomPage {
             KeyNavigation.tab: inputPassword
 
             onTextChanged: {
-                settings.setCurrentUserByName(inputEmail.text)
+                settings.setCurrentUserByUserId(inputEmail.text)
             }
         }
 
@@ -102,7 +101,7 @@ CustomPage {
             id: inputPassword
 
             placeholderText: qsTr("Password")
-            text: ffkit.stringUncrypt(settings.currentUser.password, ffkit.consumerSecret)
+            text: ffkit.stringUncrypt(settings.currentUser.password, settings.currentUser.secret)
             anchors.horizontalCenter: parent.horizontalCenter
             width: inputEmail.width
             KeyNavigation.down: inputEmail

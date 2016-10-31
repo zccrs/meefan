@@ -35,8 +35,8 @@ class /*QTWEETLIBSHARED_EXPORT*/ OAuth : public QObject
     Q_ENUMS(HttpMethod)
     Q_PROPERTY(QByteArray oauthToken READ oauthToken WRITE setOAuthToken)
     Q_PROPERTY(QByteArray oauthTokenSecret READ oauthTokenSecret WRITE setOAuthTokenSecret)
-    Q_PROPERTY(QByteArray consumerKey READ consumerKey WRITE setConsumerKey)
-    Q_PROPERTY(QByteArray consumerSecret READ consumerSecret WRITE setConsumerSecret)
+//    Q_PROPERTY(QByteArray consumerKey READ consumerKey WRITE setConsumerKey)
+//    Q_PROPERTY(QByteArray consumerSecret READ consumerSecret WRITE setConsumerSecret)
 
 public:
     OAuth(QObject *parent = 0);
@@ -61,10 +61,11 @@ public slots:
     void clearTokens();
     QByteArray oauthToken() const;
     QByteArray oauthTokenSecret() const;
+
+private:
     QByteArray consumerKey() const;
     QByteArray consumerSecret() const;
-	
-private:
+
     QByteArray generateSignatureHMACSHA1(const QByteArray& signatureBase);
     QByteArray generateSignatureBase(const QUrl& url, HttpMethod method, const QByteArray& timestamp, const QByteArray& nonce);
 

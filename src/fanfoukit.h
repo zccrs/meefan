@@ -27,6 +27,7 @@ public:
     Q_INVOKABLE QString datetimeFormatFromISO(const QString &dt) const;
     Q_INVOKABLE void setSettingValue(const QString &name, const QVariant &value);
     Q_INVOKABLE QVariant settingValue(const QString &name, const QVariant &defaultValue = QVariant()) const;
+    Q_INVOKABLE void clearSettings();
     Q_INVOKABLE QByteArray objectClassName(QObject *object) const;
 
 public slots:

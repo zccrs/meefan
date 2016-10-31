@@ -76,11 +76,20 @@ function printError(url, xhr, error) {
 function loginVerify() {
     var hr = new HttpRequest();
 
-    return hr.send(OAuth.GET, account.verify_credentials)
+    return hr.send(OAuth.GET, account.verify_credentials);
 }
 
 function homeTimeline(max_id, callback) {
     var hr = new HttpRequest(Boolean(callback), callback);
 
     return hr.send(OAuth.GET, statuses.home_timeline + (max_id ? "&max_id=" + max_id : ""));
+}
+
+function usersShow(userId) {
+    var hr = new HttpRequest();
+
+    if (userId)
+        return hr.send(OAuth.GET, user.show + "&id=" + userId);
+
+    return hr.send(OAuth.GET, users.show);
 }
