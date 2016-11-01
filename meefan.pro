@@ -66,6 +66,7 @@ contains(MEEGO_EDITION, harmattan){
 
 # Lib oauth
 include($$PWD/src/oauth/oauth.pri)
+include($$PWD/src/mywidgets/mywidgets.pri)
 
 OTHER_FILES += \
     qtc_packaging/debian_harmattan/rules \

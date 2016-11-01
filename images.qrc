@@ -3,5 +3,9 @@
         <file>images/divide.png</file>
         <file>images/mask.png</file>
         <file>images/toolbutton-checked-background.png</file>
+        <file>images/mask.bmp</file>
+        <file>images/shadow.png</file>
+        <file>images/icon_boy.png</file>
+        <file>images/icon_girl.png</file>
     </qresource>
 </RCC>

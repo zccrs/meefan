@@ -89,7 +89,7 @@ function usersShow(userId) {
     var hr = new HttpRequest();
 
     if (userId)
-        return hr.send(OAuth.GET, user.show + "&id=" + userId);
+        return hr.send(OAuth.GET, users.show + "&id=" + userId);
 
     return hr.send(OAuth.GET, users.show);
 }

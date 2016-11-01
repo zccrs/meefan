@@ -8,12 +8,10 @@ CustomPage {
 
     Component.onCompleted: {
         findChildren(appWindow, "ToolBar").platformStyle.visibilityTransitionDuration = 0;
-        showToolBar = false;
     }
 
     Component.onDestruction: {
         findChildren(appWindow, "ToolBar").platformStyle.visibilityTransitionDuration = 250;
-        showToolBar = true;
     }
 
     Connections {
@@ -29,7 +27,7 @@ CustomPage {
                 settings.currentUser.password = ffkit.stringEncrypt(inputPassword.text, ffkit.oauthTokenSecret);
 
             showInfoBanner("Login Finished");
-            pageStack.replace(Qt.resolvedUrl("MainPage.qml"));
+            pageStack.replace(Qt.resolvedUrl("HomePage.qml"));
         }
         onRequestAccessTokenError: {
             console.log("error:", error)
@@ -39,7 +37,7 @@ CustomPage {
     }
 
     Column {
-        y: 80
+        anchors.centerIn: parent
         width: parent.width
         spacing: 30
 

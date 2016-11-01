@@ -24,6 +24,14 @@ ListView {
                 source: "qrc:///images/mask.png"
                 sourceSize: parent.sourceSize
             }
+
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("UserInfoPage.qml"), {"userId": object.user.id});
+                }
+            }
         }
 
         Column {

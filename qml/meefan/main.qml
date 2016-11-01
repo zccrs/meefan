@@ -86,7 +86,7 @@ PageStackWindow {
                 ffkit.oauthToken = currentUser.token;
                 ffkit.oauthTokenSecret = currentUser.secret;
 
-                pageStack.push(Qt.resolvedUrl("MainPage.qml"), null, true);
+                pageStack.push(Qt.resolvedUrl("HomePage.qml"), null, true);
             } else {
                 pageStack.push(Qt.resolvedUrl("LoginPage.qml"), null, true);
             }
@@ -114,7 +114,7 @@ PageStackWindow {
         id: commonTools
 
         enabled: !pageStack.busy
-        visible: showToolBar
+        visible: pageStack.toolBar === commonTools
 
         ToolIcon {
             id: backButton
@@ -139,9 +139,9 @@ PageStackWindow {
                 iconId: "toolbar-home";
 
                 checked: true
-                onClicked: {
+                onCheckedChanged: {
                     if (checked) {
-                        pageStack.replace(Qt.resolvedUrl("MainPage.qml"));
+                        pageStack.replace(Qt.resolvedUrl("HomePage.qml"));
                     }
                 }
             }
