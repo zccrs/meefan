@@ -9,7 +9,16 @@ CustomPage {
     property variant object: null
 
     title: qsTr("User Info")
-    tools: commonTools
+    tools: ToolBarLayout {
+        ToolIcon {
+            iconId: "toolbar-back"
+
+            onClicked: pageStack.pop();
+        }
+        ToolIcon {
+            iconId: "toolbar-view-menu"
+        }
+    }
 
     Component.onCompleted: {
         object = Service.usersShow(userId);
@@ -17,12 +26,16 @@ CustomPage {
     }
 
     Item {
-        id: backgroundImage
+        id: backgroundItem
 
         width: parent.width
         height: 200
+        scale: 1.08
+        clip: true
 
         Image {
+            id: backgroundImage
+
             source: object.profile_background_image_url
             width: parent.width
             height: 200
@@ -30,13 +43,22 @@ CustomPage {
             fillMode: Image.PreserveAspectCrop
             y: content.atYBeginning ? 0 : -content.contentY / 2.0
             scale: content.atYBeginning ? -content.contentY / content.contentHeight / 4.0 + 1 : 1
-
-            Image {
-                width: parent.width
-                opacity: 0.2
-                source: "qrc:///images/shadow.png"
-                anchors.bottom: parent.bottom
+            effect: BlurEffect {
+                blurRadius: 10
             }
+        }
+
+        Rectangle {
+            anchors.fill: backgroundImage
+            color: "black"
+            opacity: 0.2
+        }
+
+        Image {
+            width: parent.width
+            opacity: 0.4
+            source: "qrc:///images/shadow.png"
+            anchors.bottom: backgroundImage.bottom
         }
     }
 
@@ -44,8 +66,8 @@ CustomPage {
         id: content
 
         anchors {
-            top: backgroundImage.bottom
-            topMargin: -avatarImage.height / 2 - 20
+            top: backgroundItem.bottom
+            topMargin: -avatarImage.height / 2
             bottom: parent.bottom
         }
         width: parent.width

@@ -3,6 +3,7 @@
 #include <QDeclarativeEngine>
 #include <qdeclarative.h>
 #include <QNetworkProxy>
+#include <QGraphicsBlurEffect>
 
 #include "qmlapplicationviewer.h"
 #include "fanfoukit.h"
@@ -28,6 +29,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     qmlRegisterUncreatableType<OAuth>("com.zccrs.meefan", 1, 0, "OAuth", "Can't touch this");
     qmlRegisterType<HttpRequest>("com.zccrs.meefan", 1, 0, "HttpRequest");
     qmlRegisterType<MyImage>("com.zccrs.meefan", 1, 0, "MaskImage");
+    qmlRegisterType<QGraphicsBlurEffect>("com.zccrs.meefan",1,0,"BlurEffect");
 
     QmlApplicationViewer viewer;
 

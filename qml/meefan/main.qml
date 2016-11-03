@@ -116,22 +116,22 @@ PageStackWindow {
         enabled: !pageStack.busy
         visible: pageStack.toolBar === commonTools
 
-        ToolIcon {
-            id: backButton
+//        ToolIcon {
+//            id: backButton
 
-            height: parent.height
-            iconId: "toolbar-back"
-            enabled: pageStack.depth > 1
+//            height: parent.height
+//            iconId: "toolbar-back"
+//            enabled: pageStack.depth > 1
 
-            onClicked: {
-                pageStack.pop();
-            }
-        }
+//            onClicked: {
+//                pageStack.pop();
+//            }
+//        }
 
         ButtonRow {
             height: parent.height
             anchors {
-                left: backButton.right
+                left: parent.left
                 right: parent.right
             }
 
@@ -151,11 +151,14 @@ PageStackWindow {
                 onClicked: ffkit.clearSettings();
             }
             CustomToolButton {
+                iconId: "toolbar-search"
+            }
+            CustomToolButton {
                 iconId: "toolbar-contact";
 
                 onCheckedChanged: {
                     if (checked) {
-                        pageStack.replace(Qt.resolvedUrl("UserInfoPage.qml"), {"userId": settings.currentUser.userId});
+                        pageStack.push(Qt.resolvedUrl("UserInfoPage.qml"), {"userId": settings.currentUser.userId});
                     }
                 }
             }
