@@ -10,7 +10,9 @@ var account = {
 
 // status
 var statuses = {
-    home_timeline: HOST + "/statuses/home_timeline." + FORMAT + "?mode=lite&count=10&format=html"
+    home_timeline: HOST + "/statuses/home_timeline." + FORMAT + "?mode=lite&count=10&format=html",
+    user_timeline:  HOST + "/statuses/user_timeline." + FORMAT + "?mode=lite&count=10&format=html",
+    replies: HOST + "/statuses/replies." + FORMAT + "?mode=lite&count=10&format=html"
 }
 
 // users

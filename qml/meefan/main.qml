@@ -86,7 +86,7 @@ PageStackWindow {
                 ffkit.oauthToken = currentUser.token;
                 ffkit.oauthTokenSecret = currentUser.secret;
 
-                pageStack.push(Qt.resolvedUrl("HomePage.qml"), null, true);
+                pageStack.push(Qt.resolvedUrl("HomeTimelinePage.qml"), null, true);
             } else {
                 pageStack.push(Qt.resolvedUrl("LoginPage.qml"), null, true);
             }
@@ -141,7 +141,7 @@ PageStackWindow {
                 checked: true
                 onCheckedChanged: {
                     if (checked) {
-                        pageStack.replace(Qt.resolvedUrl("HomePage.qml"));
+                        pageStack.replace(Qt.resolvedUrl("HomeTimelinePage.qml"));
                     }
                 }
             }

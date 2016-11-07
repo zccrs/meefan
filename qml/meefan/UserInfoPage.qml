@@ -76,15 +76,15 @@ CustomPage {
         Column {
             id: contentColumn
 
-            anchors {
-                left: parent.left
-                leftMargin: 20
-                right: parent.right
-                rightMargin: 20
-            }
+            width: parent.width
 
             MaskImage {
                 id: avatarImage
+
+                anchors {
+                    left: parent.left
+                    leftMargin: 20
+                }
 
                 sourceSize.width: width
                 width: 100
@@ -110,6 +110,41 @@ CustomPage {
                         left: userName.right
                         bottom: userName.baseline
                     }
+                }
+            }
+
+            Item {
+                width: 1
+                height: 20
+            }
+
+            Grid {
+                width: parent.width
+                columns: 3
+                spacing: 1
+
+                UserInfoGridCell {
+                    iconId: "tiezi"
+                    text: qsTr("Messages")
+
+                    onClicked: {
+                        pageStack.push(Qt.resolvedUrl("UserTimelinePage.qml"));
+                    }
+                }
+
+                UserInfoGridCell {
+                    iconId: "myba"
+                    text: qsTr("Follows")
+                }
+
+                UserInfoGridCell {
+                    iconId: "fs"
+                    text: qsTr("Fans")
+                }
+
+                UserInfoGridCell {
+                    iconId: "gz"
+                    text: qsTr("Pictures")
                 }
             }
         }

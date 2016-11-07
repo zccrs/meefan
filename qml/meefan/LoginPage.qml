@@ -27,7 +27,7 @@ CustomPage {
                 settings.currentUser.password = ffkit.stringEncrypt(inputPassword.text, ffkit.oauthTokenSecret);
 
             showInfoBanner("Login Finished");
-            pageStack.replace(Qt.resolvedUrl("HomePage.qml"));
+            pageStack.replace(Qt.resolvedUrl("HomeTimelinePage.qml"));
         }
         onRequestAccessTokenError: {
             console.log("error:", error)

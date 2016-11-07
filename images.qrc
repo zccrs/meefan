@@ -7,5 +7,15 @@
         <file>images/shadow.png</file>
         <file>images/icon_boy.png</file>
         <file>images/icon_girl.png</file>
+        <file>images/cent_icon_fs.png</file>
+        <file>images/cent_icon_fs_1.png</file>
+        <file>images/cent_icon_gz.png</file>
+        <file>images/cent_icon_gz_1.png</file>
+        <file>images/cent_icon_myba.png</file>
+        <file>images/cent_icon_myba_1.png</file>
+        <file>images/cent_icon_sc.png</file>
+        <file>images/cent_icon_sc_1.png</file>
+        <file>images/cent_icon_tiezi.png</file>
+        <file>images/cent_icon_tiezi_1.png</file>
     </qresource>
 </RCC>

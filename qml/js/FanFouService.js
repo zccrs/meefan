@@ -23,7 +23,7 @@ function HttpRequest(async, callback) {
 
 HttpRequest.prototype.send = function(method, url, data) {
             var xhr = ffkit.httpRequest();
-            var object;
+            var object = {};
             var callback = this.callback;
 
             function onreadystatechange() {
@@ -83,6 +83,18 @@ function homeTimeline(max_id, callback) {
     var hr = new HttpRequest(Boolean(callback), callback);
 
     return hr.send(OAuth.GET, statuses.home_timeline + (max_id ? "&max_id=" + max_id : ""));
+}
+
+function userTimeline(max_id) {
+    var hr = new HttpRequest();
+
+    return hr.send(OAuth.GET, statuses.user_timeline + (max_id ? "&max_id=" + max_id : ""));
+}
+
+function userReplies(max_id) {
+    var hr = new HttpRequest();
+
+    return hr.send(OAuth.GET, statuses.replies + (max_id ? "&max_id=" + max_id : ""));
 }
 
 function usersShow(userId) {

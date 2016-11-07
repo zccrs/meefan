@@ -35,7 +35,7 @@ CustomPage {
 
     Component.onCompleted: loadHomeTimeline();
 
-    HomeList {
+    CommonList {
         id: homeList
 
         anchors.fill: parent
