@@ -1,6 +1,7 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 import com.nokia.meego 1.0
+import "../../js/UIConstants.js" as UI
 
 ListView {
     property bool loadButtonVisible: false
@@ -8,7 +9,7 @@ ListView {
 
     spacing: 10
     delegate: Item {
-        width: parent.width - 20
+        width: parent.width - UI.MARGIN_DEFAULT * 2
         height: labelColumn.implicitHeight
         anchors.horizontalCenter: parent.horizontalCenter
 
@@ -17,8 +18,8 @@ ListView {
 
             source: object.user.profile_image_url
             sourceSize: Qt.size(width, height)
-            width: 60
-            height: 60
+            width: UI.SIZE_AVATAR_DEFAULT
+            height: width
 
             Image {
                 source: "qrc:///images/mask.png"
@@ -29,7 +30,7 @@ ListView {
                 anchors.fill: parent
 
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("UserInfoPage.qml"), {"userId": object.user.id});
+                    pageStack.push(Qt.resolvedUrl("../UserInfoPage.qml"), {"userId": object.user.id});
                 }
             }
         }
@@ -39,22 +40,22 @@ ListView {
 
             anchors {
                 left: avatar.right
-                leftMargin: 10
+                leftMargin: UI.MARGIN_DEFAULT
                 right: parent.right
             }
 
             Row {
-                spacing: 10
+                spacing: UI.SPACING_DEFAULT
 
                 Text {
                     text: object.user.screen_name
-                    font.pixelSize: 22
+                    font.pixelSize: UI.FONT_LSMALL
                 }
 
                 Text {
                     text: ffkit.datetimeFormatFromISO(new Date(object.created_at).toISOString())
-                    color: "#888"
-                    font.pixelSize: 22
+                    color: UI.COLOR_SECONDARY_FOREGROUND
+                    font.pixelSize: UI.FONT_LSMALL
                 }
             }
 
@@ -62,8 +63,8 @@ ListView {
                 id: textLocation
 
                 text: object.source + " " + object.user.location
-                color: "#888"
-                font.pixelSize: 22
+                color:  UI.COLOR_SECONDARY_FOREGROUND
+                font.pixelSize: UI.FONT_LSMALL
 
                 onLinkActivated: {
                     Qt.openUrlExternally(link)
@@ -72,14 +73,14 @@ ListView {
 
             Item {
                 width: 1
-                height: 10
+                height: UI.SPACING_DEFAULT
             }
 
             Text {
                 id: message
 
                 text: object.text
-                font.pixelSize: 26
+                font.pixelSize: UI.FONT_SLARGE
                 width: parent.width
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 
@@ -90,11 +91,11 @@ ListView {
 
             Item {
                 width: 1
-                height: 10
+                height:  UI.SPACING_DEFAULT
             }
 
             Rectangle {
-                color: "#ccc"
+                color: UI.COLOR_UNCONSPLCUOUS
                 height: 1
                 width: parent.width
             }
@@ -103,7 +104,7 @@ ListView {
 
     footer: Item {
         width: parent.width
-        height: 80
+        height: UI.HEIGHT_LIST_ITEM
 
         Button {
             id: load_button

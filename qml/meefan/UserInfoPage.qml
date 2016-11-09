@@ -2,7 +2,9 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
 import com.zccrs.meefan 1.0
+import "component"
 import "../js/FanFouService.js" as Service
+import "../js/UIConstants.js" as UI
 
 CustomPage {
     property string userId
@@ -97,7 +99,7 @@ CustomPage {
 
                     text: object.screen_name
                     color: object.profile_text_color
-                    font.pixelSize: 28
+                    font.pixelSize: UI.FONT_LARGE
                     anchors {
                         left: parent.right
                         leftMargin: 20
@@ -115,7 +117,7 @@ CustomPage {
 
             Item {
                 width: 1
-                height: 20
+                height: UI.SPACING_DEFAULT * 2
             }
 
             Grid {
@@ -128,7 +130,7 @@ CustomPage {
                     text: qsTr("Messages")
 
                     onClicked: {
-                        pageStack.push(Qt.resolvedUrl("UserTimelinePage.qml"));
+                        pageStack.push(Qt.resolvedUrl("statuses/UserTimelinePage.qml"), {"userId": userId});
                     }
                 }
 

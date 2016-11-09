@@ -3,6 +3,8 @@ import com.nokia.meego 1.0
 import com.nokia.extras 1.1
 import "../js/FanFouService.js" as Service
 import "setting"
+import "component"
+import "statuses"
 
 PageStackWindow {
     id: appWindow
@@ -86,7 +88,7 @@ PageStackWindow {
                 ffkit.oauthToken = currentUser.token;
                 ffkit.oauthTokenSecret = currentUser.secret;
 
-                pageStack.push(Qt.resolvedUrl("HomeTimelinePage.qml"), null, true);
+                pageStack.push(Qt.resolvedUrl("statuses/HomeTimelinePage.qml"), null, true);
             } else {
                 pageStack.push(Qt.resolvedUrl("LoginPage.qml"), null, true);
             }
@@ -141,7 +143,7 @@ PageStackWindow {
                 checked: true
                 onCheckedChanged: {
                     if (checked) {
-                        pageStack.replace(Qt.resolvedUrl("HomeTimelinePage.qml"));
+                        pageStack.replace(Qt.resolvedUrl("statuses/HomeTimelinePage.qml"));
                     }
                 }
             }

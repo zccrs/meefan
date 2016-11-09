@@ -1,5 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
+import "../../js/UIConstants.js" as UI
 
 Rectangle {
     property bool invertedTheme: false
@@ -24,11 +25,11 @@ Rectangle {
         color: invertedTheme ? "#fafafa" : "#82ACD2"
     }
 
-    Text{
+    Text {
         id: mytext
         anchors.verticalCenter: parent.verticalCenter
         x:10
-        font.pixelSize: 32
+        font.pixelSize: UI.FONT_XLARGE
         color: "white"
     }
 }

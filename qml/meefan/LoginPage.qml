@@ -1,6 +1,8 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
+import "component"
 import "../js/FanFouService.js" as Service
+import "../js/UIConstants.js" as UI
 
 CustomPage {
     title: qsTr("Login")
@@ -24,10 +26,12 @@ CustomPage {
             settings.currentUser.secret = ffkit.oauthTokenSecret;
 
             if (settings.currentUser.savePass)
-                settings.currentUser.password = ffkit.stringEncrypt(inputPassword.text, ffkit.oauthTokenSecret);
+                settings.currentUser.password = ffkit.stringEncrypt(inputPassword.text, "Sam.Minami");
+            else
+                settings.currentUser.password = ""
 
             showInfoBanner("Login Finished");
-            pageStack.replace(Qt.resolvedUrl("HomeTimelinePage.qml"));
+            pageStack.replace(Qt.resolvedUrl("statuses/HomeTimelinePage.qml"));
         }
         onRequestAccessTokenError: {
             console.log("error:", error)
@@ -49,7 +53,7 @@ CustomPage {
             color: "transparent"
             border {
                 width: 1
-                color: "#ccc"
+                color: UI.COLOR_UNCONSPLCUOUS
             }
 
             Column {
@@ -59,14 +63,14 @@ CustomPage {
                 Text {
                     text: "MeeFan"
                     color: parent.parent.border.color
-                    font.pixelSize: 38
+                    font.pixelSize: UI.FONT_XXLARGE
                 }
 
                 Text {
                     text: "米饭"
                     anchors.horizontalCenter: parent.horizontalCenter
                     color: parent.parent.border.color
-                    font.pixelSize: 38
+                    font.pixelSize: UI.FONT_XXLARGE
                 }
             }
         }
@@ -96,7 +100,7 @@ CustomPage {
             id: inputPassword
 
             placeholderText: qsTr("Password")
-            text: ffkit.stringUncrypt(settings.currentUser.password, settings.currentUser.secret)
+            text: ffkit.stringUncrypt(settings.currentUser.password, "Sam.Minami")
             anchors.horizontalCenter: parent.horizontalCenter
             width: inputEmail.width
             KeyNavigation.down: inputEmail
@@ -144,7 +148,7 @@ CustomPage {
 
         Item {
             width: 1
-            height: 10
+            height: UI.SPACING_DEFAULT
         }
 
         Button {

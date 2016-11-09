@@ -79,22 +79,11 @@ function loginVerify() {
     return hr.send(OAuth.GET, account.verify_credentials);
 }
 
-function homeTimeline(max_id, callback) {
+function getStatusArray(path, max_id, extra_args, callback) {
     var hr = new HttpRequest(Boolean(callback), callback);
 
-    return hr.send(OAuth.GET, statuses.home_timeline + (max_id ? "&max_id=" + max_id : ""));
-}
-
-function userTimeline(max_id) {
-    var hr = new HttpRequest();
-
-    return hr.send(OAuth.GET, statuses.user_timeline + (max_id ? "&max_id=" + max_id : ""));
-}
-
-function userReplies(max_id) {
-    var hr = new HttpRequest();
-
-    return hr.send(OAuth.GET, statuses.replies + (max_id ? "&max_id=" + max_id : ""));
+    return hr.send(OAuth.GET, statuses.packageUrl(path) + (max_id ? "&max_id=" + max_id : "")
+                   + (extra_args ? ("&" + extra_args) : ""));
 }
 
 function usersShow(userId) {
