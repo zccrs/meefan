@@ -6,6 +6,8 @@ import "../../js/FanFouService.js" as Service
 CustomPage {
     property string type
     property string httpExtraArgs
+    property bool autoVisibleLoadButton: true
+    property alias loadButtonVisible: listView.loadButtonVisible
 
     function httpHandle(obj) {
         if (obj.error) {
@@ -16,7 +18,8 @@ CustomPage {
             listModel.append({"object": obj[i]});
         }
 
-        listView.loadButtonVisible = true;
+        if (autoVisibleLoadButton)
+            listView.loadButtonVisible = true;
     }
 
     function loadList() {

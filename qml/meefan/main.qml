@@ -150,7 +150,11 @@ PageStackWindow {
             CustomToolButton {
                 iconId: "toolbar-list";
 
-                onClicked: ffkit.clearSettings();
+                onClicked: {
+                    if (checked) {
+                        pageStack.replace(Qt.resolvedUrl("statuses/PublicTimelinePage.qml"));
+                    }
+                }
             }
             CustomToolButton {
                 iconId: "toolbar-search"

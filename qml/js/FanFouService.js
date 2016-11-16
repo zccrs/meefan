@@ -82,7 +82,7 @@ function loginVerify() {
 function getStatusArray(path, max_id, extra_args, callback) {
     var hr = new HttpRequest(Boolean(callback), callback);
 
-    return hr.send(OAuth.GET, statuses.packageUrl(path) + (max_id ? "&max_id=" + max_id : "")
+    return hr.send(OAuth.GET, statuses.packageUrl(path) + (max_id ? "&max_id=" + escape(max_id) : "")
                    + (extra_args ? ("&" + extra_args) : ""));
 }
 
