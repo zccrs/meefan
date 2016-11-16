@@ -115,4 +115,8 @@ ListView {
             onClicked: parent.parent.parent.loadButtonClicked()
         }
     }
+
+    ScrollDecorator {
+        flickableItem: parent
+    }
 }
