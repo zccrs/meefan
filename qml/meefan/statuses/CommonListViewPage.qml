@@ -33,6 +33,24 @@ CustomPage {
 
     Component.onCompleted: loadList();
 
+    PullDownMenu {
+        flickableItem: listView
+        width: parent.width
+
+        Component.onCompleted: {
+            addMenu(qsTr("Refresh"))
+        }
+
+        onTrigger: {
+            switch (index) {
+            case 0: {
+                listModel.clear();
+                loadList();
+            }
+            }
+        }
+    }
+
     CommonListView {
         id: listView
 

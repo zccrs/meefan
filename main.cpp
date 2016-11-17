@@ -9,6 +9,7 @@
 #include "fanfoukit.h"
 #include "httprequest.h"
 #include "myimage.h"
+#include "monitormouseevent.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
@@ -29,7 +30,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     qmlRegisterUncreatableType<OAuth>("com.zccrs.meefan", 1, 0, "OAuth", "Can't touch this");
     qmlRegisterType<HttpRequest>("com.zccrs.meefan", 1, 0, "HttpRequest");
     qmlRegisterType<MyImage>("com.zccrs.meefan", 1, 0, "MaskImage");
-    qmlRegisterType<QGraphicsBlurEffect>("com.zccrs.meefan",1,0,"BlurEffect");
+    qmlRegisterType<QGraphicsBlurEffect>("com.zccrs.meefan", 1, 0, "BlurEffect");
+    qmlRegisterType<MonitorMouseEvent>("com.zccrs.meefan", 1, 0, "MonitorMouseEvent");
 
     QmlApplicationViewer viewer;
 
