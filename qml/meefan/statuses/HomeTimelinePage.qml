@@ -6,4 +6,20 @@ CommonListViewPage {
     tools: commonTools
 
     type: "home_timeline"
+
+    Timer {
+        id: test
+
+        interval: 100
+        running: true
+        onTriggered: {
+            menu.addMenu(qsTr("Add"))
+        }
+    }
+
+    onMenuTriggered: {
+        if (text === qsTr("Add")) {
+            pageStack.push(Qt.resolvedUrl("../EditNewMessagePage.qml"));
+        }
+    }
 }

@@ -13,9 +13,14 @@ Item {
     property int menuItemHeight: 30
     property alias listModel: listMenu.model
 
-    signal trigger(int index)
+    signal trigger(int index, string text)
 
     height: listMenu.count * (menuItemHeight + listMenu.spacing)
+
+    onCurrentIndexChanged: {
+        if (currentIndex >= 0 && listMenu.count > 0 && flickableItem.contentY < 0)
+            ffkit.vibrationDevice();
+    }
 
     function addMenu(menuText, iconSource) {
         var obj = {
@@ -152,7 +157,7 @@ Item {
 
         onMouseRelease: {
             if (currentIndex >= 0) {
-                trigger(currentIndex);
+                trigger(currentIndex, listModel.get(currentIndex).menuText);
             }
         }
     }

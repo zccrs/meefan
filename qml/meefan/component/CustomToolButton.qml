@@ -1,12 +1,13 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 import com.nokia.meego 1.0
+import "../../js/UIConstants.js" as UI
 
 ToolButton {
     property alias iconId: toolIcon.iconId
     property alias iconSource: toolIcon.iconSource
 
-    height: 71
+    height: UI.HEIGHT_TOOL_VAR - 1
     flat: true
     anchors.bottom: parent.bottom
 

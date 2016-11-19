@@ -1,5 +1,6 @@
 QT += network script
-CONFIG += c++11
+CONFIG += c++11 mobility
+MOBILITY = feedback
 
 TARGET = meefan
 VERSION = 0.0.1

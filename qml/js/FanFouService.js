@@ -21,7 +21,7 @@ function HttpRequest(async, callback) {
     this.callback = callback;
 }
 
-HttpRequest.prototype.send = function(method, url, data) {
+HttpRequest.prototype.send = function(method, url, data, content_type) {
             var xhr = ffkit.httpRequest();
             var object = {};
             var callback = this.callback;
@@ -52,7 +52,11 @@ HttpRequest.prototype.send = function(method, url, data) {
 
             if (method === OAuth.POST) {
                 xhr.open("POST", url, this.async);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                if (content_type)
+                    xhr.setRequestHeader("Content-Type", content_type);
+                else
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             } else {
                 xhr.open("GET", url, this.async);
             }
@@ -93,4 +97,21 @@ function usersShow(userId) {
         return hr.send(OAuth.GET, users.show + "&id=" + userId);
 
     return hr.send(OAuth.GET, users.show);
+}
+
+function sendMessage(text) {
+    var hr = new HttpRequest();
+    var uuid = ffkit.createUuid();
+
+    text = ffkit.toUtf8(text)
+
+    var data = "--" + uuid
+            + "\nContent-Disposition: form-data; name=\"status\""
+            + "\nContent-Transfer-Encoding: binary"
+            + "\nContent-Type: text/plain; charset=utf-8"
+            + "\nContent-Length: " + String(text.length)
+            + "\n\n" + text
+            + "\n--" + uuid;
+
+    return hr.send(OAuth.POST, statuses.update, data, "multipart/form-data; boundary=" + uuid);
 }

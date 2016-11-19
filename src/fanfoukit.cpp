@@ -10,6 +10,9 @@
 #include <QDateTime>
 #include <QSettings>
 #include <QCryptographicHash>
+#include <QUuid>
+#include <QtFeedback/QFeedbackHapticsEffect>
+#include <QtFeedback/QFeedbackActuator>
 #include <QDebug>
 
 #define ACCESS_TOKEN_URL "http://fanfou.com/oauth/access_token"
@@ -19,6 +22,7 @@ FanfouKit::FanfouKit(QObject *parent)
     , m_accessManager(new QNetworkAccessManager(this))
     , m_httpRequest(new HttpRequest(m_accessManager, this))
     , m_settings(new QSettings(this))
+    , m_rumble(0)
 {
 
 }
@@ -28,6 +32,7 @@ FanfouKit::FanfouKit(QNetworkAccessManager *manager, QObject *parent)
     , m_accessManager(manager)
     , m_httpRequest(new HttpRequest(m_accessManager, this))
     , m_settings(new QSettings(this))
+    , m_rumble(0)
 {
 
 }
@@ -35,7 +40,11 @@ FanfouKit::FanfouKit(QNetworkAccessManager *manager, QObject *parent)
 FanfouKit::FanfouKit(const QByteArray &consumerKey, const QByteArray &consumerSecret, QObject *parent)
     : OAuth(consumerKey, consumerSecret, parent)
     , m_accessManager(new QNetworkAccessManager(this))
+    , m_httpRequest(new HttpRequest(m_accessManager, this))
+    , m_settings(new QSettings(this))
+    , m_rumble(0)
 {
+
 }
 
 HttpRequest *FanfouKit::httpRequest(const QScriptValue &onreadystatechange)
@@ -58,6 +67,11 @@ QByteArray FanfouKit::readFile(const QString &filePath) const
 QString FanfouKit::fromUtf8(const QByteArray &data) const
 {
     return QString::fromUtf8(data);
+}
+
+QByteArray FanfouKit::toUtf8(const QString &string) const
+{
+    return string.toUtf8();
 }
 
 QString FanfouKit::datetimeFormatFromISO(const QString &dt) const
@@ -83,6 +97,20 @@ void FanfouKit::clearSettings()
 QByteArray FanfouKit::objectClassName(QObject *object) const
 {
     return object->metaObject()->className();
+}
+
+QString FanfouKit::createUuid() const
+{
+    return QUuid::createUuid().toString();
+}
+
+void FanfouKit::vibrationDevice(qreal intensity, int duration)
+{
+    ensureVibraRumble();
+
+    m_rumble->setIntensity(intensity);
+    m_rumble->setDuration(duration);
+    m_rumble->start();
 }
 
 QByteArray FanfouKit::generateXAuthorizationHeader(const QString &username, const QString &password)
@@ -187,4 +215,19 @@ void FanfouKit::onRequestAccessToken()
     }
 
     emit requestAccessTokenFinished();
+}
+
+void FanfouKit::ensureVibraRumble()
+{
+    if (m_rumble)
+        return;
+
+    m_rumble = new QTM_NAMESPACE::QFeedbackHapticsEffect(this);
+
+    foreach (QTM_NAMESPACE::QFeedbackActuator *actuator, QTM_NAMESPACE::QFeedbackActuator::actuators()) {
+        if (actuator->name() == "Vibra") {
+            m_rumble->setActuator(actuator);
+            break;
+        }
+    }
 }

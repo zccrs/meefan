@@ -8,6 +8,9 @@ CustomPage {
     property string httpExtraArgs
     property bool autoVisibleLoadButton: true
     property alias loadButtonVisible: listView.loadButtonVisible
+    property alias menu: pullDownMenu
+
+    signal menuTriggered(int index, string text)
 
     function httpHandle(obj) {
         if (obj.error) {
@@ -34,6 +37,8 @@ CustomPage {
     Component.onCompleted: loadList();
 
     PullDownMenu {
+        id: pullDownMenu
+
         flickableItem: listView
         width: parent.width
 
@@ -48,6 +53,8 @@ CustomPage {
                 loadList();
             }
             }
+
+            menuTriggered(index, text)
         }
     }
 
