@@ -6,6 +6,12 @@ import "../js/FanFouService.js" as Service
 import "../js/UIConstants.js" as UI
 
 CustomPage {
+    property string replyMessageId
+    property string replyUserId
+    property string repostMessageId
+    property string messageSource
+    property alias text: textArea.text
+
     title: qsTr("New")
 
     TextArea {
@@ -39,7 +45,11 @@ CustomPage {
             iconId: "toolbar-send-chat"
 
             onClicked: {
-                var obj = Service.sendMessage(textArea.text + "\n----Send from meefan")
+                var obj = Service.sendMessage(textArea.text + "\n----Send from meefan",
+                                              replyMessageId,
+                                              replyUserId,
+                                              repostMessageId,
+                                              messageSource)
 
                 if (obj.error) {
                     return;

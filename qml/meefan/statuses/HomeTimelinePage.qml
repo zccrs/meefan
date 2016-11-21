@@ -22,4 +22,12 @@ CommonListViewPage {
             pageStack.push(Qt.resolvedUrl("../EditNewMessagePage.qml"));
         }
     }
+
+    onItemClicked: {
+        pageStack.push(Qt.resolvedUrl("../EditNewMessagePage.qml"),
+                       {
+                           "text": "@" + object.user.screen_name + " ",
+                           "replyMessageId": "\"" + object.id + "\""
+                       })
+    }
 }

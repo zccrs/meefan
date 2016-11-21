@@ -6,6 +6,8 @@ import "../../js/UIConstants.js" as UI
 ListView {
     property bool loadButtonVisible: false
     signal loadButtonClicked
+    signal userAvatarClicked(variant object)
+    signal itemClicked(variant object)
 
     spacing: 10
     delegate: Item {
@@ -76,17 +78,24 @@ ListView {
                 height: UI.SPACING_DEFAULT
             }
 
-            Text {
-                id: message
-
-                text: object.text
-                font.pixelSize: UI.FONT_SLARGE
+            MouseArea {
                 width: parent.width
-                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                height: message.implicitHeight
 
-                onLinkActivated: {
-                    Qt.openUrlExternally(link)
+                Text {
+                    id: message
+
+                    text: object.text
+                    width: parent.width
+                    font.pixelSize: UI.FONT_SLARGE
+                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+
+                    onLinkActivated: {
+                        Qt.openUrlExternally(link)
+                    }
                 }
+
+                onClicked: itemClicked(object)
             }
 
             Item {

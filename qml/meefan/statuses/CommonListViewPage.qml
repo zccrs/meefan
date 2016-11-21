@@ -4,11 +4,16 @@ import "../component"
 import "../../js/FanFouService.js" as Service
 
 CustomPage {
+    id: page
+
     property string type
     property string httpExtraArgs
     property bool autoVisibleLoadButton: true
     property alias loadButtonVisible: listView.loadButtonVisible
     property alias menu: pullDownMenu
+
+    signal userAvatarClicked(variant object)
+    signal itemClicked(variant object)
 
     signal menuTriggered(int index, string text)
 
@@ -67,6 +72,11 @@ CustomPage {
         }
         onLoadButtonClicked: {
             loadList()
+        }
+
+        Component.onCompleted: {
+            userAvatarClicked.connect(page.userAvatarClicked)
+            itemClicked.connect(page.itemClicked)
         }
     }
 }
