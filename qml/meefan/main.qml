@@ -160,11 +160,13 @@ PageStackWindow {
                 iconId: "toolbar-search"
             }
             CustomToolButton {
+                id: toolbar_contact_button
+
                 iconId: "toolbar-contact";
 
                 onCheckedChanged: {
                     if (checked) {
-                        pageStack.push(Qt.resolvedUrl("UserInfoPage.qml"), {"userId": settings.currentUser.userId});
+                        pageStack.replace(Qt.resolvedUrl("UserInfoPage.qml"), {"userId": settings.currentUser.userId, "tools": commonTools});
                     }
                 }
             }

@@ -20,5 +20,8 @@ var statuses = {
 
 // users
 var users = {
-    show: HOST + "/users/show." + FORMAT + "?format=html"
+    packageUrl: function(path) {return users[path]},
+    show: HOST + "/users/show." + FORMAT + "?format=html",
+    followers: HOST + "/users/followers." + FORMAT + "?format=html",
+    friends: HOST + "/users/friends." + FORMAT + "?format=html"
 }

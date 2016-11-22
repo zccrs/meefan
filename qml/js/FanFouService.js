@@ -90,6 +90,13 @@ function getStatusArray(path, max_id, extra_args, callback) {
                    + (extra_args ? ("&" + extra_args) : ""));
 }
 
+function getUsersArray(path, user_id, extra_args, callback) {
+    var hr = new HttpRequest(Boolean(callback), callback);
+
+    return hr.send(OAuth.GET, users.packageUrl(path) + (user_id ? "&id=" + user_id : "")
+                   + (extra_args ? ("&" + extra_args) : ""));
+}
+
 function usersShow(userId) {
     var hr = new HttpRequest();
 

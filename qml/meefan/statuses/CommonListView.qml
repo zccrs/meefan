@@ -31,9 +31,7 @@ ListView {
             MouseArea {
                 anchors.fill: parent
 
-                onClicked: {
-                    pageStack.push(Qt.resolvedUrl("../UserInfoPage.qml"), {"userId": object.user.id});
-                }
+                onClicked: userAvatarClicked(object)
             }
         }
 

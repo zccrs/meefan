@@ -23,8 +23,10 @@ CustomPage {
     }
 
     Component.onCompleted: {
-        object = Service.usersShow(userId);
-//        object = JSON.parse(ffkit.fromUtf8(ffkit.readFile("/home/zhang/user.json")));
+        if (!object)
+            object = Service.usersShow(userId);
+        else
+            userId = object.id;
     }
 
     Item {
@@ -137,11 +139,19 @@ CustomPage {
                 UserInfoGridCell {
                     iconId: "myba"
                     text: qsTr("Follows")
+
+                    onClicked: {
+                        pageStack.push(Qt.resolvedUrl("users/FriendsPage.qml"), {"userId": userId});
+                    }
                 }
 
                 UserInfoGridCell {
                     iconId: "fs"
                     text: qsTr("Fans")
+
+                    onClicked: {
+                        pageStack.push(Qt.resolvedUrl("users/FansPage.qml"), {"userId": userId});
+                    }
                 }
 
                 UserInfoGridCell {

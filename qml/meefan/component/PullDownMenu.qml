@@ -9,7 +9,7 @@ Item {
     property Flickable flickableItem
     property bool invertedTheme: false
     property int menuItemPixelSize: 22
-    property int currentIndex: listMenu.currentIndex
+    property int currentIndex: flickableItem.contentY < 0 ? listMenu.currentIndex : -1
     property int menuItemHeight: 30
     property alias listModel: listMenu.model
 
@@ -18,7 +18,7 @@ Item {
     height: listMenu.count * (menuItemHeight + listMenu.spacing)
 
     onCurrentIndexChanged: {
-        if (currentIndex >= 0 && listMenu.count > 0 && flickableItem.contentY < 0)
+        if (currentIndex >= 0 && listMenu.count > 0)
             ffkit.vibrationDevice();
     }
 
