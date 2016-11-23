@@ -8,7 +8,7 @@ import "../js/UIConstants.js" as UI
 
 CustomPage {
     property string userId
-    property variant object: null
+    property variant userObject: null
 
     title: qsTr("User Info")
     tools: ToolBarLayout {
@@ -23,10 +23,10 @@ CustomPage {
     }
 
     Component.onCompleted: {
-        if (!object)
-            object = Service.usersShow(userId);
+        if (!userObject)
+            userObject = Service.usersShow(userId);
         else
-            userId = object.id;
+            userId = userObject.id;
     }
 
     Item {
@@ -40,7 +40,7 @@ CustomPage {
         Image {
             id: backgroundImage
 
-            source: object.profile_background_image_url
+            source: userObject.profile_background_image_url
             width: parent.width
             height: 200
             clip: true
@@ -93,14 +93,14 @@ CustomPage {
                 sourceSize.width: width
                 width: 100
                 height: width
-                source: object.profile_image_url_large
+                source: userObject.profile_image_url_large
                 maskSource: "qrc:///images/mask.bmp"
 
                 Text {
                     id: userName
 
-                    text: object.screen_name
-                    color: object.profile_text_color
+                    text: userObject.screen_name
+                    color: userObject.profile_text_color
                     font.pixelSize: UI.FONT_LARGE
                     anchors {
                         left: parent.right
@@ -109,7 +109,7 @@ CustomPage {
                 }
 
                 Image {
-                    source: "qrc:///images/icon_" + (object.gender === '男' ? "boy" : "girl") + ".png"
+                    source: "qrc:///images/icon_" + (userObject.gender === '男' ? "boy" : "girl") + ".png"
                     anchors {
                         left: userName.right
                         bottom: userName.baseline
@@ -157,6 +157,16 @@ CustomPage {
                 UserInfoGridCell {
                     iconId: "gz"
                     text: qsTr("Pictures")
+                }
+
+                UserInfoGridCell {
+                    iconId: "tiezi"
+                    text: qsTr("Private Message")
+                    visible: userId === settings.currentUser.userId
+
+                    onClicked: {
+                        pageStack.push(Qt.resolvedUrl("PrivateMessageListPage.qml"));
+                    }
                 }
             }
         }

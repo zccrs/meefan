@@ -13,6 +13,7 @@
 #include <QUuid>
 #include <QtFeedback/QFeedbackHapticsEffect>
 #include <QtFeedback/QFeedbackActuator>
+#include <QFontMetrics>
 #include <QDebug>
 
 #define ACCESS_TOKEN_URL "http://fanfou.com/oauth/access_token"
@@ -76,7 +77,7 @@ QByteArray FanfouKit::toUtf8(const QString &string) const
 
 QString FanfouKit::datetimeFormatFromISO(const QString &dt) const
 {
-    return QDateTime::fromString(dt, Qt::ISODate).toString("yyyy-MM-dd hh:mm");
+    return QDateTime::fromString(dt, Qt::ISODate).toLocalTime().toString("yyyy-MM-dd hh:mm");
 }
 
 void FanfouKit::setSettingValue(const QString &name, const QVariant &value)
@@ -111,6 +112,11 @@ void FanfouKit::vibrationDevice(qreal intensity, int duration)
     m_rumble->setIntensity(intensity);
     m_rumble->setDuration(duration);
     m_rumble->start();
+}
+
+QString FanfouKit::stringSimplified(const QString &string) const
+{
+    return string.simplified();
 }
 
 QByteArray FanfouKit::generateXAuthorizationHeader(const QString &username, const QString &password)

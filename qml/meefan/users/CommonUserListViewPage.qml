@@ -69,7 +69,7 @@ CustomPage {
         }
 
         onItemClicked: {
-            pageStack.replace(Qt.resolvedUrl("../UserInfoPage.qml"), {"object": object});
+            pageStack.replace(Qt.resolvedUrl("../UserInfoPage.qml"), {"userObject": object});
         }
 
         Component.onCompleted: {

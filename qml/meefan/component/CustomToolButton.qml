@@ -7,7 +7,7 @@ ToolButton {
     property alias iconId: toolIcon.iconId
     property alias iconSource: toolIcon.iconSource
 
-    height: UI.HEIGHT_TOOL_VAR - 1
+    height: UI.HEIGHT_TOOLBAR - 1
     flat: true
     anchors.bottom: parent.bottom
 

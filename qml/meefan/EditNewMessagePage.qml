@@ -29,7 +29,7 @@ CustomPage {
         id: toolBar
 
         width: parent.width
-        height: UI.HEIGHT_TOOL_VAR
+        height: UI.HEIGHT_TOOLBAR
         anchors.bottom: parent.bottom
 
         ToolIcon {
@@ -45,7 +45,7 @@ CustomPage {
             iconId: "toolbar-send-chat"
 
             onClicked: {
-                var obj = Service.sendMessage(textArea.text + "\n----Send from meefan",
+                var obj = Service.commitMessage(textArea.text + "\n----Send from meefan",
                                               replyMessageId,
                                               replyUserId,
                                               repostMessageId,

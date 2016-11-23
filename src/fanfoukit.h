@@ -39,6 +39,8 @@ public:
     /// duration unit is msec
     Q_INVOKABLE void vibrationDevice(qreal intensity = 0.1, int duration = 100);
 
+    Q_INVOKABLE QString stringSimplified(const QString &string) const;
+
 public slots:
     QByteArray generateXAuthorizationHeader(const QString &username, const QString &password);
 

@@ -25,3 +25,10 @@ var users = {
     followers: HOST + "/users/followers." + FORMAT + "?format=html",
     friends: HOST + "/users/friends." + FORMAT + "?format=html"
 }
+
+// direct-messages
+var direct_messages = {
+    conversation_list: HOST + "/direct_messages/conversation_list." + FORMAT,
+    conversation: HOST + "/direct_messages/conversation." + FORMAT,
+    newMessage: HOST + "/direct_messages/new." + FORMAT
+}

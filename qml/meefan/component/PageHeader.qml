@@ -5,9 +5,10 @@ import "../../js/UIConstants.js" as UI
 Rectangle {
     property bool invertedTheme: false
     property alias title: mytext.text
+    property alias contentComponent: loader.sourceComponent
 
     width: parent.width
-    height: 72
+    height: UI.HEIGHT_HEADERBAR
     color: "#0071BC"
 
     Rectangle {
@@ -27,9 +28,19 @@ Rectangle {
 
     Text {
         id: mytext
+
+        visible: !contentComponent
         anchors.verticalCenter: parent.verticalCenter
         x:10
         font.pixelSize: UI.FONT_XLARGE
         color: "white"
+    }
+
+    Loader {
+        id: loader
+
+        anchors {
+            verticalCenter: parent.verticalCenter
+        }
     }
 }

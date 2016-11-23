@@ -105,6 +105,7 @@ PageStackWindow {
 
         title: pageStack.currentPage.title
         width: parent.width
+        contentComponent: pageStack.currentPage.titleComponent
 
         Component.onCompleted: {
             parent = findChildren(appWindow, "appWindowContent", false, "objectName");

@@ -5,6 +5,7 @@ Page {
     id: page
 
     property string title
+    property Component titleComponent
 
     orientationLock: PageOrientation.LockPortrait
 }

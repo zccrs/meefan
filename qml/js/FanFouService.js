@@ -159,7 +159,7 @@ MultipartBodyHandler.prototype.add = function(parameterName, data, contentType, 
 //    作用: 消息来源
 //    格式: source=source_str
 //    字段说明: 可选, source应为英文字符串
-function sendMessage(text, in_reply_to_status_id, in_reply_to_user_id, repost_status_id, source) {
+function commitMessage(text, in_reply_to_status_id, in_reply_to_user_id, repost_status_id, source) {
     var hr = new HttpRequest();
     var uuid = ffkit.createUuid();
     var bh = new MultipartBodyHandler();
@@ -178,4 +178,42 @@ function sendMessage(text, in_reply_to_status_id, in_reply_to_user_id, repost_st
     bh.add("location", "Finland");
 
     return hr.send(OAuth.POST, statuses.update, bh.getAll(uuid), "multipart/form-data; boundary=" + uuid);
+}
+
+function getPrivateMessageList() {
+    var hr = new HttpRequest();
+
+    return hr.send(OAuth.GET, direct_messages.conversation_list);
+}
+
+
+//in_reply_to_id
+//    作用: 回复的私信id
+//    格式: in_reply_to_id=msg_id
+//    字段说明: 可选
+function sendPrivateMessage(targetUserId, text, in_reply_to_id) {
+    var hr = new HttpRequest();
+    var uuid = ffkit.createUuid();
+    var bh = new MultipartBodyHandler();
+
+    bh.add("user", targetUserId, "application/json")
+    bh.add("text", ffkit.toUtf8(text));
+
+    if (in_reply_to_id)
+        bh.add("in_reply_to_id", in_reply_to_id, "application/json");
+
+    return hr.send(OAuth.POST, direct_messages.newMessage, bh.getAll(uuid), "multipart/form-data; boundary=" + uuid);
+}
+
+function getPrivateMessagesOfUser(targetUserId, max_id, since_id) {
+    var hr = new HttpRequest();
+    var url = direct_messages.conversation + "?id=" + targetUserId;
+
+    if (max_id)
+        url += ("&" + max_id);
+
+    if (since_id)
+        url += ("&" + since_id);
+
+    return hr.send(OAuth.GET, url);
 }
