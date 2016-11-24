@@ -210,10 +210,10 @@ function getPrivateMessagesOfUser(targetUserId, max_id, since_id) {
     var url = direct_messages.conversation + "?id=" + targetUserId;
 
     if (max_id)
-        url += ("&" + max_id);
+        url += ("&max_id=" + max_id);
 
     if (since_id)
-        url += ("&" + since_id);
+        url += ("&since_id=" + since_id);
 
     return hr.send(OAuth.GET, url);
 }

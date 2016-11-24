@@ -39,6 +39,11 @@ CustomPage {
     }
 
     function loadOldMessages() {
+        if (listView.loadingList)
+            return;
+
+        listView.loadingList = true;
+
         var max_id;
 
         if (listView.model.count > 0)
@@ -49,12 +54,19 @@ CustomPage {
         if (obj.error)
             return;
 
-        for (var i in obj) {
+        for (var i = (max_id ? 1 : 0); i < obj.length; ++i) {
             listView.model.insert(0, {"object": obj[i]});
         }
+
+        listView.loadingList = false;
     }
 
     function loadNewMessages() {
+        if (listView.loadingList)
+            return;
+
+        listView.loadingList = true;
+
         var since_id;
 
         if (listView.model.count > 0)
@@ -68,11 +80,14 @@ CustomPage {
         for (var i in obj) {
             listView.model.append({"object": obj[obj.length - i - 1]});
         }
+
+        listView.loadingList = false;
     }
 
     Component.onCompleted: {
         findChildren(appWindow, "ToolBar").platformStyle.visibilityTransitionDuration = 0;
         loadNewMessages();
+        listView.positionViewAtEnd();
     }
 
     Component.onDestruction: {
@@ -81,6 +96,8 @@ CustomPage {
 
     ListView {
         id: listView
+
+        property bool loadingList: false
 
         spacing: UI.SPACING_LARGE
         model: ListModel{}
@@ -169,6 +186,16 @@ CustomPage {
                             anchors.right = parent.right
                     }
                 }
+            }
+        }
+
+        onMovementEnded: {
+            if (atYEnd) {
+                loadNewMessages()
+            }
+
+            if (atYBeginning) {
+                loadOldMessages()
             }
         }
     }
