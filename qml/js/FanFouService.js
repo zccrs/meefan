@@ -217,3 +217,21 @@ function getPrivateMessagesOfUser(targetUserId, max_id, since_id) {
 
     return hr.send(OAuth.GET, url);
 }
+
+function searchMessage(keyword, max_id, targetUserId, callback) {
+    var hr = new HttpRequest(Boolean(callback), callback);
+    var url = targetUserId ? search.user_timeline : search.public_timeline;
+
+    url += "&q=" + escape(ffkit.toUtf8(keyword));
+
+    if (max_id)
+        url += "&max_id=" + max_id;
+
+    if (targetUserId)
+        url += "&id=" + targetUserId;
+
+//    if (since_id)
+//        url += "&since_id" + since_id;
+
+    return hr.send(OAuth.GET, url);
+}

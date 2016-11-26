@@ -32,3 +32,9 @@ var direct_messages = {
     conversation: HOST + "/direct_messages/conversation." + FORMAT,
     newMessage: HOST + "/direct_messages/new." + FORMAT
 }
+
+// search
+var search = {
+    public_timeline: HOST + "/search/public_timeline." + FORMAT + "?count=60&format=html",
+    user_timeline: HOST + "/search/user_timeline." + FORMAT + "?count=60&format=html"
+}

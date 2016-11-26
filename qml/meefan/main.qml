@@ -158,7 +158,7 @@ PageStackWindow {
                 }
             }
             CustomToolButton {
-                iconId: "toolbar-search"
+                iconId: "toolbar-new-message"
             }
             CustomToolButton {
                 id: toolbar_contact_button

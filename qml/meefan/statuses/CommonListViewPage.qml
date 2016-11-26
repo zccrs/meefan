@@ -1,5 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
+import com.nokia.meego 1.0
 import "../component"
 import "../../js/FanFouService.js" as Service
 
@@ -11,6 +12,7 @@ CustomPage {
     property bool autoVisibleLoadButton: true
     property alias loadButtonVisible: listView.loadButtonVisible
     property alias menu: pullDownMenu
+    property bool searchMode: false
 
     signal userAvatarClicked(variant object)
     signal itemClicked(variant object)
@@ -28,6 +30,10 @@ CustomPage {
 
         if (autoVisibleLoadButton)
             listView.loadButtonVisible = true;
+
+        if (obj.length === 0) {
+            showInfoBanner(qsTr("No more"));
+        }
     }
 
     function loadList() {
@@ -36,10 +42,34 @@ CustomPage {
         if (listModel.count > 0)
             max_id = listModel.get(listModel.count - 1).object.id;
 
-        Service.getStatusArray(type, max_id, httpExtraArgs, httpHandle);
+        if (searchMode)
+            Service.searchMessage(searchTextField.text, max_id, page.userId, httpHandle);
+        else
+            Service.getStatusArray(type, max_id, httpExtraArgs, httpHandle);
+    }
+
+    function switchToSearchMode() {
+        searchMode = true;
+        privateData.pageTitle = title;
+        title = qsTr("Search");
+        appWindow.showToolBar = false;
+        searchTextField.forceActiveFocus();
+        searchTextField.selectAll();
+    }
+
+    function quitSearchMode() {
+        title = privateData.pageTitle;
+        appWindow.showToolBar = true;
+        searchMode = false;
     }
 
     Component.onCompleted: loadList();
+
+    QtObject {
+        id: privateData
+
+        property string pageTitle
+    }
 
     PullDownMenu {
         id: pullDownMenu
@@ -48,14 +78,20 @@ CustomPage {
         width: parent.width
 
         Component.onCompleted: {
-            addMenu(qsTr("Refresh"))
+            addMenu(qsTr("Search"));
+            addMenu(qsTr("Refresh"));
         }
 
         onTrigger: {
-            switch (index) {
-            case 0: {
+            switch (text) {
+            case qsTr("Search"): {
+                switchToSearchMode();
+                break;
+            }
+            case qsTr("Refresh"): {
                 listModel.clear();
                 loadList();
+                break;
             }
             }
 
@@ -66,7 +102,12 @@ CustomPage {
     CommonListView {
         id: listView
 
-        anchors.fill: parent
+        width: parent.width
+        anchors {
+            top: parent.top
+            bottom: searchToolBar.visible ? searchToolBar.top : parent.bottom
+        }
+
         model: ListModel {
             id: listModel
         }
@@ -83,6 +124,36 @@ CustomPage {
         Component.onCompleted: {
             userAvatarClicked.connect(page.userAvatarClicked)
             itemClicked.connect(page.itemClicked)
+        }
+    }
+
+    ToolBar {
+        id: searchToolBar
+
+        anchors.bottom: parent.bottom
+        visible: !appWindow.showToolBar
+
+        tools: ToolBarLayout {
+            visible: tools === searchToolBar
+
+            ToolIcon {
+                iconId: "toolbar-back"
+
+                onClicked: quitSearchMode();
+            }
+
+            TextField {
+                id: searchTextField
+            }
+
+            ToolIcon {
+                iconId: "toolbar-search"
+
+                onClicked: {
+                    listModel.clear();
+                    loadList();
+                }
+            }
         }
     }
 }

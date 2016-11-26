@@ -113,7 +113,7 @@ Item {
         Row {
             property bool active: ListView.view.currentIndex == index
 
-            height: title.implicitHeight
+            height: menuItemHeight
             anchors.horizontalCenter: parent.horizontalCenter
 
             Image {
