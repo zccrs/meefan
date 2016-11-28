@@ -151,16 +151,30 @@ CustomPage {
             height: UI.SPACING_DEFAULT
         }
 
-        Button {
-            text: qsTr("Login")
+        Row {
             anchors.horizontalCenter: parent.horizontalCenter
-            enabled: inputEmail.text && inputPassword.text && !pageStack.busy
+            spacing: UI.SPACING_DEFAULT
 
-            onClicked: {
-                settings.currentUser.userId = inputEmail.text;
-                settings.setUser(settings.currentUser.userId, settings.currentUser);
+            Button {
+                width: (inputEmail.width - parent.spacing) / 2
+                text: qsTr("Register")
 
-                ffkit.requestAccessToken(inputEmail.text, inputPassword.text)
+                onClicked: {
+                    pageStack.replace(Qt.resolvedUrl("RegisterPage.qml"));
+                }
+            }
+
+            Button {
+                text: qsTr("Login")
+                width: (inputEmail.width - parent.spacing) / 2
+                enabled: inputEmail.text && inputPassword.text && !pageStack.busy
+
+                onClicked: {
+                    settings.currentUser.userId = inputEmail.text;
+                    settings.setUser(settings.currentUser.userId, settings.currentUser);
+
+                    ffkit.requestAccessToken(inputEmail.text, inputPassword.text)
+                }
             }
         }
     }

@@ -19,6 +19,7 @@ function initialize(fk, handle) {
 function HttpRequest(async, callback) {
     this.async = async;
     this.callback = callback;
+    this.xhr = null;
 }
 
 HttpRequest.prototype.send = function(method, url, data, content_type) {
@@ -30,19 +31,19 @@ HttpRequest.prototype.send = function(method, url, data, content_type) {
                 if (xhr.readyState === xhr.DONE) {
                     try {
                         object = JSON.parse(xhr.responseText);
+                    } catch(e) {
+                        object = xhr.responseText;
+                    }
 
-                        if (xhr.status !== 200) {
+                    if (xhr.status !== 200) {
+                        if (xhr.status !== 302) {
                             printError(url, xhr, object.error);
 
                             if (httpRequestErrorHandle)
                                 httpRequestErrorHandle(xhr, object.error);
-                        } else {
-                            if (callback)
-                                callback(object);
                         }
-                    } catch(e) {
-                        object.error = JSON.stringify(e);
-                        printError(url, xhr, object.error);
+                    } else if (callback) {
+                        callback(object);
                     }
                 }
             }
@@ -56,7 +57,7 @@ HttpRequest.prototype.send = function(method, url, data, content_type) {
                 if (content_type)
                     xhr.setRequestHeader("Content-Type", content_type);
                 else
-                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
             } else {
                 xhr.open("GET", url, this.async);
             }
@@ -66,6 +67,8 @@ HttpRequest.prototype.send = function(method, url, data, content_type) {
 
             if (!this.async)
                 onreadystatechange();
+
+            this.xhr = xhr;
 
             return object;
         }
@@ -234,4 +237,74 @@ function searchMessage(keyword, max_id, targetUserId, callback) {
 //        url += "&since_id" + since_id;
 
     return hr.send(OAuth.GET, url);
+}
+
+function registerCheck(email, nickname, callback) {
+    var hr;
+    var url = register.check;
+    var data = "action=register.check";
+
+    var cb = function(obj) {
+        if (obj.status === 0) {
+            obj.error = obj.msg;
+            printError(url, hr.xhr, obj.error);
+
+            if (httpRequestErrorHandle)
+                httpRequestErrorHandle(hr.xhr, obj.error)
+        }
+
+        if (callback)
+            callback(obj);
+
+        return obj;
+    };
+
+    if (callback) {
+        hr = new HttpRequest(true, cb);
+    } else {
+        hr = new HttpRequest();
+    }
+
+    if (email)
+        data += "&email=" + encodeURIComponent(email);
+
+    if (nickname)
+        data += "&realname=" + encodeURIComponent(nickname);
+
+    var obj = hr.send(OAuth.POST, url, data);
+
+    if (obj)
+        return cb(obj);
+}
+
+function registerFanfou(email, nickname, password) {
+    var hr = new HttpRequest();
+    var url = register.register;
+    var data = "action=register";
+
+    data += "&email=" + encodeURIComponent(email);
+    data += "&realname=" + encodeURIComponent(nickname);
+    data += "&loginpass=" + encodeURIComponent(password);
+    data += "&verifypass=" + encodeURIComponent(password);
+
+    var regexp = /<input\s+type="hidden"\s+name="token"\s+value="(\S+)"\s*\/>/g;
+    var list = regexp.exec(hr.send(OAuth.GET, url));
+
+    var obj = {};
+
+    if (list[1]) {
+        data += "&token=" + list[1];
+        var request = hr.send(OAuth.POST, url, data);
+
+        if (/\S+/.exec(request)) {
+            obj.error = qsTr("Registration failed");
+        }
+    } else {
+        obj.error = qsTr("Get register token failed");
+    }
+
+    if (obj.error && httpRequestErrorHandle)
+        httpRequestErrorHandle(hr.xhr, obj.error)
+
+    return obj;
 }

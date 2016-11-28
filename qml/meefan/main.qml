@@ -28,7 +28,7 @@ PageStackWindow {
 
             pageStack.clear();
             pageStack.push(Qt.resolvedUrl("LoginPage.qml"), null, true);
-        } else {
+        } else if (errorMessage) {
             showInfoBanner(errorMessage);
         }
     }

@@ -38,3 +38,9 @@ var search = {
     public_timeline: HOST + "/search/public_timeline." + FORMAT + "?count=60&format=html",
     user_timeline: HOST + "/search/user_timeline." + FORMAT + "?count=60&format=html"
 }
+
+// register
+var register = {
+    check: "http://fanfou.com/register.check",
+    register: "http://fanfou.com/register"
+}
