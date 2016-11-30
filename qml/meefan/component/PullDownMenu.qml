@@ -84,7 +84,7 @@ Item {
             if (y > height) {
                 currentIndex = 0
             } else {
-                var index = listMenu.indexAt(width / 2, root.height - y)
+                var index = listMenu.indexAt(width / 2, root.height / 2 - y)
                 currentIndex = index
             }
         }

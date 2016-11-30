@@ -17,7 +17,7 @@ class HttpRequest : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(State readyState READ readyState CONSTANT)
+    Q_PROPERTY(State readyState READ readyState NOTIFY readyStateChanged)
     Q_PROPERTY(State UNSENT READ enumUnsent CONSTANT)
     Q_PROPERTY(State OPENED READ enumOpened CONSTANT)
     Q_PROPERTY(State HEADERS_RECEIVED READ enumHeaders_Received CONSTANT)
@@ -60,6 +60,9 @@ public slots:
     void open(const QByteArray &method, const QUrl &url, bool async = true);
     void send(const QByteArray &data = QByteArray());
     void abort();
+
+signals:
+    void readyStateChanged();
 
 private slots:
     void setReadyStateToLoading();

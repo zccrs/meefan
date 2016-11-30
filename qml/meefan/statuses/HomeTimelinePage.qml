@@ -8,8 +8,6 @@ CommonListViewPage {
     type: "home_timeline"
 
     Timer {
-        id: test
-
         interval: 100
         running: true
         onTriggered: {

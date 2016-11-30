@@ -26,7 +26,7 @@ public:
     explicit FanfouKit(QNetworkAccessManager *manager, QObject *parent = 0);
     explicit FanfouKit(const QByteArray& consumerKey, const QByteArray& consumerSecret, QObject *parent = 0);
 
-    Q_INVOKABLE HttpRequest *httpRequest(const QScriptValue &onreadystatechange = QScriptValue());
+    Q_INVOKABLE HttpRequest *httpRequest() const;
     Q_INVOKABLE QByteArray readFile(const QString &filePath) const;
     Q_INVOKABLE QString fromUtf8(const QByteArray &data) const;
     Q_INVOKABLE QByteArray toUtf8(const QString &string) const;

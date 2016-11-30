@@ -1,6 +1,7 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
 import com.nokia.extras 1.1
+import com.zccrs.meefan 1.0
 import "../js/FanFouService.js" as Service
 import "setting"
 import "component"
@@ -110,6 +111,16 @@ PageStackWindow {
         Component.onCompleted: {
             parent = findChildren(appWindow, "appWindowContent", false, "objectName");
             pageStack.parent.anchors.top = header.bottom;
+        }
+
+        Connections {
+            target: ffkit.httpRequest();
+
+            onReadyStateChanged: {
+                var state = ffkit.httpRequest().readyState;
+
+                header.indicatorRunning = (state > HttpRequest.Opened && state < HttpRequest.Done);
+            }
         }
     }
 

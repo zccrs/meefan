@@ -48,10 +48,8 @@ FanfouKit::FanfouKit(const QByteArray &consumerKey, const QByteArray &consumerSe
 
 }
 
-HttpRequest *FanfouKit::httpRequest(const QScriptValue &onreadystatechange)
+HttpRequest *FanfouKit::httpRequest() const
 {
-    m_httpRequest->setOnreadystatechange(onreadystatechange);
-
     return m_httpRequest;
 }
 

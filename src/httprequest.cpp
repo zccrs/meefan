@@ -178,6 +178,8 @@ void HttpRequest::abort()
     if (eventLoop) {
         eventLoop->exit();
     }
+
+    setOnreadystatechange(QScriptValue());
 }
 
 void HttpRequest::setReadyStateToLoading()
@@ -192,6 +194,8 @@ void HttpRequest::setReadyState(HttpRequest::State state)
 
     m_readyState = state;
 
+    emit readyStateChanged();
+
     if (m_onreadystatechange.isFunction()) {
         m_onreadystatechange.call();
     }
@@ -205,4 +209,6 @@ void HttpRequest::onFinished()
     if (eventLoop) {
         eventLoop->exit();
     }
+
+    setOnreadystatechange(QScriptValue());
 }
