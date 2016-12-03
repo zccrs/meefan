@@ -13,6 +13,8 @@ CustomPage {
     property alias loadButtonVisible: listView.loadButtonVisible
     property alias menu: pullDownMenu
     property bool searchMode: false
+    property bool hasSearch: true
+    property alias messageMouseAreaEnabled: listView.messageMouseAreaEnabled
 
     signal userAvatarClicked(variant object)
     signal itemClicked(variant object)
@@ -63,7 +65,14 @@ CustomPage {
         searchMode = false;
     }
 
-    Component.onCompleted: loadList();
+    Component.onCompleted: {
+        loadList();
+
+        if (hasSearch)
+            pullDownMenu.addMenu(qsTr("Search"));
+
+        pullDownMenu.addMenu(qsTr("Refresh"));
+    }
 
     QtObject {
         id: privateData
@@ -76,11 +85,6 @@ CustomPage {
 
         flickableItem: listView
         width: parent.width
-
-        Component.onCompleted: {
-            addMenu(qsTr("Search"));
-            addMenu(qsTr("Refresh"));
-        }
 
         onTrigger: {
             switch (text) {
@@ -119,6 +123,9 @@ CustomPage {
                 toolbar_contact_button.checked = true;
             else
                 pageStack.push(Qt.resolvedUrl("../UserInfoPage.qml"), {"userId": object.user.id});
+        }
+        onItemClicked: {
+            pageStack.push(Qt.resolvedUrl("ContextTimeline.qml"), {"messageId": object.id});
         }
 
         Component.onCompleted: {

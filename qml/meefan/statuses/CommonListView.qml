@@ -5,6 +5,7 @@ import "../../js/UIConstants.js" as UI
 
 ListView {
     property bool loadButtonVisible: false
+    property bool messageMouseAreaEnabled: true
     signal loadButtonClicked
     signal userAvatarClicked(variant object)
     signal itemClicked(variant object)
@@ -77,6 +78,7 @@ ListView {
             }
 
             MouseArea {
+                enabled: messageMouseAreaEnabled
                 width: parent.width
                 height: message.implicitHeight
 

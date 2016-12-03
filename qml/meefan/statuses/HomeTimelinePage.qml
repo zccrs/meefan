@@ -21,11 +21,11 @@ CommonListViewPage {
         }
     }
 
-    onItemClicked: {
-        pageStack.push(Qt.resolvedUrl("../EditNewMessagePage.qml"),
-                       {
-                           "text": "@" + object.user.screen_name + " ",
-                           "replyMessageId": "\"" + object.id + "\""
-                       })
-    }
+//    onItemClicked: {
+//        pageStack.push(Qt.resolvedUrl("../EditNewMessagePage.qml"),
+//                       {
+//                           "text": "@" + object.user.screen_name + " ",
+//                           "replyMessageId": "\"" + object.id + "\""
+//                       })
+//    }
 }

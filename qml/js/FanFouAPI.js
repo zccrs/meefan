@@ -14,6 +14,7 @@ var statuses = {
     home_timeline: HOST + "/statuses/home_timeline." + FORMAT + "?mode=lite&count=10&format=html",
     user_timeline:  HOST + "/statuses/user_timeline." + FORMAT + "?mode=lite&count=10&format=html",
     public_timeline: HOST + "/statuses/public_timeline." + FORMAT + "?mode=lite&count=60&format=html",
+    context_timeline: HOST + "/statuses/context_timeline." + FORMAT + "?format=html",
     replies: HOST + "/statuses/replies." + FORMAT + "?mode=lite&count=10&format=html",
     update: HOST + "/statuses/update." + FORMAT + "?mode=lite&format=html"
 }
