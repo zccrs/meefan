@@ -17,5 +17,7 @@
         <file>images/cent_icon_sc_1.png</file>
         <file>images/cent_icon_tiezi.png</file>
         <file>images/cent_icon_tiezi_1.png</file>
+        <file>images/save_button.svg</file>
+        <file>images/save_button_shadow.png</file>
     </qresource>
 </RCC>

@@ -3,12 +3,15 @@ import com.nokia.meego 1.0
 import com.nokia.extras 1.1
 import com.zccrs.meefan 1.0
 import "../js/FanFouService.js" as Service
+import "../js/UIConstants.js" as UI
 import "setting"
 import "component"
 import "statuses"
 
 PageStackWindow {
     id: appWindow
+
+    property alias showHeaderBar: header.visible
 
 //    initialPage: UserInfoPage {
 
@@ -106,7 +109,15 @@ PageStackWindow {
 
         title: pageStack.currentPage.title
         width: parent.width
+        height: visible ? UI.HEIGHT_HEADERBAR : 0
         contentComponent: pageStack.currentPage.titleComponent
+
+        Behavior on height {
+            NumberAnimation {
+                easing.type: Easing.InOutExpo;
+                duration: 250
+            }
+        }
 
         Component.onCompleted: {
             parent = findChildren(appWindow, "appWindowContent", false, "objectName");

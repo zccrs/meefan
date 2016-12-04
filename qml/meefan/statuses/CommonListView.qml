@@ -6,6 +6,7 @@ import "../../js/UIConstants.js" as UI
 ListView {
     property bool loadButtonVisible: false
     property bool messageMouseAreaEnabled: true
+    property bool showFullWindow: false
     signal loadButtonClicked
     signal userAvatarClicked(variant object)
     signal itemClicked(variant object)
@@ -89,6 +90,7 @@ ListView {
                     width: parent.width
                     font.pixelSize: UI.FONT_SLARGE
                     wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                    textFormat: Text.RichText
 
                     onLinkActivated: {
                         Qt.openUrlExternally(link)
@@ -96,6 +98,31 @@ ListView {
                 }
 
                 onClicked: itemClicked(object)
+            }
+
+            Image {
+                source: object.photo ? object.photo.thumburl : ""
+                fillMode: Image.PreserveAspectFit
+                width: Math.min(parent.width, implicitWidth)
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    onClicked: {
+                        showFullWindow = true;
+
+                        if (!imageViewerLoader.item) {
+                            imageViewerLoader.source = "../component/ImageViewer.qml";
+                            imageViewerLoader.item.closed.connect(function() {showFullWindow = false;});
+                        }
+
+                        imageViewerLoader.item.imageUrl = object.photo.largeurl;
+                        imageViewerLoader.item.show();
+                    }
+                }
             }
 
             Item {
@@ -127,5 +154,11 @@ ListView {
 
     ScrollDecorator {
         flickableItem: parent
+    }
+
+    Loader {
+        id: imageViewerLoader
+
+        anchors.fill: parent
     }
 }

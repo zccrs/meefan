@@ -18,7 +18,6 @@ CustomPage {
 
     signal userAvatarClicked(variant object)
     signal itemClicked(variant object)
-
     signal menuTriggered(int index, string text)
 
     function httpHandle(obj) {
@@ -127,6 +126,10 @@ CustomPage {
         onItemClicked: {
             pageStack.push(Qt.resolvedUrl("ContextTimeline.qml"), {"messageId": object.id});
         }
+        onShowFullWindowChanged: {
+            appWindow.showToolBar = !showFullWindow;
+            appWindow.showHeaderBar = !showFullWindow;
+        }
 
         Component.onCompleted: {
             userAvatarClicked.connect(page.userAvatarClicked)
@@ -138,7 +141,7 @@ CustomPage {
         id: searchToolBar
 
         anchors.bottom: parent.bottom
-        visible: !appWindow.showToolBar
+        visible: !appWindow.showToolBar && !listView.showFullWindow
 
         tools: ToolBarLayout {
             visible: tools === searchToolBar
