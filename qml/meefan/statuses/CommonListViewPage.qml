@@ -64,6 +64,11 @@ CustomPage {
         searchMode = false;
     }
 
+    function showFullWindow(enable) {
+        appWindow.showToolBar = !enable;
+        appWindow.showHeaderBar = !enable;
+    }
+
     Component.onCompleted: {
         loadList();
 
@@ -126,10 +131,7 @@ CustomPage {
         onItemClicked: {
             pageStack.push(Qt.resolvedUrl("ContextTimeline.qml"), {"messageId": object.id});
         }
-        onShowFullWindowChanged: {
-            appWindow.showToolBar = !showFullWindow;
-            appWindow.showHeaderBar = !showFullWindow;
-        }
+        onShowFullWindowChanged: page.showFullWindow(listView.showFullWindow)
 
         Component.onCompleted: {
             userAvatarClicked.connect(page.userAvatarClicked)

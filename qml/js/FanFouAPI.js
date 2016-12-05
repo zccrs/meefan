@@ -45,3 +45,8 @@ var register = {
     check: "http://fanfou.com/register.check",
     register: "http://fanfou.com/register"
 }
+
+// photos
+var photos = {
+    upload: HOST + "/photos/upload." + FORMAT + "?format=html"
+}

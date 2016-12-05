@@ -28,6 +28,7 @@ public:
 
     Q_INVOKABLE HttpRequest *httpRequest() const;
     Q_INVOKABLE QByteArray readFile(const QString &filePath) const;
+    Q_INVOKABLE QString fileName(const QString &filePath) const;
     Q_INVOKABLE QString fromUtf8(const QByteArray &data) const;
     Q_INVOKABLE QByteArray toUtf8(const QString &string) const;
     Q_INVOKABLE QString datetimeFormatFromISO(const QString &dt) const;
@@ -40,6 +41,11 @@ public:
     Q_INVOKABLE void vibrationDevice(qreal intensity = 0.1, int duration = 100);
 
     Q_INVOKABLE QString stringSimplified(const QString &string) const;
+
+    Q_INVOKABLE QByteArray byteArrayJoin(const QByteArray &a1, const QByteArray &a2,
+                                         const QByteArray &a3 = QByteArray(), const QByteArray &a4 = QByteArray(),
+                                         const QByteArray &a5 = QByteArray(), const QByteArray &a6 = QByteArray()) const;
+    Q_INVOKABLE int byteArraySize(const QByteArray &data) const;
 
 public slots:
     QByteArray generateXAuthorizationHeader(const QString &username, const QString &password);

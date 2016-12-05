@@ -2,6 +2,8 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 
 CommonListViewPage {
+    id: page
+
     title: qsTr("Home")
     tools: commonTools
 
@@ -15,9 +17,21 @@ CommonListViewPage {
         }
     }
 
+    Loader {
+        id: editNewMessageLoader
+
+        anchors.fill: parent
+    }
+
     onMenuTriggered: {
         if (text === qsTr("Add")) {
-            pageStack.push(Qt.resolvedUrl("../EditNewMessagePage.qml"));
+            if (!editNewMessageLoader.item) {
+                editNewMessageLoader.source = "../EditNewMessage.qml";
+                editNewMessageLoader.item.closed.connect(function() {showFullWindow(false);});
+            }
+
+            showFullWindow(true);
+            editNewMessageLoader.item.show();
         }
     }
 

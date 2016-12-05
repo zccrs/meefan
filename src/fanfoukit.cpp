@@ -14,6 +14,7 @@
 #include <QtFeedback/QFeedbackHapticsEffect>
 #include <QtFeedback/QFeedbackActuator>
 #include <QFontMetrics>
+#include <QFileInfo>
 #include <QDebug>
 
 #define ACCESS_TOKEN_URL "http://fanfou.com/oauth/access_token"
@@ -57,10 +58,18 @@ QByteArray FanfouKit::readFile(const QString &filePath) const
 {
     QFile file(filePath);
 
-    if (file.open(QIODevice::ReadOnly))
+    if (file.open(QIODevice::ReadOnly)) {
         return file.readAll();
+    }
 
     return QByteArray();
+}
+
+QString FanfouKit::fileName(const QString &filePath) const
+{
+    QFileInfo info(filePath);
+
+    return info.fileName();
 }
 
 QString FanfouKit::fromUtf8(const QByteArray &data) const
@@ -115,6 +124,18 @@ void FanfouKit::vibrationDevice(qreal intensity, int duration)
 QString FanfouKit::stringSimplified(const QString &string) const
 {
     return string.simplified();
+}
+
+QByteArray FanfouKit::byteArrayJoin(const QByteArray &a1, const QByteArray &a2,
+                                    const QByteArray &a3, const QByteArray &a4,
+                                    const QByteArray &a5, const QByteArray &a6) const
+{
+    return a1 + a2 + a3 + a4 + a5 + a6;
+}
+
+int FanfouKit::byteArraySize(const QByteArray &data) const
+{
+    return data.size();
 }
 
 QByteArray FanfouKit::generateXAuthorizationHeader(const QString &username, const QString &password)

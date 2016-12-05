@@ -119,12 +119,7 @@ MultipartBodyHandler.prototype.getAll = function(uuid) {
             for (var i in this.list) {
                 var o = this.list[i];
 
-                data += "--" + uuid
-                        + "\nContent-Disposition: form-data; name=\"" + o.parameterName + "\""
-                        + "\nContent-Transfer-Encoding: binary"
-                        + "\nContent-Type: " + o.contentType + "; charset=" + o.contentCharset
-                        + "\nContent-Length: " + String(o.data.toString().length)
-                        + "\n\n" + o.data + "\n";
+                data += this.objectToString(o, uuid);
             }
 
             data += "--" + uuid + "--";
@@ -132,16 +127,31 @@ MultipartBodyHandler.prototype.getAll = function(uuid) {
             return data;
         }
 
-MultipartBodyHandler.prototype.add = function(parameterName, data, contentType, contentCharset) {
+MultipartBodyHandler.prototype.add = function(parameterName, data, contentType, contentCharset, contentLength, disposition) {
             var o = {
                 "parameterName": parameterName,
                 "data": data,
                 "contentType": (contentType ? contentType : "text/plain"),
-                "contentCharset": (contentCharset ? contentCharset : "utf-8")
+                "contentCharset": (contentCharset ? contentCharset : "utf-8"),
+                "disposition": (disposition ? disposition : "form-data"),
+                "contentLength": (contentLength ? contentLength : String(data.toString().length))
             }
 
             this.list.push(o);
+
+            return o;
         }
+
+MultipartBodyHandler.prototype.objectToString = function(o, uuid) {
+    var data = "--" + uuid
+             + "\nContent-Disposition: "+ o.disposition +"; name=\"" + o.parameterName + "\""
+             + "\nContent-Transfer-Encoding: binary"
+             + "\nContent-Type: " + o.contentType + "; charset=" + o.contentCharset
+             + "\nContent-Length: " + o.contentLength
+             + "\n\n" + o.data + "\n";
+
+    return data;
+}
 
 //in_reply_to_status_id
 //    作用: 回复的消息id
@@ -183,12 +193,36 @@ function commitMessage(text, in_reply_to_status_id, in_reply_to_user_id, repost_
     return hr.send(OAuth.POST, statuses.update, bh.getAll(uuid), "multipart/form-data; boundary=" + uuid);
 }
 
+function uploadPhoto(photoFileUrl, text, source) {
+    var hr = new HttpRequest();
+    var uuid = ffkit.createUuid();
+    var bh = new MultipartBodyHandler();
+    var textObject;
+
+    if (text)
+        textObject = bh.add("status", ffkit.toUtf8(text));
+
+    if (photoFileUrl.toString().indexOf("file://") === 0)
+        photoFileUrl = photoFileUrl.toString().slice(7);
+
+    var fileData = ffkit.readFile(photoFileUrl);
+    var disposition = "form-data;filename=\""+ ffkit.fileName(photoFileUrl) +"\"";
+    var photoData =  bh.objectToString(bh.add("photo", "", "", "", ffkit.byteArraySize(fileData), disposition), uuid);
+    var data = photoData.slice(0, photoData.length - 1);
+
+    if (textObject)
+        data = ffkit.byteArrayJoin(bh.objectToString(textObject, uuid), data, fileData, "\n--" + uuid + "--");
+    else
+        data = ffkit.byteArrayJoin(data, fileData, "\n--" + uuid + "--");
+
+    return hr.send(OAuth.POST, photos.upload, data, "multipart/form-data; boundary=" + uuid);
+}
+
 function getPrivateMessageList() {
     var hr = new HttpRequest();
 
     return hr.send(OAuth.GET, direct_messages.conversation_list);
 }
-
 
 //in_reply_to_id
 //    作用: 回复的私信id
