@@ -10,12 +10,20 @@ ListView {
     signal loadButtonClicked
     signal userAvatarClicked(variant object)
     signal itemClicked(variant object)
+    signal itemPressAndHold(variant object)
 
     spacing: 10
     delegate: Item {
         width: parent.width - UI.MARGIN_DEFAULT * 2
         height: labelColumn.implicitHeight
         anchors.horizontalCenter: parent.horizontalCenter
+
+        MouseArea {
+            anchors.fill: parent
+            enabled: messageMouseAreaEnabled
+            onClicked: itemClicked(object)
+            onPressAndHold: itemPressAndHold(object)
+        }
 
         Image {
             id: avatar
@@ -64,7 +72,7 @@ ListView {
             Text {
                 id: textLocation
 
-                text: object.source + " " + object.user.location
+                text: object.source + " " + object.location
                 color:  UI.COLOR_SECONDARY_FOREGROUND
                 font.pixelSize: UI.FONT_LSMALL
 
@@ -78,26 +86,18 @@ ListView {
                 height: UI.SPACING_DEFAULT
             }
 
-            MouseArea {
-                enabled: messageMouseAreaEnabled
+            Text {
+                id: message
+
+                text: object.text
                 width: parent.width
-                height: message.implicitHeight
+                font.pixelSize: UI.FONT_SLARGE
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                textFormat: Text.RichText
 
-                Text {
-                    id: message
-
-                    text: object.text
-                    width: parent.width
-                    font.pixelSize: UI.FONT_SLARGE
-                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                    textFormat: Text.RichText
-
-                    onLinkActivated: {
-                        Qt.openUrlExternally(link)
-                    }
+                onLinkActivated: {
+                    Qt.openUrlExternally(link)
                 }
-
-                onClicked: itemClicked(object)
             }
 
             Image {

@@ -3,6 +3,7 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 import "../component"
 import "../../js/FanFouService.js" as Service
+import "../"
 
 CustomPage {
     id: page
@@ -69,6 +70,35 @@ CustomPage {
         appWindow.showHeaderBar = !enable;
     }
 
+    Loader {
+        id: editNewMessageLoader
+        anchors.fill: parent
+        z: 1;
+    }
+
+    function openNewMessageEdit(text, replyMessageId, replyUserId, repostMessageId, messageSource) {
+        if (!editNewMessageLoader.item) {
+            editNewMessageLoader.source = "../EditNewMessage.qml"
+            editNewMessageLoader.item.anchors.fill = editNewMessageLoader.item.parent;
+            editNewMessageLoader.item.closed.connect(function() {
+                                         showFullWindow(false);
+                                     });
+            editNewMessageLoader.item.sendMessageFinished.connect(function(object) {
+                                                                      listView.model.insert(0, {"object": object});
+                                                                  });
+        }
+
+        editNewMessageLoader.item.text = text ? text : "";
+        editNewMessageLoader.item.replyMessageId = replyMessageId ? replyMessageId : "";
+        editNewMessageLoader.item.replyUserId = replyUserId ? replyUserId : "";
+        editNewMessageLoader.item.repostMessageId = repostMessageId ? repostMessageId : "";
+        editNewMessageLoader.item.messageSource = messageSource ? messageSource : "";
+        showFullWindow(true);
+        editNewMessageLoader.item.show();
+
+        return editNewMessageLoader.item;
+    }
+
     Component.onCompleted: {
         loadList();
 
@@ -132,10 +162,59 @@ CustomPage {
             pageStack.push(Qt.resolvedUrl("ContextTimeline.qml"), {"messageId": object.id});
         }
         onShowFullWindowChanged: page.showFullWindow(listView.showFullWindow)
+        onItemPressAndHold: {
+            itemMenu.object = object;
+            itemMenu.open();
+        }
 
         Component.onCompleted: {
             userAvatarClicked.connect(page.userAvatarClicked)
             itemClicked.connect(page.itemClicked)
+        }
+    }
+
+    Menu {
+        id: itemMenu
+
+        property variant object: null
+
+        content: MenuLayout {
+            MenuItem {
+                text: qsTr("Reply")
+
+                onClicked: {
+                    openNewMessageEdit("@" + itemMenu.object.user.screen_name + " ", itemMenu.object.id);
+                }
+            }
+
+            MenuItem {
+                text: qsTr("Forward")
+            }
+
+            MenuItem {
+                text: qsTr("Collect")
+            }
+
+            MenuItem {
+                id: menu_remove
+
+                text: qsTr("Delete")
+                enabled: itemMenu.object ? itemMenu.object.user.id === settings.currentUser.userId : false
+
+                onClicked: {
+                    var obj = Service.destroyMessage(itemMenu.object.id);
+
+                    if (obj.error || !obj.id)
+                        return;
+
+                    for (var i = 0; i < listView.model.count; ++i) {
+                        if (listView.model.get(i).object.id === obj.id) {
+                            listView.model.remove(i);
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 

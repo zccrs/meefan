@@ -17,29 +17,9 @@ CommonListViewPage {
         }
     }
 
-    Loader {
-        id: editNewMessageLoader
-
-        anchors.fill: parent
-    }
-
     onMenuTriggered: {
         if (text === qsTr("Add")) {
-            if (!editNewMessageLoader.item) {
-                editNewMessageLoader.source = "../EditNewMessage.qml";
-                editNewMessageLoader.item.closed.connect(function() {showFullWindow(false);});
-            }
-
-            showFullWindow(true);
-            editNewMessageLoader.item.show();
+            openNewMessageEdit();
         }
     }
-
-//    onItemClicked: {
-//        pageStack.push(Qt.resolvedUrl("../EditNewMessagePage.qml"),
-//                       {
-//                           "text": "@" + object.user.screen_name + " ",
-//                           "replyMessageId": "\"" + object.id + "\""
-//                       })
-//    }
 }

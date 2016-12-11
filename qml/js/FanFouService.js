@@ -342,3 +342,13 @@ function registerFanfou(email, nickname, password) {
 
     return obj;
 }
+
+function destroyMessage(messageId) {
+    var hr = new HttpRequest();
+    var uuid = ffkit.createUuid();
+    var bh = new MultipartBodyHandler();
+
+    bh.add("id", messageId);
+
+    return hr.send(OAuth.POST, statuses.destroy, bh.getAll(uuid), "multipart/form-data; boundary=" + uuid);
+}

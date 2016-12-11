@@ -13,6 +13,7 @@ Rectangle {
     property alias text: textArea.text
 
     signal closed
+    signal sendMessageFinished(variant object)
 
     color: "#aa000000"
 
@@ -80,7 +81,7 @@ Rectangle {
             id: textArea
 
             width: parent.width - 2 * UI.MARGIN_DEFAULT
-            height: 300
+            height: 200
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
@@ -167,7 +168,8 @@ Rectangle {
                     }
 
                     hide();
-                    showInfoBanner(qsTr("Send the new message succeed."))
+                    showInfoBanner(qsTr("Send the new message succeed."));
+                    sendMessageFinished(obj);
                 }
             }
         }

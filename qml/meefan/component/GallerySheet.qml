@@ -25,6 +25,7 @@ Sheet {
         color: UI.COLOR_FOREGROUND;
         anchors { left: parent.left; leftMargin: UI.PADDING_DOUBLE; verticalCenter: parent.verticalCenter; }
         text: qsTr("Select Image");
+        font.pixelSize: UI.FONT_XLARGE
     }
 
     DocumentGalleryModel {
