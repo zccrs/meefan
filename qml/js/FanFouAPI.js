@@ -8,6 +8,20 @@ var account = {
     verify_credentials: HOST + "/account/verify_credentials." + FORMAT + "?mode=lite"
 }
 
+// favorites
+var favorites = {
+    getFavoriteUrl: function(messageId, favorite) {
+                        if (favorite === undefined)
+                            favorite = true;
+
+                        return (favorite ? favorites.create : favorites.destroy)
+                                + messageId + ".json?format=html"
+                    },
+    favorites: HOST + "/favorites/id." + FORMAT + "?count=10&format=html",
+    create: HOST + "/favorites/create/",
+    destroy: HOST + "/favorites/destroy/"
+}
+
 // status
 var statuses = {
     packageUrl: function(path) {return statuses[path]},
@@ -17,7 +31,8 @@ var statuses = {
     context_timeline: HOST + "/statuses/context_timeline." + FORMAT + "?format=html",
     replies: HOST + "/statuses/replies." + FORMAT + "?mode=lite&count=10&format=html",
     update: HOST + "/statuses/update." + FORMAT + "?mode=lite&format=html",
-    destroy: HOST + "/statuses/destroy." + FORMAT
+    destroy: HOST + "/statuses/destroy." + FORMAT,
+    favorites: favorites.favorites
 }
 
 // users

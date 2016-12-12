@@ -192,7 +192,36 @@ CustomPage {
             }
 
             MenuItem {
-                text: qsTr("Collect")
+                text: {
+                    if (itemMenu.object)
+                        if (itemMenu.object.favorited)
+                        return qsTr("Cancel Favorite")
+
+                    return qsTr("Favorite");
+                }
+
+                onClicked: {
+                    var obj;
+
+                    if (itemMenu.object.favorited) {
+                        obj = Service.cancelFavoriteMessage(itemMenu.object.id);
+                    } else {
+                        obj = Service.favoriteMessage(itemMenu.object.id);
+                    }
+
+
+                    if (obj.error || !obj.id)
+                        return;
+
+                    for (var i = 0; i < listView.model.count; ++i) {
+                        if (listView.model.get(i).object.id === obj.id) {
+                            listView.model.set(i, {"object": obj});
+                            break;
+                        }
+                    }
+
+                    showInfoBanner(qsTr("Successful operation"));
+                }
             }
 
             MenuItem {

@@ -352,3 +352,15 @@ function destroyMessage(messageId) {
 
     return hr.send(OAuth.POST, statuses.destroy, bh.getAll(uuid), "multipart/form-data; boundary=" + uuid);
 }
+
+function favoriteMessage(messageId) {
+    var hr = new HttpRequest();
+
+    return hr.send(OAuth.POST, favorites.getFavoriteUrl(messageId, true));
+}
+
+function cancelFavoriteMessage(messageId) {
+    var hr = new HttpRequest();
+
+    return hr.send(OAuth.POST, favorites.getFavoriteUrl(messageId, false));
+}

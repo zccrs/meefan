@@ -168,6 +168,15 @@ CustomPage {
                         pageStack.push(Qt.resolvedUrl("PrivateMessageListPage.qml"));
                     }
                 }
+
+                UserInfoGridCell {
+                    iconId: "sc"
+                    text: qsTr("Favorites")
+
+                    onClicked: {
+                        pageStack.push(Qt.resolvedUrl("FavoriteListPage.qml"), {"userId": userId});
+                    }
+                }
             }
         }
     }
