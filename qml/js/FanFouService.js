@@ -364,3 +364,27 @@ function cancelFavoriteMessage(messageId) {
 
     return hr.send(OAuth.POST, favorites.getFavoriteUrl(messageId, false));
 }
+
+function likeFriend(userId) {
+    var hr = new HttpRequest();
+
+    var uuid = ffkit.createUuid();
+    var bh = new MultipartBodyHandler();
+
+    bh.add("id", userId);
+    bh.add("format", "html");
+
+    return hr.send(OAuth.POST, friendships.create, bh.getAll(uuid), "multipart/form-data; boundary=" + uuid);
+}
+
+function cancelLikeFriend(userId) {
+    var hr = new HttpRequest();
+
+    var uuid = ffkit.createUuid();
+    var bh = new MultipartBodyHandler();
+
+    bh.add("id", userId);
+    bh.add("format", "html");
+
+    return hr.send(OAuth.POST, friendships.destroy, bh.getAll(uuid), "multipart/form-data; boundary=" + uuid);
+}

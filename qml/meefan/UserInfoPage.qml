@@ -10,7 +10,6 @@ CustomPage {
     property string userId
     property variant userObject: null
 
-    title: qsTr("User Info")
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
@@ -19,6 +18,59 @@ CustomPage {
         }
         ToolIcon {
             iconId: "toolbar-view-menu"
+        }
+    }
+    titleComponent: Component {
+        Item {
+            anchors.fill: parent
+
+            Text {
+                anchors.verticalCenter: parent.verticalCenter
+                x: UI.MARGIN_DEFAULT
+                font.pixelSize: UI.FONT_XLARGE
+                color: "white"
+                text: qsTr("User Info")
+            }
+
+            ToolIcon {
+                iconId: {
+                    if (userId === settings.currentUser.userId) {
+                        return "toolbar-forward-selected";
+                    } else if (userObject.following) {
+                        return  "toolbar-favorite-mark-white-selected";
+                    } else {
+                        return "toolbar-favorite-unmark-white-selected";
+                    }
+                }
+
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    right: parent.right
+                    rightMargin: UI.MARGIN_DEFAULT
+                }
+
+                onClicked: {
+                    if (userId === settings.currentUser.userId) {
+                        settings.currentUser.token = "";
+                        settings.currentUser.secret = "";
+                        pageStack.replace(Qt.resolvedUrl("LoginPage.qml"));
+                        return;
+                    }
+
+                    var obj = null;
+
+                    if (userObject.following) {
+                        obj = Service.cancelLikeFriend(userId)
+                    } else {
+                        obj = Service.likeFriend(userId)
+                    }
+
+                    if (obj.error || !obj.id)
+                        return;
+
+                    userObject = obj;
+                }
+            }
         }
     }
 
@@ -172,6 +224,7 @@ CustomPage {
                 UserInfoGridCell {
                     iconId: "sc"
                     text: qsTr("Favorites")
+                    visible: !userObject.protected || userId === settings.currentUser.userId
 
                     onClicked: {
                         pageStack.push(Qt.resolvedUrl("FavoriteListPage.qml"), {"userId": userId});

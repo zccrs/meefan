@@ -66,3 +66,9 @@ var register = {
 var photos = {
     upload: HOST + "/photos/upload." + FORMAT + "?format=html"
 }
+
+// friendships
+var friendships = {
+    create: HOST + "/friendships/create." + FORMAT + "?format=html",
+    destroy: HOST + "/friendships/destroy." + FORMAT + "?format=html"
+}

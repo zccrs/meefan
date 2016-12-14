@@ -33,7 +33,7 @@ Rectangle {
 
         visible: !contentComponent
         anchors.verticalCenter: parent.verticalCenter
-        x:10
+        x: UI.MARGIN_DEFAULT
         font.pixelSize: UI.FONT_XLARGE
         color: "white"
     }
@@ -41,6 +41,7 @@ Rectangle {
     Loader {
         id: loader
 
+        width: parent.width
         anchors {
             verticalCenter: parent.verticalCenter
         }
