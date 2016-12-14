@@ -15,6 +15,7 @@
 #include <QtFeedback/QFeedbackActuator>
 #include <QFontMetrics>
 #include <QFileInfo>
+#include <QTextDocument>
 #include <QDebug>
 
 #define ACCESS_TOKEN_URL "http://fanfou.com/oauth/access_token"
@@ -136,6 +137,15 @@ QByteArray FanfouKit::byteArrayJoin(const QByteArray &a1, const QByteArray &a2,
 int FanfouKit::byteArraySize(const QByteArray &data) const
 {
     return data.size();
+}
+
+QString FanfouKit::toPlainText(const QString &text) const
+{
+    QTextDocument document;
+
+    document.setHtml(text);
+
+    return document.toPlainText();
 }
 
 QByteArray FanfouKit::generateXAuthorizationHeader(const QString &username, const QString &password)

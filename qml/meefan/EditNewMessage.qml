@@ -146,7 +146,7 @@ Rectangle {
             }
 
             Button {
-                enabled: messageImage.source.toString() || textArea.text
+                enabled: (messageImage.source.toString() || textArea.text) && !headerBar.indicatorRunning
                 anchors.right: parent.right;
                 platformStyle: ButtonStyle {
                     buttonWidth: buttonHeight*2;
@@ -157,7 +157,7 @@ Rectangle {
                 onClicked: {
                     var obj = messageImage.source.toString()
                               ? Service.uploadPhoto(messageImage.source, textArea.text)
-                              : Service.commitMessage(textArea.text + "\n----Send from meefan",
+                              : Service.commitMessage(textArea.text,
                                                     replyMessageId,
                                                     replyUserId,
                                                     repostMessageId,

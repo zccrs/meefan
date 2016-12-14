@@ -46,6 +46,7 @@ public:
                                          const QByteArray &a3 = QByteArray(), const QByteArray &a4 = QByteArray(),
                                          const QByteArray &a5 = QByteArray(), const QByteArray &a6 = QByteArray()) const;
     Q_INVOKABLE int byteArraySize(const QByteArray &data) const;
+    Q_INVOKABLE QString toPlainText(const QString &text) const;
 
 public slots:
     QByteArray generateXAuthorizationHeader(const QString &username, const QString &password);

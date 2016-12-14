@@ -12,6 +12,7 @@ PageStackWindow {
     id: appWindow
 
     property alias showHeaderBar: header.visible
+    property alias headerBar: header
 
 //    initialPage: UserInfoPage {
 
@@ -196,13 +197,10 @@ PageStackWindow {
                 }
             }
             CustomToolButton {
-                iconId: "toolbar-settings";
+                iconId: "toolbar-frequent-used";
 
                 onClicked: {
-                    settings.currentUser.token = "";
-                    settings.currentUser.secret = "";
 
-                    showInfoBanner("clean token and secret finished");
                 }
             }
         }

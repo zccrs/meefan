@@ -84,6 +84,8 @@ CustomPage {
                                          showFullWindow(false);
                                      });
             editNewMessageLoader.item.sendMessageFinished.connect(function(object) {
+                                                                      object.text = object.text.replace(/<a href.+?><img.*\/>.+?<\/a>/, "");
+
                                                                       listView.model.insert(0, {"object": object});
                                                                   });
         }
@@ -188,7 +190,13 @@ CustomPage {
             }
 
             MenuItem {
-                text: qsTr("Forward")
+                text: qsTr("Repost")
+
+                onClicked: {
+                    var text = " " + qsTr("Repost") + "@" + itemMenu.object.user.screen_name + " " + ffkit.toPlainText(itemMenu.object.text);
+
+                    openNewMessageEdit(text, undefined, undefined, itemMenu.object.id);
+                }
             }
 
             MenuItem {

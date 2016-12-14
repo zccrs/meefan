@@ -185,6 +185,9 @@ function commitMessage(text, in_reply_to_status_id, in_reply_to_user_id, repost_
     if (in_reply_to_user_id)
         bh.add("in_reply_to_user_id", in_reply_to_user_id, "application/json");
 
+    if (repost_status_id)
+        bh.add("repost_status_id", repost_status_id, "application/json");
+
     if (source)
         bh.add("source", source);
 
