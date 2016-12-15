@@ -189,7 +189,7 @@ CustomPage {
                          && inputPassword2.text && !inputPassword2.errorHighlight
                          && inputPassword1.text === inputPassword2.text
                          && inputPassword1.text.length > 3
-                         && !pageStack.busy
+                         && !pageBush
 
                 onClicked: {
                     var obj = Service.registerFanfou(inputEmail.text, inputNickname.text, inputPassword1.text);

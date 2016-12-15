@@ -13,6 +13,7 @@ PageStackWindow {
 
     property alias showHeaderBar: header.visible
     property alias headerBar: header
+    property bool pageBush: pageStack.currentPage && pageStack.currentPage.status !== PageStatus.Active
 
 //    initialPage: UserInfoPage {
 
@@ -68,6 +69,11 @@ PageStackWindow {
             return list;
     }
 
+    function setShowFullWindow(enable) {
+        appWindow.showToolBar = !enable;
+        appWindow.showHeaderBar = !enable;
+    }
+
     InfoBanner {
         id: infoBanner
 
@@ -77,7 +83,7 @@ PageStackWindow {
     BusyIndicator {
         anchors.centerIn: parent
         platformStyle: BusyIndicatorStyle { size: "large" }
-        running: pageStack.busy
+        running: pageBush
         visible: running
     }
 
@@ -141,7 +147,7 @@ PageStackWindow {
     ToolBarLayout {
         id: commonTools
 
-        enabled: !pageStack.busy
+        enabled: !pageBush
         visible: pageStack.toolBar === commonTools
 
 //        ToolIcon {

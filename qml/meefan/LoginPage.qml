@@ -167,7 +167,7 @@ CustomPage {
             Button {
                 text: qsTr("Login")
                 width: (inputEmail.width - parent.spacing) / 2
-                enabled: inputEmail.text && inputPassword.text && !pageStack.busy
+                enabled: inputEmail.text && inputPassword.text && !pageBush
 
                 onClicked: {
                     settings.currentUser.userId = inputEmail.text;

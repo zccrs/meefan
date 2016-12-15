@@ -71,11 +71,6 @@ CustomPage {
         searchMode = false;
     }
 
-    function showFullWindow(enable) {
-        appWindow.showToolBar = !enable;
-        appWindow.showHeaderBar = !enable;
-    }
-
     Loader {
         id: editNewMessageLoader
         anchors.fill: parent
@@ -86,9 +81,6 @@ CustomPage {
         if (!editNewMessageLoader.item) {
             editNewMessageLoader.source = "../EditNewMessage.qml"
             editNewMessageLoader.item.anchors.fill = editNewMessageLoader.item.parent;
-            editNewMessageLoader.item.closed.connect(function() {
-                                         showFullWindow(false);
-                                     });
             editNewMessageLoader.item.sendMessageFinished.connect(function(object) {
                                                                       object.text = object.text.replace(/<a href.+?><img.*\/>.+?<\/a>/, "");
 
@@ -101,7 +93,6 @@ CustomPage {
         editNewMessageLoader.item.replyUserId = replyUserId ? replyUserId : "";
         editNewMessageLoader.item.repostMessageId = repostMessageId ? repostMessageId : "";
         editNewMessageLoader.item.messageSource = messageSource ? messageSource : "";
-        showFullWindow(true);
         editNewMessageLoader.item.show();
 
         return editNewMessageLoader.item;
@@ -169,7 +160,7 @@ CustomPage {
         onItemClicked: {
             pageStack.push(Qt.resolvedUrl("ContextTimeline.qml"), {"messageId": object.id});
         }
-        onShowFullWindowChanged: page.showFullWindow(listView.showFullWindow)
+        onShowFullWindowChanged: setShowFullWindow(listView.showFullWindow)
         onItemPressAndHold: {
             itemMenu.object = object;
             itemMenu.open();

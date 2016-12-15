@@ -11,16 +11,21 @@ CustomPage {
     property string type
     property string httpExtraArgs
     property alias menu: pullDownMenu
+    property bool popWhenItemClicked: false
 
     signal userAvatarClicked(variant object)
     signal itemClicked(variant object)
     signal menuTriggered(int index, string text)
+    signal pagePoped()
 
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
 
-            onClicked: pageStack.pop();
+            onClicked: {
+                pageStack.pop();
+                pagePoped();
+            }
         }
     }
 
@@ -69,7 +74,11 @@ CustomPage {
         }
 
         onItemClicked: {
-            pageStack.replace(Qt.resolvedUrl("../UserInfoPage.qml"), {"userObject": object});
+            if (popWhenItemClicked) {
+                pageStack.pop(undefined, true);
+            } else {
+                pageStack.replace(Qt.resolvedUrl("../UserInfoPage.qml"), {"userObject": object});
+            }
         }
 
         Component.onCompleted: {

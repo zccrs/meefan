@@ -18,11 +18,13 @@ Rectangle {
     color: "#aa000000"
 
     function show() {
+        setShowFullWindow(true);
         visible = true;
         textArea.forceActiveFocus();
     }
 
     function hide() {
+        setShowFullWindow(false);
         focus = false;
         visible = false;
         closed();
@@ -104,12 +106,32 @@ Rectangle {
                 Button {
                     platformStyle: toolBtnStyle;
                     iconSource: "qrc:///images/btn_insert_at.png";
+
+                    onClicked: {
+                        setShowFullWindow(false);
+
+                        var obj = {
+                            "userId": settings.currentUser.userId,
+                            "popWhenItemClicked": true
+                        }
+                        var page = pageStack.push(Qt.resolvedUrl("users/FriendsPage.qml"), obj);
+
+                        page.itemClicked.connect(function (object) {
+                                                     setShowFullWindow(true);
+                                                     textArea.text += "@" + object.screen_name + " ";
+                                                     textArea.forceActiveFocus();
+                                                     textArea.cursorPosition = textArea.text.length
+                                                 });
+                        page.pagePoped.connect(function () {
+                                                   setShowFullWindow(true);
+                                               });
+                    }
                 }
 
-                Button {
-                    platformStyle: toolBtnStyle;
-                    iconSource: "qrc:///images/btn_insert_face.png";
-                }
+//                Button {
+//                    platformStyle: toolBtnStyle;
+//                    iconSource: "qrc:///images/btn_insert_face.png";
+//                }
 
                 Button {
                     id: picBtn;
