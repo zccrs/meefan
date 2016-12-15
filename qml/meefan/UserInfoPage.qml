@@ -189,8 +189,11 @@ CustomPage {
                 }
 
                 UserInfoGridCell {
+                    id: followsGridCell
+
                     iconId: "myba"
                     text: qsTr("Follows")
+                    visible: !userObject.protected || userId === settings.currentUser.userId
 
                     onClicked: {
                         pageStack.push(Qt.resolvedUrl("users/FriendsPage.qml"), {"userId": userId});
@@ -200,6 +203,7 @@ CustomPage {
                 UserInfoGridCell {
                     iconId: "fs"
                     text: qsTr("Fans")
+                    visible: followsGridCell.visible
 
                     onClicked: {
                         pageStack.push(Qt.resolvedUrl("users/FansPage.qml"), {"userId": userId});
@@ -208,7 +212,17 @@ CustomPage {
 
                 UserInfoGridCell {
                     iconId: "gz"
-                    text: qsTr("Pictures")
+                    text: qsTr("Photos")
+
+                    onClicked: {
+                        var obj = {
+                            "userId": userId,
+                            "type": "photos_user_timeline",
+                            "title": qsTr("User Photos")
+                        }
+
+                        pageStack.push(Qt.resolvedUrl("statuses/UserTimelinePage.qml"), obj);
+                    }
                 }
 
                 UserInfoGridCell {
@@ -224,7 +238,7 @@ CustomPage {
                 UserInfoGridCell {
                     iconId: "sc"
                     text: qsTr("Favorites")
-                    visible: !userObject.protected || userId === settings.currentUser.userId
+                    visible: followsGridCell.visible
 
                     onClicked: {
                         pageStack.push(Qt.resolvedUrl("FavoriteListPage.qml"), {"userId": userId});

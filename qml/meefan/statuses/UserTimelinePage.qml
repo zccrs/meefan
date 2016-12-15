@@ -5,7 +5,7 @@ import com.nokia.meego 1.0
 CommonListViewPage {
     property string userId
 
-    title: qsTr("My Message")
+    title: qsTr("User Message")
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"

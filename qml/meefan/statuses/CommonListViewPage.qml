@@ -26,6 +26,12 @@ CustomPage {
             return;
         }
 
+        //###(zccrs): Delete duplicate data
+        if (listModel.count > 0 && obj.length > 0
+                && listModel.get(listModel.count - 1).object.id === obj[0].id) {
+            obj.shift();
+        }
+
         for (var i in obj) {
             listModel.append({"object": obj[i]});
         }

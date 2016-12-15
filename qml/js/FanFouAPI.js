@@ -22,6 +22,12 @@ var favorites = {
     destroy: HOST + "/favorites/destroy/"
 }
 
+// photos
+var photos = {
+    upload: HOST + "/photos/upload." + FORMAT + "?format=html",
+    user_timeline: HOST + "/photos/user_timeline." + FORMAT + "?count=10&format=html"
+}
+
 // status
 var statuses = {
     packageUrl: function(path) {return statuses[path]},
@@ -32,7 +38,8 @@ var statuses = {
     replies: HOST + "/statuses/replies." + FORMAT + "?mode=lite&count=10&format=html",
     update: HOST + "/statuses/update." + FORMAT + "?mode=lite&format=html",
     destroy: HOST + "/statuses/destroy." + FORMAT,
-    favorites: favorites.favorites
+    favorites: favorites.favorites,
+    photos_user_timeline: photos.user_timeline
 }
 
 // users
@@ -60,11 +67,6 @@ var search = {
 var register = {
     check: "http://fanfou.com/register.check",
     register: "http://fanfou.com/register"
-}
-
-// photos
-var photos = {
-    upload: HOST + "/photos/upload." + FORMAT + "?format=html"
 }
 
 // friendships
