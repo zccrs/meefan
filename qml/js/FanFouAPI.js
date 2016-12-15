@@ -1,5 +1,6 @@
 .pragma library
 
+var FANFOU_HOME = "http://fanfou.com/"
 var HOST = "http://api.fanfou.com"
 var FORMAT = "json"
 
