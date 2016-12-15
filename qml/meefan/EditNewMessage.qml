@@ -146,7 +146,7 @@ Rectangle {
             }
 
             Button {
-                enabled: (messageImage.source.toString() || textArea.text) && !headerBar.indicatorRunning
+                enabled: (messageImage.source.toString() || textArea.text) && !sendIndicator.running
                 anchors.right: parent.right;
                 platformStyle: ButtonStyle {
                     buttonWidth: buttonHeight*2;
@@ -171,6 +171,15 @@ Rectangle {
                     showInfoBanner(qsTr("Send the new message succeed."));
                     sendMessageFinished(obj);
                 }
+
+                BusyIndicator {
+                    id: sendIndicator
+
+                    anchors.centerIn: parent
+                    platformStyle: BusyIndicatorStyle { size: "small" }
+                    visible: running
+                    running: headerBar.indicatorRunning
+                }
             }
         }
 
@@ -183,7 +192,7 @@ Rectangle {
 
             ToolIcon {
                 iconId: "browser-stop"
-                visible: messageImage.status === Image.Ready
+                visible: messageImage.status === Image.Ready && !sendIndicator.running
                 anchors {
                     top: parent.top
                     topMargin: -height / 2
