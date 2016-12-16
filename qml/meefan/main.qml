@@ -170,6 +170,8 @@ PageStackWindow {
             }
 
             CustomToolButton {
+                id: toolbar_home_button
+
                 iconId: "toolbar-home";
 
                 checked: true

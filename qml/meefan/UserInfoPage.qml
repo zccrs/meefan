@@ -17,7 +17,21 @@ CustomPage {
             onClicked: pageStack.pop();
         }
         ToolIcon {
-            iconId: "toolbar-view-menu"
+            iconId: "toolbar-send-email"
+
+            onClicked: {
+                pageStack.clear();
+                toolbar_home_button.clicked();
+                pageStack.currentPage.openNewMessageEdit("@" + userObject.screen_name + " ",
+                                                         undefined, userObject.id);
+            }
+        }
+        ToolIcon {
+            iconId: "toolbar-new-message"
+
+            onClicked: {
+                pageStack.push(Qt.resolvedUrl("PrivateMessageChatPage.qml"), {"userObject": userObject});
+            }
         }
     }
     titleComponent: Component {
