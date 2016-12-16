@@ -39,6 +39,7 @@ var statuses = {
     replies: HOST + "/statuses/replies." + FORMAT + "?mode=lite&count=10&format=html",
     update: HOST + "/statuses/update." + FORMAT + "?mode=lite&format=html",
     destroy: HOST + "/statuses/destroy." + FORMAT,
+    mentions: HOST + "/statuses/mentions." + FORMAT + "?count=10&format=html",
     favorites: favorites.favorites,
     photos_user_timeline: photos.user_timeline
 }

@@ -190,6 +190,12 @@ PageStackWindow {
             }
             CustomToolButton {
                 iconId: "toolbar-new-message"
+
+                onClicked: {
+                    if (checked) {
+                        pageStack.replace(Qt.resolvedUrl("statuses/MentionsPage.qml"));
+                    }
+                }
             }
             CustomToolButton {
                 id: toolbar_contact_button
