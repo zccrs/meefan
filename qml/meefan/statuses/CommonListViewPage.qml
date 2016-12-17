@@ -3,6 +3,7 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 import "../component"
 import "../../js/FanFouService.js" as Service
+import "../../js/UIConstants.js" as UI
 import "../"
 
 CustomPage {
@@ -41,6 +42,8 @@ CustomPage {
 
         if (obj.length === 0) {
             showInfoBanner(qsTr("No more"));
+        } else {
+            ++privateData.currentPageNumber;
         }
     }
 
@@ -53,7 +56,7 @@ CustomPage {
         if (searchMode)
             Service.searchMessage(searchTextField.text, max_id, page.userId, httpHandle);
         else
-            Service.getStatusArray(type, max_id, httpExtraArgs, httpHandle);
+            Service.getStatusArray(type, privateData.currentPageNumber, max_id, httpExtraArgs, httpHandle);
     }
 
     function switchToSearchMode() {
@@ -111,6 +114,7 @@ CustomPage {
         id: privateData
 
         property string pageTitle
+        property int currentPageNumber: 1
     }
 
     PullDownMenu {
@@ -127,6 +131,7 @@ CustomPage {
             }
             case qsTr("Refresh"): {
                 listModel.clear();
+                privateData.currentPageNumber = 1;
                 loadList();
                 break;
             }
@@ -148,9 +153,21 @@ CustomPage {
         model: ListModel {
             id: listModel
         }
-        onLoadButtonClicked: {
-            loadList()
+
+        footer: Item {
+            width: parent.width
+            height: UI.HEIGHT_LIST_ITEM
+
+            Button {
+                id: load_button
+
+                text: qsTr("Load")
+                anchors.centerIn: parent
+                visible: page.loadButtonVisible
+                onClicked: page.loadList()
+            }
         }
+
         onUserAvatarClicked: {
             pushUserInfo(object.user.id);
         }
@@ -171,6 +188,10 @@ CustomPage {
         Component.onCompleted: {
             userAvatarClicked.connect(page.userAvatarClicked)
             itemClicked.connect(page.itemClicked)
+        }
+
+        ScrollDecorator {
+            flickableItem: parent
         }
     }
 

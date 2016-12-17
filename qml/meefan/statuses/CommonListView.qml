@@ -1,13 +1,12 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import com.nokia.meego 1.0
 import "../../js/UIConstants.js" as UI
 import "../../js/FanFouAPI.js" as API
 
 ListView {
     property bool loadButtonVisible: false
     property bool messageMouseAreaEnabled: true
-    signal loadButtonClicked
+
     signal userAvatarClicked(variant object)
     signal itemClicked(variant object)
     signal itemPressAndHold(variant object)
@@ -137,23 +136,5 @@ ListView {
                 width: parent.width
             }
         }
-    }
-
-    footer: Item {
-        width: parent.width
-        height: UI.HEIGHT_LIST_ITEM
-
-        Button {
-            id: load_button
-
-            text: qsTr("Load")
-            anchors.centerIn: parent
-            visible: parent.parent.parent.loadButtonVisible
-            onClicked: parent.parent.parent.loadButtonClicked()
-        }
-    }
-
-    ScrollDecorator {
-        flickableItem: parent
     }
 }

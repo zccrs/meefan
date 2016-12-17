@@ -31,7 +31,7 @@ var photos = {
 
 // status
 var statuses = {
-    packageUrl: function(path) {return statuses[path]},
+    packageUrl: function(path, page) {return statuses[path] + (page ? "&page=" + page : "")},
     home_timeline: HOST + "/statuses/home_timeline." + FORMAT + "?mode=lite&count=10&format=html",
     user_timeline:  HOST + "/statuses/user_timeline." + FORMAT + "?mode=lite&count=10&format=html",
     public_timeline: HOST + "/statuses/public_timeline." + FORMAT + "?mode=lite&count=60&format=html",
@@ -46,7 +46,7 @@ var statuses = {
 
 // users
 var users = {
-    packageUrl: function(path) {return users[path]},
+    packageUrl: function(path, page) {return users[path] + (page ? "&page=" + page : "")},
     show: HOST + "/users/show." + FORMAT + "?format=html",
     followers: HOST + "/users/followers." + FORMAT + "?format=html",
     friends: HOST + "/users/friends." + FORMAT + "?format=html"
@@ -54,7 +54,7 @@ var users = {
 
 // direct-messages
 var direct_messages = {
-    conversation_list: HOST + "/direct_messages/conversation_list." + FORMAT,
+    conversation_list: HOST + "/direct_messages/conversation_list." + FORMAT + "?count=10",
     conversation: HOST + "/direct_messages/conversation." + FORMAT,
     newMessage: HOST + "/direct_messages/new." + FORMAT
 }

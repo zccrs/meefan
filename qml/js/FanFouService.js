@@ -86,17 +86,17 @@ function loginVerify() {
     return hr.send(OAuth.GET, account.verify_credentials);
 }
 
-function getStatusArray(path, max_id, extra_args, callback) {
+function getStatusArray(path, page, max_id, extra_args, callback) {
     var hr = new HttpRequest(Boolean(callback), callback);
 
-    return hr.send(OAuth.GET, statuses.packageUrl(path) + (max_id ? "&max_id=" + escape(max_id) : "")
+    return hr.send(OAuth.GET, statuses.packageUrl(path, page) + (max_id ? "&max_id=" + escape(max_id) : "")
                    + (extra_args ? ("&" + extra_args) : ""));
 }
 
-function getUsersArray(path, user_id, extra_args, callback) {
+function getUsersArray(path, page, user_id, extra_args, callback) {
     var hr = new HttpRequest(Boolean(callback), callback);
 
-    return hr.send(OAuth.GET, users.packageUrl(path) + (user_id ? "&id=" + user_id : "")
+    return hr.send(OAuth.GET, users.packageUrl(path, page) + (user_id ? "&id=" + user_id : "")
                    + (extra_args ? ("&" + extra_args) : ""));
 }
 
@@ -221,10 +221,10 @@ function uploadPhoto(photoFileUrl, text, source) {
     return hr.send(OAuth.POST, photos.upload, data, "multipart/form-data; boundary=" + uuid);
 }
 
-function getPrivateMessageList() {
+function getPrivateMessageList(page) {
     var hr = new HttpRequest();
 
-    return hr.send(OAuth.GET, direct_messages.conversation_list);
+    return hr.send(OAuth.GET, direct_messages.conversation_list + (page ? "&page=" + page : ""));
 }
 
 //in_reply_to_id

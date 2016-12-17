@@ -7,6 +7,8 @@ import "../js/FanFouService.js" as Service
 import "../js/UIConstants.js" as UI
 
 CustomPage {
+    id: page
+
     title: qsTr("Private Message")
     tools: ToolBarLayout {
         ToolIcon {
@@ -17,7 +19,11 @@ CustomPage {
     }
 
     Component.onCompleted: {
-        var obj = Service.getPrivateMessageList();
+        loadList();
+    }
+
+    function loadList() {
+        var obj = Service.getPrivateMessageList(privateData.currentPageNumber);
 
         if (obj.error) {
             return;
@@ -25,6 +31,39 @@ CustomPage {
 
         for (var i in obj) {
             listView.model.append({"object": obj[i]});
+        }
+
+        if (obj.length === 0) {
+            showInfoBanner(qsTr("No more"));
+        } else {
+            ++privateData.currentPageNumber;
+        }
+    }
+
+    QtObject {
+        id: privateData
+
+        property int currentPageNumber: 1
+    }
+
+    PullDownMenu {
+        id: pullDownMenu
+
+        flickableItem: listView
+        width: parent.width
+
+        Component.onCompleted: {
+            addMenu(qsTr("Refresh"))
+        }
+
+        onTrigger: {
+            switch (index) {
+            case 0: {
+                listModel.clear();
+                privateData.currentPageNumber = 1;
+                loadList();
+            }
+            }
         }
     }
 
@@ -100,6 +139,19 @@ CustomPage {
                     width: parent.width
                     elide: Text.ElideRight
                 }
+            }
+        }
+
+        footer: Item {
+            width: parent.width
+            height: UI.HEIGHT_LIST_ITEM
+
+            Button {
+                id: load_button
+
+                text: qsTr("Load")
+                anchors.centerIn: parent
+                onClicked: page.loadList()
             }
         }
 
