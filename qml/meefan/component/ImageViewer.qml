@@ -9,7 +9,7 @@ Rectangle {
     property alias currentImage: imagePreview
     property alias flickable: imageFlickable
     signal closed
-    signal saveButtonClicked
+    signal saveButtonClicked(variant image)
 
     anchors.fill: parent
     color: "black"
@@ -212,7 +212,7 @@ Rectangle {
         MouseArea{
             anchors.fill: parent
             onClicked: {
-                saveButtonClicked()
+                saveButtonClicked(imagePreview)
             }
         }
     }

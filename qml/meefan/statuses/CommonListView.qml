@@ -7,7 +7,6 @@ import "../../js/FanFouAPI.js" as API
 ListView {
     property bool loadButtonVisible: false
     property bool messageMouseAreaEnabled: true
-    property bool showFullWindow: false
     signal loadButtonClicked
     signal userAvatarClicked(variant object)
     signal itemClicked(variant object)
@@ -122,15 +121,7 @@ ListView {
                     anchors.fill: parent
 
                     onClicked: {
-                        showFullWindow = true;
-
-                        if (!imageViewerLoader.item) {
-                            imageViewerLoader.source = "../component/ImageViewer.qml";
-                            imageViewerLoader.item.closed.connect(function() {showFullWindow = false;});
-                        }
-
-                        imageViewerLoader.item.imageUrl = object.photo.largeurl;
-                        imageViewerLoader.item.show();
+                        appWindow.showImageViewer(object.photo.largeurl);
                     }
                 }
             }
@@ -164,11 +155,5 @@ ListView {
 
     ScrollDecorator {
         flickableItem: parent
-    }
-
-    Loader {
-        id: imageViewerLoader
-
-        anchors.fill: parent
     }
 }

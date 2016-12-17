@@ -157,7 +157,6 @@ CustomPage {
         onItemClicked: {
             pageStack.push(Qt.resolvedUrl("ContextTimeline.qml"), {"messageId": object.id});
         }
-        onShowFullWindowChanged: setShowFullWindow(listView.showFullWindow)
         onItemPressAndHold: {
             itemMenu.object = object;
             itemMenu.open();
@@ -259,7 +258,7 @@ CustomPage {
         id: searchToolBar
 
         anchors.bottom: parent.bottom
-        visible: !appWindow.showToolBar && !listView.showFullWindow
+        visible: !appWindow.showFullWindow && !appWindow.showToolBar
 
         tools: ToolBarLayout {
             visible: tools === searchToolBar

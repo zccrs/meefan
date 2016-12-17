@@ -74,6 +74,49 @@ PageStackWindow {
         appWindow.showHeaderBar = !enable;
     }
 
+    function showImageViewer(imageUrl) {
+        setShowFullWindow (true);
+
+        if (!imageViewerLoader.item) {
+            imageViewerLoader.source = "component/ImageViewer.qml";
+        }
+
+        imageViewerLoader.item.imageUrl = imageUrl;
+        imageViewerLoader.item.show();
+    }
+
+    Loader {
+        id: imageViewerLoader
+
+        anchors.fill: parent
+    }
+
+    Connections {
+        target: imageViewerLoader.item
+
+        onSaveButtonClicked: {
+            var url = imageViewerLoader.item.imageUrl.toString();
+            var last = url.lastIndexOf('/') + 1;
+            var fileName = ffkit.picturesStorageLocation() + "/";
+
+            if (last > 0 && last < url.length) {
+                fileName += url.substring(last);
+            } else {
+                fileName += ffkit.createUuid() + ".jpg";
+            }
+
+            if (ffkit.saveImage(image, fileName)) {
+                showInfoBanner(qsTr("Saved: ") + fileName);
+            } else {
+                showInfoBanner(qsTr("Save failed: ") + fileName);
+            }
+        }
+
+        onClosed: {
+            setShowFullWindow(false);
+        }
+    }
+
     InfoBanner {
         id: infoBanner
 

@@ -47,6 +47,8 @@ public:
                                          const QByteArray &a5 = QByteArray(), const QByteArray &a6 = QByteArray()) const;
     Q_INVOKABLE int byteArraySize(const QByteArray &data) const;
     Q_INVOKABLE QString toPlainText(const QString &text) const;
+    Q_INVOKABLE bool saveImage(const QScriptValue object, const QString &toPath) const;
+    Q_INVOKABLE QString picturesStorageLocation() const;
 
 public slots:
     QByteArray generateXAuthorizationHeader(const QString &username, const QString &password);

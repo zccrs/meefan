@@ -16,6 +16,9 @@
 #include <QFontMetrics>
 #include <QFileInfo>
 #include <QTextDocument>
+#include <QDeclarativeItem>
+#include <QPainter>
+#include <QDesktopServices>
 #include <QDebug>
 
 #define ACCESS_TOKEN_URL "http://fanfou.com/oauth/access_token"
@@ -146,6 +149,33 @@ QString FanfouKit::toPlainText(const QString &text) const
     document.setHtml(text);
 
     return document.toPlainText();
+}
+
+bool FanfouKit::saveImage(const QScriptValue object, const QString &toPath) const
+{
+    if (QDeclarativeItem *item = qobject_cast<QDeclarativeItem*>(object.toQObject())) {
+        QImage image(item->implicitWidth(), item->implicitHeight(), QImage::Format_ARGB32_Premultiplied);
+        QPainter p(&image);
+
+        item->paint(&p, 0, 0);
+
+        if (image.isNull()) {
+            qWarning("FanfouKit::saveImage: Image data is null");
+
+            return false;
+        }
+
+        return image.save(toPath);
+    }
+
+    qWarning("FanfouKit::saveImage: Image object is null");
+
+    return false;
+}
+
+QString FanfouKit::picturesStorageLocation() const
+{
+    return QDesktopServices::storageLocation(QDesktopServices::PicturesLocation);
 }
 
 QByteArray FanfouKit::generateXAuthorizationHeader(const QString &username, const QString &password)
