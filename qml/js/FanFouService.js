@@ -391,3 +391,9 @@ function cancelLikeFriend(userId) {
 
     return hr.send(OAuth.POST, friendships.destroy, bh.getAll(uuid), "multipart/form-data; boundary=" + uuid);
 }
+
+function getNotification() {
+    var hr = new HttpRequest();
+
+    return hr.send(OAuth.GET, account.notification);
+}

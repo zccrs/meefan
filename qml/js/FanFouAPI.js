@@ -1,3 +1,5 @@
+// api from: https://github.com/FanfouAPI/FanFouAPIDoc/wiki/Apicategory
+
 .pragma library
 
 var FANFOU_HOME = "http://fanfou.com/"
@@ -6,7 +8,8 @@ var FORMAT = "json"
 
 // account
 var account = {
-    verify_credentials: HOST + "/account/verify_credentials." + FORMAT + "?mode=lite"
+    verify_credentials: HOST + "/account/verify_credentials." + FORMAT + "?mode=lite",
+    notification: HOST + "/account/notification." + FORMAT
 }
 
 // favorites

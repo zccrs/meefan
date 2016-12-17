@@ -37,6 +37,7 @@ CustomPage {
             showInfoBanner(qsTr("No more"));
         } else {
             ++privateData.currentPageNumber;
+            appWindow.privateMessageNotificationCount = 0;
         }
     }
 

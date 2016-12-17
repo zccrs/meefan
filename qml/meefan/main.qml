@@ -14,6 +14,8 @@ PageStackWindow {
     property alias showHeaderBar: header.visible
     property alias headerBar: header
     property bool pageBush: pageStack.currentPage && pageStack.currentPage.status !== PageStatus.Active
+    property int mentionsNotificationCount: 0
+    property int privateMessageNotificationCount: 0
 
 //    initialPage: UserInfoPage {
 
@@ -156,6 +158,41 @@ PageStackWindow {
         }
     }
 
+    Timer {
+        interval: 6000
+        repeat: true
+        running: true
+
+        onTriggered: {
+            // One 30 msec
+            interval = 30000;
+
+            var obj = Service.getNotification();
+
+            if (obj.error)
+                return;
+
+            var message = "";
+
+            if (obj.mentions > 0 && mentionsNotificationCount != obj.mentions) {
+                message += qsTr("Someone has mentioned you");
+            }
+
+            if (obj.direct_messages > 0 && privateMessageNotificationCount != obj.direct_messages) {
+                if (message)
+                    message += "\n";
+
+                message += qsTr("There are %1 new private messages").replace("%1", obj.direct_messages);
+            }
+
+            if (message)
+                showInfoBanner(message);
+
+            mentionsNotificationCount = obj.mentions;
+            privateMessageNotificationCount = obj.direct_messages;
+        }
+    }
+
     PageHeader {
         id: header
 
@@ -239,7 +276,18 @@ PageStackWindow {
                 onClicked: {
                     if (checked) {
                         pageStack.replace(Qt.resolvedUrl("statuses/MentionsPage.qml"));
+                        mentionsNotificationCount = 0;
                     }
+                }
+
+                RemindToolTip {
+                    anchors {
+                        bottom: parent.verticalCenter
+                        bottomMargin: 20
+                        horizontalCenter: parent.horizontalCenter
+                    }
+                    text: mentionsNotificationCount
+                    visible: mentionsNotificationCount > 0
                 }
             }
             CustomToolButton {
@@ -251,6 +299,16 @@ PageStackWindow {
                     if (checked) {
                         pageStack.replace(Qt.resolvedUrl("UserInfoPage.qml"), {"userId": settings.currentUser.userId, "tools": commonTools});
                     }
+                }
+
+                RemindToolTip {
+                    anchors {
+                        bottom: parent.verticalCenter
+                        bottomMargin: 20
+                        horizontalCenter: parent.horizontalCenter
+                    }
+                    text: privateMessageNotificationCount
+                    visible: privateMessageNotificationCount > 0
                 }
             }
             CustomToolButton {

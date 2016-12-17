@@ -247,6 +247,16 @@ CustomPage {
                     onClicked: {
                         pageStack.push(Qt.resolvedUrl("PrivateMessageListPage.qml"));
                     }
+
+                    RemindToolTip {
+                        anchors {
+                            right: parent.right
+                            top: parent.top
+                            margins: UI.MARGIN_DEFAULT
+                        }
+                        text: appWindow.privateMessageNotificationCount
+                        visible: appWindow.privateMessageNotificationCount > 0
+                    }
                 }
 
                 UserInfoGridCell {
