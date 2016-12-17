@@ -121,5 +121,9 @@ CustomPage {
         ScrollDecorator {
             flickableItem: parent
         }
+
+        ScrollTopButton {
+            flickableItem: parent
+        }
     }
 }

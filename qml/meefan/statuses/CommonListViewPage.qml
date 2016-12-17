@@ -69,15 +69,12 @@ CustomPage {
     }
 
     function quitSearchMode() {
+        if (!searchMode)
+            return;
+
         title = privateData.pageTitle;
         appWindow.showToolBar = true;
         searchMode = false;
-    }
-
-    Loader {
-        id: editNewMessageLoader
-        anchors.fill: parent
-        z: 1;
     }
 
     function openNewMessageEdit(text, replyMessageId, replyUserId, repostMessageId, messageSource) {
@@ -110,11 +107,23 @@ CustomPage {
         pullDownMenu.addMenu(qsTr("Refresh"));
     }
 
+    onStatusChanged: {
+        if (status === PageStatus.Deactivating) {
+            quitSearchMode();
+        }
+    }
+
     QtObject {
         id: privateData
 
         property string pageTitle
         property int currentPageNumber: 1
+    }
+
+    Loader {
+        id: editNewMessageLoader
+        anchors.fill: parent
+        z: 1;
     }
 
     PullDownMenu {
@@ -192,6 +201,10 @@ CustomPage {
         }
 
         ScrollDecorator {
+            flickableItem: parent
+        }
+
+        ScrollTopButton {
             flickableItem: parent
         }
     }
