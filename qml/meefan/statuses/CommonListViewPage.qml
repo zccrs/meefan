@@ -161,6 +161,7 @@ CustomPage {
             Button {
                 id: load_button
 
+                enabled: !appWindow.networkBusy
                 text: qsTr("Load")
                 anchors.centerIn: parent
                 visible: page.loadButtonVisible

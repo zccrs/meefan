@@ -13,6 +13,7 @@ PageStackWindow {
 
     property alias showHeaderBar: header.visible
     property alias headerBar: header
+    property alias networkBusy: header.indicatorRunning
     property bool pageBush: pageStack.currentPage && pageStack.currentPage.status !== PageStatus.Active
     property int mentionsNotificationCount: 0
     property int privateMessageNotificationCount: 0

@@ -172,6 +172,7 @@ CustomPage {
             Button {
                 id: loginButton
 
+                enabled: !appWindow.networkBusy
                 text: qsTr("Login")
                 width: (inputEmail.width - parent.spacing) / 2
 
@@ -190,6 +191,7 @@ CustomPage {
                          && inputPassword1.text === inputPassword2.text
                          && inputPassword1.text.length > 3
                          && !pageBush
+                         && !appWindow.networkBusy
 
                 onClicked: {
                     var obj = Service.registerFanfou(inputEmail.text, inputNickname.text, inputPassword1.text);

@@ -156,6 +156,7 @@ CustomPage {
             spacing: UI.SPACING_DEFAULT
 
             Button {
+                enabled: !appWindow.networkBusy
                 width: (inputEmail.width - parent.spacing) / 2
                 text: qsTr("Register")
 
@@ -167,7 +168,7 @@ CustomPage {
             Button {
                 text: qsTr("Login")
                 width: (inputEmail.width - parent.spacing) / 2
-                enabled: inputEmail.text && inputPassword.text && !pageBush
+                enabled: inputEmail.text && inputPassword.text && !pageBush && !appWindow.networkBusy
 
                 onClicked: {
                     settings.currentUser.userId = inputEmail.text;

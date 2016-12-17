@@ -200,7 +200,7 @@ Rectangle {
                     anchors.centerIn: parent
                     platformStyle: BusyIndicatorStyle { size: "small" }
                     visible: running
-                    running: headerBar.indicatorRunning
+                    running: appWindow.networkBusy
                 }
             }
         }
