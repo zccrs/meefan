@@ -89,4 +89,7 @@ HEADERS += \
 INCLUDEPATH += $$PWD/src
 
 RESOURCES += \
-    images.qrc
+    images.qrc \
+    translate.qrc
+
+TRANSLATIONS += $$PWD/$${TARGET}_zh_CN.ts

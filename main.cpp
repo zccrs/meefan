@@ -4,6 +4,7 @@
 #include <qdeclarative.h>
 #include <QNetworkProxy>
 #include <QGraphicsBlurEffect>
+#include <QTranslator>
 
 #include "qmlapplicationviewer.h"
 #include "fanfoukit.h"
@@ -18,6 +19,12 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     app->setApplicationName("meefan");
     app->setApplicationVersion("0.0.1");
     app->setOrganizationName("zccrs");
+
+    QTranslator translator;
+
+    if (translator.load(QString(":/%1_%2").arg(app->applicationName()).arg(QLocale::system().name()))) {
+        app->installTranslator(&translator);
+    }
 
 #ifdef ENABLE_PROXY
     QNetworkProxy proxy;
