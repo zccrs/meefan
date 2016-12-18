@@ -6,7 +6,6 @@ import "../js/UIConstants.js" as UI
 
 CustomPage {
     title: qsTr("Login")
-    orientationLock: PageOrientation.LockPortrait
 
     Component.onCompleted: {
         findChildren(appWindow, "ToolBar").platformStyle.visibilityTransitionDuration = 0;

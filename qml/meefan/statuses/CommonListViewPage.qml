@@ -179,7 +179,7 @@ CustomPage {
         }
 
         onUserAvatarClicked: {
-            pushUserInfo(object.user.id);
+            appWindow.pushUserInfo(object.user.id);
         }
         onItemClicked: {
             pageStack.push(Qt.resolvedUrl("ContextTimeline.qml"), {"messageId": object.id});
@@ -187,12 +187,6 @@ CustomPage {
         onItemPressAndHold: {
             itemMenu.object = object;
             itemMenu.open();
-        }
-        onPushUserInfo: {
-            if (userId === settings.currentUser.userId)
-                toolbar_contact_button.checked = true;
-            else
-                pageStack.push(Qt.resolvedUrl("../UserInfoPage.qml"), {"userId": userId});
         }
 
         Component.onCompleted: {

@@ -13,12 +13,12 @@
 #include <QUuid>
 #include <QtFeedback/QFeedbackHapticsEffect>
 #include <QtFeedback/QFeedbackActuator>
-#include <QFontMetrics>
 #include <QFileInfo>
 #include <QTextDocument>
 #include <QDeclarativeItem>
 #include <QPainter>
 #include <QDesktopServices>
+#include <QCoreApplication>
 #include <QDebug>
 
 #define ACCESS_TOKEN_URL "http://fanfou.com/oauth/access_token"
@@ -176,6 +176,11 @@ bool FanfouKit::saveImage(const QScriptValue object, const QString &toPath) cons
 QString FanfouKit::picturesStorageLocation() const
 {
     return QDesktopServices::storageLocation(QDesktopServices::PicturesLocation);
+}
+
+QString FanfouKit::applicationVersion() const
+{
+    return qApp->applicationVersion();
 }
 
 QByteArray FanfouKit::generateXAuthorizationHeader(const QString &username, const QString &password)

@@ -1,7 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 import "../../js/UIConstants.js" as UI
-import "../../js/FanFouAPI.js" as API
 
 ListView {
     property bool loadButtonVisible: false
@@ -10,7 +9,6 @@ ListView {
     signal userAvatarClicked(variant object)
     signal itemClicked(variant object)
     signal itemPressAndHold(variant object)
-    signal pushUserInfo(string userId)
 
     spacing: 10
     delegate: Item {
@@ -96,15 +94,7 @@ ListView {
                 textFormat: Text.RichText
 
                 onLinkActivated: {
-                    if (link.indexOf(API.FANFOU_HOME) === 0) {
-                        var l = link.substring(API.FANFOU_HOME.length);
-
-                        if (l.indexOf(/[\/?&]/) < 0) {
-                            pushUserInfo(l);
-                        }
-                    }
-
-                    Qt.openUrlExternally(link)
+                    appWindow.openUrlExternally(link)
                 }
             }
 

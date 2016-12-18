@@ -49,6 +49,7 @@ public:
     Q_INVOKABLE QString toPlainText(const QString &text) const;
     Q_INVOKABLE bool saveImage(const QScriptValue object, const QString &toPath) const;
     Q_INVOKABLE QString picturesStorageLocation() const;
+    Q_INVOKABLE QString applicationVersion() const;
 
 public slots:
     QByteArray generateXAuthorizationHeader(const QString &username, const QString &password);

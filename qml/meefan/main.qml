@@ -3,6 +3,7 @@ import com.nokia.meego 1.0
 import com.nokia.extras 1.1
 import com.zccrs.meefan 1.0
 import "../js/FanFouService.js" as Service
+import "../js/FanFouAPI.js" as API
 import "../js/UIConstants.js" as UI
 import "setting"
 import "component"
@@ -88,6 +89,26 @@ PageStackWindow {
         imageViewerLoader.item.show();
     }
 
+    function pushUserInfo(userId) {
+        if (userId === settings.currentUser.userId)
+            toolbar_contact_button.checked = true;
+        else
+            pageStack.push(Qt.resolvedUrl("UserInfoPage.qml"), {"userId": userId});
+    }
+
+    function openUrlExternally(link) {
+        if (link.indexOf(API.FANFOU_HOME) === 0) {
+            var l = link.substring(API.FANFOU_HOME.length);
+
+            if (l.indexOf(/[\/?&]/) < 0) {
+                pushUserInfo(l);
+                return;
+            }
+        }
+
+        Qt.openUrlExternally(link)
+    }
+
     Loader {
         id: imageViewerLoader
 
@@ -165,8 +186,8 @@ PageStackWindow {
         running: true
 
         onTriggered: {
-            // One 30 msec
-            interval = 30000;
+            // One 60 msec
+            interval = 60000;
 
             var obj = Service.getNotification();
 
@@ -316,7 +337,9 @@ PageStackWindow {
                 iconId: "toolbar-frequent-used";
 
                 onClicked: {
-
+                    if (checked) {
+                        pageStack.replace(Qt.resolvedUrl("AboutPage.qml"));
+                    }
                 }
             }
         }

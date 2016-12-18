@@ -76,7 +76,7 @@ CustomPage {
         model: ListModel {}
 
         delegate: MouseArea {
-            property variant userObject: object.dm.sender_id === object.other_id ? object.dm.sender : object.dm.recipient
+            property variant userObject: object.dm.sender_id === object.otherid ? object.dm.sender : object.dm.recipient
 
             width: parent.width - UI.MARGIN_DEFAULT * 2
             height: Math.max(labelColumn.implicitHeight, avatar.height)

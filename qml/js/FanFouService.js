@@ -191,7 +191,7 @@ function commitMessage(text, in_reply_to_status_id, in_reply_to_user_id, repost_
     if (source)
         bh.add("source", source);
 
-    bh.add("location", "Finland");
+//    bh.add("location", "Finland");
 
     return hr.send(OAuth.POST, statuses.update, bh.getAll(uuid), "multipart/form-data; boundary=" + uuid);
 }
