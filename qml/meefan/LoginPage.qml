@@ -29,7 +29,7 @@ CustomPage {
             else
                 settings.currentUser.password = ""
 
-            showInfoBanner("Login Finished");
+            showInfoBanner(qsTr("Login Finished"));
             pageStack.replace(Qt.resolvedUrl("statuses/HomeTimelinePage.qml"));
         }
         onRequestAccessTokenError: {

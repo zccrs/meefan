@@ -170,6 +170,10 @@
         <source>Register</source>
         <translation>注册</translation>
     </message>
+    <message>
+        <source>Login Finished</source>
+        <translation>呼～登录完成=-=</translation>
+    </message>
 </context>
 <context>
     <name>MentionsPage</name>
