@@ -181,9 +181,10 @@ PageStackWindow {
     }
 
     Timer {
+        id: notificationTimer
+
         interval: 6000
         repeat: true
-        running: true
 
         onTriggered: {
             // One 60 msec
@@ -286,7 +287,7 @@ PageStackWindow {
             CustomToolButton {
                 iconId: "toolbar-list";
 
-                onClicked: {
+                onCheckedChanged: {
                     if (checked) {
                         pageStack.replace(Qt.resolvedUrl("statuses/PublicTimelinePage.qml"));
                     }
@@ -295,7 +296,7 @@ PageStackWindow {
             CustomToolButton {
                 iconId: "toolbar-new-message"
 
-                onClicked: {
+                onCheckedChanged: {
                     if (checked) {
                         pageStack.replace(Qt.resolvedUrl("statuses/MentionsPage.qml"));
                         mentionsNotificationCount = 0;
@@ -336,7 +337,7 @@ PageStackWindow {
             CustomToolButton {
                 iconId: "toolbar-frequent-used";
 
-                onClicked: {
+                onCheckedChanged: {
                     if (checked) {
                         pageStack.replace(Qt.resolvedUrl("AboutPage.qml"));
                     }

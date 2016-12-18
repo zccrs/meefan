@@ -77,6 +77,17 @@ CustomPage {
                 appWindow.openUrlExternally(link);
             }
         }
+
+        Text {
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("Acknowledgement: ") + "<a href='http://tieba.baidu.com/home/main/?un=%E6%A2%A6%E5%BD%B1%E5%86%B3%E5%B9%BB&ie=utf-8&fr=frs'>梦影决幻</a>"
+            font.pixelSize: UI.FONT_DEFAULT
+            color: UI.COLOR_SECONDARY_FOREGROUND
+
+            onLinkActivated: {
+                Qt.openUrlExternally(link);
+            }
+        }
     }
 
     Text {

@@ -22,4 +22,8 @@ CommonListViewPage {
             openNewMessageEdit();
         }
     }
+
+    Component.onCompleted: {
+        notificationTimer.running = true;
+    }
 }
