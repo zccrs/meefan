@@ -51,6 +51,8 @@ public:
     Q_INVOKABLE QString picturesStorageLocation() const;
     Q_INVOKABLE QString applicationVersion() const;
 
+    Q_INVOKABLE QString dateConvert(const QString &date, const QString &fromFormat, const QString &toFormat) const;
+
 public slots:
     QByteArray generateXAuthorizationHeader(const QString &username, const QString &password);
 

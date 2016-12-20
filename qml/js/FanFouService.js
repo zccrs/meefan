@@ -397,3 +397,20 @@ function getNotification() {
 
     return hr.send(OAuth.GET, account.notification);
 }
+
+//---------------------------------------------zhihu--------------------------------------------------
+Qt.include("ZhiHuAPI.js")
+function getNewsLatest(date) {
+    var hr = new HttpRequest();
+
+    if (date)
+        return hr.send(OAuth.GET, z_news.before(date));
+
+    return hr.send(OAuth.GET, z_news.latest);
+}
+
+function getNewsContent(newsId) {
+    var hr = new HttpRequest();
+
+    return hr.send(OAuth.GET, z_news.newsContent(newsId));
+}

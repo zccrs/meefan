@@ -181,6 +181,14 @@ CustomPage {
                         bottom: userName.baseline
                     }
                 }
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    onClicked: {
+                        pageStack.push(Qt.resolvedUrl("../zhihu/NewsListPage.qml"));
+                    }
+                }
             }
 
             Item {

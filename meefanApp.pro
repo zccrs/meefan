@@ -14,7 +14,10 @@ folder_01.target = qml
 folder_js.source = qml/js
 folder_js.target = qml
 
-DEPLOYMENTFOLDERS = folder_01 folder_js
+zhihu.source = qml/zhihu
+zhihu.target = qml
+
+DEPLOYMENTFOLDERS = folder_01 folder_js zhihu
 
 # Additional import path used to resolve QML modules in Creator's code model
 QML_IMPORT_PATH =
@@ -79,7 +82,8 @@ OTHER_FILES += \
     qtc_packaging/debian_harmattan/compat \
     qtc_packaging/debian_harmattan/changelog \
     qml/js/FanFouAPI.js \
-    qml/js/FanFouService.js
+    qml/js/FanFouService.js \
+    qml/zhihu/NewsListPage.qml
 
 HEADERS += \
     src/fanfoukit.h \

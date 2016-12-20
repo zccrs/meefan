@@ -186,6 +186,11 @@ QString FanfouKit::applicationVersion() const
     return qApp->applicationVersion();
 }
 
+QString FanfouKit::dateConvert(const QString &date, const QString &fromFormat, const QString &toFormat) const
+{
+    return QDate::fromString(date, fromFormat).toString(toFormat);
+}
+
 QByteArray FanfouKit::generateXAuthorizationHeader(const QString &username, const QString &password)
 {
     QUrl url(ACCESS_TOKEN_URL);
