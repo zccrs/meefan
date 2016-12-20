@@ -65,9 +65,12 @@ signals:
 
 private slots:
     void onRequestAccessToken();
+    void onGetSplashLateshFinished();
+    void onGetSplashImageFinished();
 
 private:
     void ensureVibraRumble();
+    void updateSplash();
 
     QNetworkAccessManager *m_accessManager;
     HttpRequest *m_httpRequest;

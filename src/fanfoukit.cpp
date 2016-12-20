@@ -7,6 +7,7 @@
 #include <QRegExp>
 #include <QStringList>
 #include <QFile>
+#include <QDir>
 #include <QDateTime>
 #include <QSettings>
 #include <QCryptographicHash>
@@ -22,6 +23,8 @@
 #include <QDebug>
 
 #define ACCESS_TOKEN_URL "http://fanfou.com/oauth/access_token"
+#define SPLASH_URL "http://api.zccrs.com/splash/meefan/n9/"
+#define SPLASH_PATH QDesktopServices::storageLocation(QDesktopServices::CacheLocation) + QDir::separator() +  "splash" + QDir::separator()
 
 FanfouKit::FanfouKit(QObject *parent)
     : OAuth(parent)
@@ -30,7 +33,7 @@ FanfouKit::FanfouKit(QObject *parent)
     , m_settings(new QSettings(this))
     , m_rumble(0)
 {
-
+    updateSplash();
 }
 
 FanfouKit::FanfouKit(QNetworkAccessManager *manager, QObject *parent)
@@ -40,7 +43,7 @@ FanfouKit::FanfouKit(QNetworkAccessManager *manager, QObject *parent)
     , m_settings(new QSettings(this))
     , m_rumble(0)
 {
-
+    updateSplash();
 }
 
 FanfouKit::FanfouKit(const QByteArray &consumerKey, const QByteArray &consumerSecret, QObject *parent)
@@ -50,7 +53,7 @@ FanfouKit::FanfouKit(const QByteArray &consumerKey, const QByteArray &consumerSe
     , m_settings(new QSettings(this))
     , m_rumble(0)
 {
-
+    updateSplash();
 }
 
 HttpRequest *FanfouKit::httpRequest() const
@@ -287,6 +290,53 @@ void FanfouKit::onRequestAccessToken()
     emit requestAccessTokenFinished();
 }
 
+void FanfouKit::onGetSplashLateshFinished()
+{
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+
+    if (!reply)
+        return;
+
+    const QList<QByteArray> dataList = reply->readAll().split(',');
+
+    if (dataList.count() < 2)
+        return;
+
+    const QString splashPath = SPLASH_PATH;
+    QByteArray splashFileName = dataList.last().split('"').at(3);
+
+    if (!splashFileName.isEmpty()) {
+        if (!QFile::exists(splashPath + splashFileName)) {
+            QNetworkRequest request;
+
+            request.setUrl(QUrl(SPLASH_URL + splashFileName));
+
+            QNetworkReply *reply = m_accessManager->get(request);
+            connect(reply, SIGNAL(finished()), this, SLOT(onGetSplashImageFinished()));
+        }
+    }
+}
+
+void FanfouKit::onGetSplashImageFinished()
+{
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+
+    if (!reply)
+        return;
+
+    const QString &splashPath = SPLASH_PATH;
+
+    QFile file(splashPath + QFileInfo(reply->url().path()).fileName());
+
+    if (!QDir().mkpath(QFileInfo(file.fileName()).absolutePath()))
+        return;
+
+    if (file.open(QIODevice::WriteOnly)) {
+        file.write(reply->readAll());
+        file.close();
+    }
+}
+
 void FanfouKit::ensureVibraRumble()
 {
     if (m_rumble)
@@ -298,6 +348,32 @@ void FanfouKit::ensureVibraRumble()
         if (actuator->name() == "Vibra") {
             m_rumble->setActuator(actuator);
             break;
+        }
+    }
+}
+
+void FanfouKit::updateSplash()
+{
+    QNetworkRequest request;
+
+    request.setUrl(QUrl(SPLASH_URL + QLatin1String("latesh")));
+
+    QNetworkReply *reply = m_accessManager->get(request);
+    connect(reply, SIGNAL(finished()), this, SLOT(onGetSplashLateshFinished()));
+
+    int today = QDate::currentDate().toString("yyyyMMdd").toInt();
+    QDir splashDir(SPLASH_PATH);
+
+    //clear old splash
+    foreach (const QString &fileName, splashDir.entryList(QStringList() << "*.jpg", QDir::Files, QDir::Name)) {
+        if (fileName.size() != 12)
+            continue;
+
+        bool ok = false;
+        int file_date = fileName.left(8).toInt(&ok);
+
+        if (ok && file_date < today) {
+            splashDir.remove(fileName);
         }
     }
 }
