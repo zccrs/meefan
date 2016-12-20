@@ -356,7 +356,7 @@ void FanfouKit::updateSplash()
 {
     QNetworkRequest request;
 
-    request.setUrl(QUrl(SPLASH_URL + QLatin1String("latesh")));
+    request.setUrl(QUrl(SPLASH_URL + QLatin1String("latest")));
 
     QNetworkReply *reply = m_accessManager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(onGetSplashLateshFinished()));
