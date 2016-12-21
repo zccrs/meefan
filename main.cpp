@@ -5,6 +5,7 @@
 #include <QNetworkProxy>
 #include <QGraphicsBlurEffect>
 #include <QTranslator>
+#include <QtWebKit/QWebSettings>
 
 #include "qmlapplicationviewer.h"
 #include "fanfoukit.h"
@@ -33,6 +34,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     proxy.setPort(8888);
     QNetworkProxy::setApplicationProxy(proxy);
 #endif
+
+    QWebSettings::globalSettings()->setUserStyleSheetUrl(QUrl::fromLocalFile(QML_ROOT_PATH"zhihu/css/default.css"));
 
     qmlRegisterUncreatableType<OAuth>("com.zccrs.meefan", 1, 0, "OAuth", "Can't touch this");
     qmlRegisterType<HttpRequest>("com.zccrs.meefan", 1, 0, "HttpRequest");

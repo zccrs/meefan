@@ -28,11 +28,13 @@ CustomPage {
         for (var i in obj.stories) {
             var date = ffkit.dateConvert(String(obj.date), "yyyyMMdd", "MMMdd dddd");
 
-            listModel.append({"object": obj.stories[i], "date": date});
+            listModel.append({"object": obj.stories[i], "date": date, "septalLineVisible": true});
         }
 
         if (obj.length === 0) {
             showInfoBanner(qsTr("No more"));
+        } else {
+            listModel.get(listModel.count - 1).septalLineVisible = false;
         }
 
         currentDate = obj.date;
@@ -47,21 +49,41 @@ CustomPage {
         anchors.fill: parent
         section.property: "date"
         section.criteria: ViewSection.FullString
-        section.delegate: Text {
-            text: section
-            color: UI.COLOR_UNCONSPLCUOUS
-            anchors.horizontalCenter: parent.horizontalCenter
-            font.pixelSize: UI.FONT_XLARGE
-            verticalAlignment: Qt.AlignVCenter
-            height: implicitHeight * 2
+        section.delegate: Row {
+            width: parent.width
+            height: text.implicitHeight * 2
+
+            Rectangle {
+                color: UI.COLOR_UNCONSPLCUOUS
+                height: 1
+                width: (parent.width - text.implicitWidth) / 2
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            Text {
+                id: text
+
+                text: section
+                color: UI.COLOR_UNCONSPLCUOUS
+                anchors.verticalCenter: parent.verticalCenter
+                font.pixelSize: UI.FONT_LARGE
+            }
+
+            Rectangle {
+                color: UI.COLOR_UNCONSPLCUOUS
+                height: 1
+                width: (parent.width - text.implicitWidth) / 2
+                anchors.verticalCenter: parent.verticalCenter
+            }
         }
 
         model: ListModel {
             id: listModel
         }
-        delegate: Item {
+        delegate: MouseArea {
             width: parent.width - 2 * UI.MARGIN_DEFAULT
-            height: Math.max(text.implicitHeight, image.implicitHeight, 100) + UI.MARGIN_DEFAULT
+            height: Math.max(text.implicitHeight, image.implicitHeight, 100)
+                    + (septalLineVisible ? UI.MARGIN_DEFAULT : 0)
             anchors.horizontalCenter: parent.horizontalCenter
 
             Text {
@@ -88,10 +110,15 @@ CustomPage {
             }
 
             Rectangle {
+                visible: septalLineVisible
                 color: UI.COLOR_UNCONSPLCUOUS
                 height: 1
                 width: parent.width
                 anchors.bottom: parent.bottom
+            }
+
+            onClicked: {
+                pageStack.push(Qt.resolvedUrl("NewsContentPage.qml"), {"newsId": object.id});
             }
         }
 

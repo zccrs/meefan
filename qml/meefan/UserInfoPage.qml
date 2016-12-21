@@ -185,7 +185,7 @@ CustomPage {
                 MouseArea {
                     anchors.fill: parent
 
-                    onClicked: {
+                    onDoubleClicked: {
                         pageStack.push(Qt.resolvedUrl("../zhihu/NewsListPage.qml"));
                     }
                 }

@@ -1,4 +1,4 @@
-QT += network script
+QT += network script webkit
 CONFIG += c++11 mobility
 MOBILITY = feedback
 
@@ -97,3 +97,11 @@ RESOURCES += \
     translate.qrc
 
 TRANSLATIONS += $$PWD/$${TARGET}_zh_CN.ts
+
+simulator {
+    DEFINES += QML_ROOT_PATH=\\\"$${OUT_PWD}/qml/\\\"
+}
+
+contains(MEEGO_EDITION, harmattan) {
+    DEFINES += QML_ROOT_PATH=\\\"/opt/$${TARGET}/qml/\\\"
+}
