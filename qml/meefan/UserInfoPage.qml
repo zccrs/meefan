@@ -240,7 +240,7 @@ CustomPage {
                 }
 
                 UserInfoGridCell {
-                    iconId: "tiezi"
+                    iconId: "chat"
                     text: qsTr("Private Message")
                     visible: userId === settings.currentUser.userId
 

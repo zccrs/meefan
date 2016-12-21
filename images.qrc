@@ -26,5 +26,9 @@
         <file>images/btn_insert_pics.png</file>
         <file>images/btn_insert_pics_1.png</file>
         <file>images/ico_mbar_news_point.png</file>
+        <file>images/bubble_1.png</file>
+        <file>images/bubble_2.png</file>
+        <file>images/cent_icon_chat.png</file>
+        <file>images/cent_icon_chat_1.png</file>
     </qresource>
 </RCC>

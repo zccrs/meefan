@@ -126,6 +126,7 @@ CustomPage {
                 sourceSize: Qt.size(width, height)
                 width: UI.SIZE_AVATAR_DEFAULT
                 height: width
+                anchors.bottom: labelColumn.bottom
 
                 Image {
                     source: "qrc:///images/mask.png"
@@ -144,7 +145,35 @@ CustomPage {
             Column {
                 id: labelColumn
 
-                width: (parent.width - avatar.width - parent.spacing) / 1.3
+                width: (parent.width - avatar.width - parent.spacing) / 1.1
+
+                BorderImage {
+                    source: "qrc:/images/bubble_" + (enabledMirroring ? 1 : 2) +".png"
+                    width: parent.width
+                    height: message.implicitHeight + border.top + border.bottom
+                    border.left: 28; border.top: 28
+                    border.right: 28; border.bottom: 28
+                    x: enabledMirroring ? border.left * 2 : -border.left * 2
+
+                    Text {
+                        id: message
+
+                        text: object.text
+                        anchors.rightMargin: parent.border.right
+                        x: parent.border.left
+                        y: parent.border.top
+                        width: parent.width - parent.border.left - parent.border.right
+                        font.pixelSize: UI.FONT_SLARGE
+                        wrapMode: Text.WrapAtWordBoundaryOrAnywhere;
+                        horizontalAlignment: (lineCount <= 1 && object.sender_id !== userObject.unique_id)
+                                             ? Text.AlignRight : Text.AlignLeft
+
+                        Component.onCompleted: {
+                            if (enabledMirroring)
+                                anchors.right = parent.right
+                        }
+                    }
+                }
 
                 Text {
                     text: object.sender_screen_name
@@ -161,25 +190,6 @@ CustomPage {
                     text: ffkit.datetimeFormatFromISO(new Date(object.created_at).toISOString())
                     color: UI.COLOR_SECONDARY_FOREGROUND
                     font.pixelSize: UI.FONT_SMALL
-
-                    Component.onCompleted: {
-                        if (enabledMirroring)
-                            anchors.right = parent.right
-                    }
-                }
-
-                Item {
-                    width: 1
-                    height: 10
-                }
-
-                Text {
-                    text: object.text
-                    font.pixelSize: UI.FONT_SLARGE
-                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere;
-                    width: parent.width
-                    horizontalAlignment: (lineCount <= 1 && object.sender_id !== userObject.unique_id)
-                                         ? Text.AlignRight : Text.AlignLeft
 
                     Component.onCompleted: {
                         if (enabledMirroring)
