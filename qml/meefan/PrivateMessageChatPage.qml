@@ -148,21 +148,23 @@ CustomPage {
                 width: (parent.width - avatar.width - parent.spacing) / 1.1
 
                 BorderImage {
+                    property int imageMargins: 28
+
                     source: "qrc:/images/bubble_" + (enabledMirroring ? 1 : 2) +".png"
-                    width: Math.min(parent.width, message.implicitWidth + border.left + border.right)
-                    height: message.implicitHeight + border.top + border.bottom
-                    border.left: 28; border.top: 28
-                    border.right: 28; border.bottom: 28
-                    x: enabledMirroring ? border.right * 2 + parent.width - width : -border.left * 2
+                    width: Math.min(parent.width, message.implicitWidth + imageMargins * 2)
+                    height: message.implicitHeight + 2 * imageMargins
+                    border.left: 60; border.top: imageMargins
+                    border.right: 60; border.bottom: imageMargins
+                    x: enabledMirroring ? imageMargins * 2 + parent.width - width : -imageMargins * 2
 
                     Text {
                         id: message
 
                         text: object.text
-                        anchors.rightMargin: parent.border.right
-                        x: parent.border.left
-                        y: parent.border.top
-                        width: parent.parent.width - parent.border.left - parent.border.right
+                        anchors.rightMargin: parent.imageMargins
+                        x: parent.imageMargins
+                        y: parent.imageMargins
+                        width: parent.parent.width - 2 * parent.imageMargins
                         font.pixelSize: UI.FONT_SLARGE
                         wrapMode: Text.WrapAtWordBoundaryOrAnywhere;
                         horizontalAlignment: (lineCount === 1 && object.sender_id !== userObject.unique_id
