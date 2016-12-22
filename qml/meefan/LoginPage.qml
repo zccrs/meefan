@@ -29,6 +29,13 @@ CustomPage {
             else
                 settings.currentUser.password = ""
 
+            var userInfo = Service.usersShow();
+
+            if (!userInfo.error) {
+                settings.currentUser.userId = userInfo.id;
+                settings.currentUser.userScreenName = userInfo.screen_name;
+            }
+
             showInfoBanner(qsTr("Login Finished"));
             pageStack.replace(Qt.resolvedUrl("statuses/HomeTimelinePage.qml"));
         }

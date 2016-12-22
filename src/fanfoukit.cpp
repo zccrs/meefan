@@ -191,6 +191,11 @@ QString FanfouKit::dateConvert(const QString &date, const QString &fromFormat, c
     return QDate::fromString(date, fromFormat).toString(toFormat);
 }
 
+QString FanfouKit::qmlRootPath() const
+{
+    return QML_ROOT_PATH;
+}
+
 QByteArray FanfouKit::generateXAuthorizationHeader(const QString &username, const QString &password)
 {
     QUrl url(ACCESS_TOKEN_URL);

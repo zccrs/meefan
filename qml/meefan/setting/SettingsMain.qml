@@ -7,11 +7,13 @@ SettingsBase {
     property variant userMap: new Object()
     property QtObject currentUser: QtObject {
         property string userId
+        property string userScreenName
         property string token
         property string secret
         property string password
         property bool savePass: false
         property bool autoLogin: false
+        property bool chrismasSurprised: false
     }
 
     function setCurrentUserByUserId (id) {
