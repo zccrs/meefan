@@ -149,11 +149,11 @@ CustomPage {
 
                 BorderImage {
                     source: "qrc:/images/bubble_" + (enabledMirroring ? 1 : 2) +".png"
-                    width: parent.width
+                    width: Math.min(parent.width, message.implicitWidth + border.left + border.right)
                     height: message.implicitHeight + border.top + border.bottom
                     border.left: 28; border.top: 28
                     border.right: 28; border.bottom: 28
-                    x: enabledMirroring ? border.left * 2 : -border.left * 2
+                    x: enabledMirroring ? border.right * 2 + parent.width - width : -border.left * 2
 
                     Text {
                         id: message
@@ -162,15 +162,16 @@ CustomPage {
                         anchors.rightMargin: parent.border.right
                         x: parent.border.left
                         y: parent.border.top
-                        width: parent.width - parent.border.left - parent.border.right
+                        width: parent.parent.width - parent.border.left - parent.border.right
                         font.pixelSize: UI.FONT_SLARGE
                         wrapMode: Text.WrapAtWordBoundaryOrAnywhere;
-                        horizontalAlignment: (lineCount <= 1 && object.sender_id !== userObject.unique_id)
+                        horizontalAlignment: (lineCount === 1 && object.sender_id !== userObject.unique_id
+                                                                  && object.sender_id !== userObject.id)
                                              ? Text.AlignRight : Text.AlignLeft
 
                         Component.onCompleted: {
                             if (enabledMirroring)
-                                anchors.right = parent.right
+                                anchors.right = parent.right;
                         }
                     }
                 }
