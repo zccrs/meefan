@@ -18,7 +18,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QScopedPointer<QApplication> app(createApplication(argc, argv));
 
     app->setApplicationName("meefan");
-    app->setApplicationVersion("0.0.1");
+    app->setApplicationVersion("0.0.2");
     app->setOrganizationName("zccrs");
 
     QTranslator translator;

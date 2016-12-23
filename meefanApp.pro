@@ -3,7 +3,7 @@ CONFIG += c++11 mobility
 MOBILITY = feedback
 
 TARGET = meefan
-VERSION = 0.0.1
+VERSION = 0.0.2
 
 DEFINES += CONSUMER_KEY=\\\"$${CONSUMER_KEY}\\\" CONSUMER_SECRET=\\\"$${CONSUMER_SECRET}\\\"
 
