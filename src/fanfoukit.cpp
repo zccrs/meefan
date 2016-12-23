@@ -94,6 +94,11 @@ QString FanfouKit::datetimeFormatFromISO(const QString &dt) const
     return QDateTime::fromString(dt, Qt::ISODate).toLocalTime().toString("yyyy-MM-dd hh:mm");
 }
 
+QString FanfouKit::getCurrentDateTime(const QString &format) const
+{
+    return QDateTime::currentDateTime().toString(format);
+}
+
 void FanfouKit::setSettingValue(const QString &name, const QVariant &value)
 {
     m_settings->setValue(name, value);

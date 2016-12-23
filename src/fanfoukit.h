@@ -32,6 +32,7 @@ public:
     Q_INVOKABLE QString fromUtf8(const QByteArray &data) const;
     Q_INVOKABLE QByteArray toUtf8(const QString &string) const;
     Q_INVOKABLE QString datetimeFormatFromISO(const QString &dt) const;
+    Q_INVOKABLE QString getCurrentDateTime(const QString &format) const;
     Q_INVOKABLE void setSettingValue(const QString &name, const QVariant &value);
     Q_INVOKABLE QVariant settingValue(const QString &name, const QVariant &defaultValue = QVariant()) const;
     Q_INVOKABLE void clearSettings();
