@@ -109,6 +109,10 @@ PageStackWindow {
         Qt.openUrlExternally(link)
     }
 
+    function getService() {
+        return Service;
+    }
+
     Loader {
         id: imageViewerLoader
 
