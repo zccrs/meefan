@@ -35,7 +35,7 @@ CustomPage {
 
         sourceSize.width: parent.width
         source: newsObject.image
-        y: Math.min(0, flickable.anchors.topMargin - implicitHeight)
+        y: Math.min(0, flickable.contentTopMargin - implicitHeight)
            - (flickable.atYBeginning ? flickable.contentY : flickable.contentY / 2.0)
 
         Rectangle {
@@ -77,22 +77,30 @@ CustomPage {
     Flickable {
         id: flickable
 
+        property int contentTopMargin: 200
+
         width: parent.width
-        anchors {
-            top: parent.top
-            topMargin: 200
-            bottom: parent.bottom
-        }
+        anchors.fill: parent
 
-        contentHeight: webView.implicitHeight
+        contentHeight: webViewColumn.implicitHeight
 
-        WebView {
-            id: webView
-
+        Column {
+            id: webViewColumn
             width: parent.width
-            preferredWidth: width
-            html: ffkit.fromUtf8(newsObject.body)
-            settings.defaultFontSize: UI.FONT_DEFAULT
+
+            Item {
+                width: 1
+                height: flickable.contentTopMargin
+            }
+
+            WebView {
+                id: webView
+
+                width: parent.width
+                preferredWidth: width
+                html: ffkit.fromUtf8(newsObject.body)
+                settings.defaultFontSize: UI.FONT_DEFAULT
+            }
         }
     }
 
