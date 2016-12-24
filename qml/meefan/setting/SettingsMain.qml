@@ -6,7 +6,9 @@ SettingsBase {
 
     property variant userMap: new Object()
     property QtObject currentUser: QtObject {
+        property string loginName
         property string userId
+        property string userScreenName
         property string token
         property string secret
         property string password
@@ -14,11 +16,11 @@ SettingsBase {
         property bool autoLogin: false
     }
 
-    function setCurrentUserByUserId (id) {
-        if (currentUser.userId === id)
+    function setCurrentUserByLoginName (name) {
+        if (currentUser.loginName === name)
             return true;
 
-        var user = userMap[id];
+        var user = userMap[name];
 
         if (user) {
             currentUser.token = "";
@@ -33,10 +35,10 @@ SettingsBase {
         return Boolean(user);
     }
 
-    function setUser (id, userObj) {
+    function setUser (name, userObj) {
         var map = userMap;
 
-        map[id] = userObj;
+        map[name] = userObj;
         userMap = map;
     }
 }

@@ -31,6 +31,10 @@ CustomPage {
     }
 
     onUserIdChanged: {
+        refreshList();
+    }
+
+    function refreshList() {
         privateData.currentPageNumber = 1;
         listModel.clear();
         loadList();
@@ -75,7 +79,7 @@ CustomPage {
         onTrigger: {
             switch (index) {
             case 0: {
-                onUserIdChanged();
+                refreshList();
             }
             }
 

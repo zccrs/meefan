@@ -60,7 +60,7 @@ CustomPage {
         onTrigger: {
             switch (index) {
             case 0: {
-                listModel.clear();
+                listView.model.clear();
                 privateData.currentPageNumber = 1;
                 loadList();
             }
