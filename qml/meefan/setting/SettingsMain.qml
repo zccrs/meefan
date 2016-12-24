@@ -16,6 +16,16 @@ SettingsBase {
         property bool autoLogin: false
     }
 
+    function clearCurrentUserInfo() {
+        currentUser.userId = "";
+        currentUser.userScreenName = "";
+        currentUser.token = "";
+        currentUser.secret = "";
+        currentUser.password = "";
+        currentUser.savePass = false;
+        currentUser.autoLogin = false;
+    }
+
     function setCurrentUserByLoginName (name) {
         if (currentUser.loginName === name)
             return true;
@@ -23,12 +33,7 @@ SettingsBase {
         var user = userMap[name];
 
         if (user) {
-            currentUser.token = "";
-            currentUser.secret = "";
-            currentUser.password = "";
-            currentUser.savePass = false;
-            currentUser.autoLogin = false;
-
+            clearCurrentUserInfo();
             jsObject2QObject(currentUser, user);
         }
 
