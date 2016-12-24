@@ -29,15 +29,19 @@ CustomPage {
             else
                 settings.currentUser.password = ""
 
-            var userInfo = Service.usersShow();
+            var obj = Service.usersShow();
 
-            if (!userInfo.error) {
-                settings.currentUser.userId = userInfo.id;
-                settings.currentUser.userScreenName = userInfo.screen_name;
+            if (obj) {
+                settings.currentUser.userId = obj.id;
+                settings.currentUser.userScreenName = obj.screen_name;
             }
 
             showInfoBanner(qsTr("Login Finished"));
-            pageStack.replace(Qt.resolvedUrl("statuses/HomeTimelinePage.qml"));
+
+            if (!toolbar_home_button.checked)
+                toolbar_home_button.checked = true;
+            else
+                pageStack.replace(Qt.resolvedUrl("statuses/HomeTimelinePage.qml"));
         }
         onRequestAccessTokenError: {
             console.log("error:", error)
@@ -89,8 +93,8 @@ CustomPage {
         TextField {
             id: inputEmail
 
-            placeholderText: qsTr("User Name/Email")
-            text: settings.currentUser.userId
+            placeholderText: qsTr("Phone Number/Email")
+            text: settings.currentUser.loginName
             anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width * 0.85
             KeyNavigation.down: inputPassword
@@ -98,7 +102,7 @@ CustomPage {
             KeyNavigation.tab: inputPassword
 
             onTextChanged: {
-                settings.setCurrentUserByUserId(inputEmail.text)
+                settings.setCurrentUserByLoginName(inputEmail.text)
             }
         }
 
@@ -177,8 +181,8 @@ CustomPage {
                 enabled: inputEmail.text && inputPassword.text && !pageBush && !appWindow.networkBusy
 
                 onClicked: {
-                    settings.currentUser.userId = inputEmail.text;
-                    settings.setUser(settings.currentUser.userId, settings.currentUser);
+                    settings.currentUser.loginName = inputEmail.text;
+                    settings.setUser(settings.currentUser.loginName, settings.currentUser);
 
                     ffkit.requestAccessToken(inputEmail.text, inputPassword.text)
                 }
