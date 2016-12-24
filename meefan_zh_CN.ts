@@ -156,7 +156,7 @@
     </message>
     <message>
         <source>User Name/Email</source>
-        <translation>用户名/邮箱</translation>
+        <translation type="vanished">用户名/邮箱</translation>
     </message>
     <message>
         <source>Password</source>
@@ -177,6 +177,10 @@
     <message>
         <source>Login Finished</source>
         <translation>呼～登录完成=-=</translation>
+    </message>
+    <message>
+        <source>Phone Number/Email</source>
+        <translation>手机号/邮箱</translation>
     </message>
 </context>
 <context>
