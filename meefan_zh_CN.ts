@@ -27,6 +27,10 @@
         <source>Feedback</source>
         <translation>反馈</translation>
     </message>
+    <message>
+        <source>Project: </source>
+        <translation>项目地址：</translation>
+    </message>
 </context>
 <context>
     <name>CommonListViewPage</name>
