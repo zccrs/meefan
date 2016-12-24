@@ -106,6 +106,25 @@ CustomPage {
     Text {
         anchors {
             horizontalCenter: parent.horizontalCenter
+            bottom: feedbackText.top
+        }
+
+        font.pixelSize: UI.FONT_DEFAULT
+        text: "<a href='none'>Clear Config</>"
+
+        onLinkActivated: {
+            ffkit.clearAppConfig();
+            settings.userMap = undefined;
+            settings.clearCurrentUserInfo();
+            appWindow.showInfoBanner("Clear Successful, Plase restart the application now");
+        }
+    }
+
+    Text {
+        id: feedbackText
+
+        anchors {
+            horizontalCenter: parent.horizontalCenter
             bottom: parent.bottom
             bottomMargin: UI.MARGIN_XLARGE
         }

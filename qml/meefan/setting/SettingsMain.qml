@@ -25,6 +25,7 @@ SettingsBase {
         currentUser.password = "";
         currentUser.savePass = false;
         currentUser.autoLogin = false;
+        currentUser.chrismasSurprised = false;
     }
 
     function setCurrentUserByLoginName (name) {

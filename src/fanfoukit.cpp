@@ -201,6 +201,12 @@ QString FanfouKit::qmlRootPath() const
     return QML_ROOT_PATH;
 }
 
+void FanfouKit::clearAppConfig() const
+{
+    m_settings->clear();
+    m_settings->sync();
+}
+
 QByteArray FanfouKit::generateXAuthorizationHeader(const QString &username, const QString &password)
 {
     QUrl url(ACCESS_TOKEN_URL);

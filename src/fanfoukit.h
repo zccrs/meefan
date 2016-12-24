@@ -55,6 +55,7 @@ public:
     Q_INVOKABLE QString dateConvert(const QString &date, const QString &fromFormat, const QString &toFormat) const;
 
     Q_INVOKABLE QString qmlRootPath() const;
+    Q_INVOKABLE void clearAppConfig() const;
 
 public slots:
     QByteArray generateXAuthorizationHeader(const QString &username, const QString &password);
