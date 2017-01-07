@@ -41,7 +41,7 @@ CustomPage {
     }
 
     Component.onCompleted: {
-        loadList()
+        loadList();
     }
 
     ListView {

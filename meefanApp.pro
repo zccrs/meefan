@@ -3,7 +3,7 @@ CONFIG += c++11 mobility
 MOBILITY = feedback
 
 TARGET = meefan
-VERSION = 0.0.2
+VERSION = 0.0.3
 
 DEFINES += CONSUMER_KEY=\\\"$${CONSUMER_KEY}\\\" CONSUMER_SECRET=\\\"$${CONSUMER_SECRET}\\\"
 
@@ -16,6 +16,15 @@ folder_js.target = qml
 
 zhihu.source = qml/zhihu
 zhihu.target = qml
+
+contains(MEEGO_EDITION, harmattan) {
+    zhihu_desktopfile.files = zhihu_harmattan.desktop
+    zhihu_desktopfile.path = /usr/share/applications
+
+    export(zhihu_desktopfile.files)
+    export(zhihu_desktopfile.path)
+    INSTALLS += zhihu_desktopfile
+}
 
 DEPLOYMENTFOLDERS = folder_01 folder_js zhihu
 

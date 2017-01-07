@@ -207,6 +207,11 @@ void FanfouKit::clearAppConfig() const
     m_settings->sync();
 }
 
+bool FanfouKit::isZhihu() const
+{
+    return qApp->arguments().value(1) == "--zhihu";
+}
+
 QByteArray FanfouKit::generateXAuthorizationHeader(const QString &username, const QString &password)
 {
     QUrl url(ACCESS_TOKEN_URL);

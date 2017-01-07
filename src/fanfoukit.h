@@ -57,6 +57,8 @@ public:
     Q_INVOKABLE QString qmlRootPath() const;
     Q_INVOKABLE void clearAppConfig() const;
 
+    Q_INVOKABLE bool isZhihu() const;
+
 public slots:
     QByteArray generateXAuthorizationHeader(const QString &username, const QString &password);
 

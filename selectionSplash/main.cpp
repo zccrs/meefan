@@ -18,15 +18,31 @@ int main(int argv, char *argc[])
     QProcess process;
     QObject::connect(&process, SIGNAL(finished(int)), app, SLOT(quit()));
 
-    const QString splashFilePath = SPLASH_PATH + QDate::currentDate().toString("yyyyMMdd.jpg");
+    QString splashFilePath = SPLASH_PATH + QDate::currentDate().toString("yyyyMMdd.jpg");
 
     qDebug() << "splashFilePath:" << splashFilePath;
+    qDebug() << "argc:" << app->arguments();
 
-    if (QFile::exists(splashFilePath)) {
-        process.start(QString("/usr/bin/invoker --splash %1 --type=d -s /opt/meefan/bin/meefan").arg(splashFilePath));
-    } else {
-        process.start("/usr/bin/invoker --splash /opt/meefan/data/splash.png --type=d -s /opt/meefan/bin/meefan");
+    QStringList args = app->arguments();
+
+    if (!args.isEmpty())
+        args.removeFirst();
+
+    QString command = "/usr/bin/invoker --splash %1 --type=d -s /opt/meefan/bin/meefan %2";
+
+    if (!QFile::exists(splashFilePath)) {
+        splashFilePath = "/opt/meefan/data/splash.png";
     }
 
-    return app->exec();
+    command = command.arg(splashFilePath).arg(args.join(" "));
+    process.start(command);
+
+    qDebug() << "command:" << command;
+
+    if (process.error() == QProcess::UnknownError)
+        return app->exec();
+    else
+        qDebug() << process.errorString();
+
+    qDebug() << process.readAllStandardError();
 }

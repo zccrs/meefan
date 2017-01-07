@@ -176,6 +176,10 @@ PageStackWindow {
             } else {
                 pageStack.push(Qt.resolvedUrl("LoginPage.qml"), null, true);
             }
+
+            if (ffkit.isZhihu()) {
+                pageStack.push(Qt.resolvedUrl("../zhihu/NewsListPage.qml"), {"tools": null}, true);
+            }
         }
 
         Component.onDestruction: {
