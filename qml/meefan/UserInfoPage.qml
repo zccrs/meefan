@@ -186,8 +186,7 @@ CustomPage {
                     anchors.fill: parent
 
                     onDoubleClicked: {
-                        if (settings.currentUser.chrismasSurprised)
-                            pageStack.push(Qt.resolvedUrl("../zhihu/NewsListPage.qml"));
+                        pageStack.push(Qt.resolvedUrl("../zhihu/NewsListPage.qml"));
                     }
                 }
             }
